@@ -59,5 +59,5 @@ const historyList=create('div');historyList.className='knowledge-admin-list';
 history.onclick=async()=>{try{const data=await api('/api/admin/history');historyList.replaceChildren();const sorted=data.items.sort((a,b)=>b.savedAt.localeCompare(a.savedAt));if(!sorted.length)historyList.append(create('p','Ainda não há versões anteriores.'));for(const entry of sorted.slice(0,50)){const details=create('details');details.append(create('summary',entry.content.title+' — '+new Date(entry.savedAt).toLocaleString('pt-BR')));const pre=create('pre',entry.content.body);pre.className='history-body';details.append(pre);historyList.append(details)}}catch(e){historyList.replaceChildren(create('p',e.message))}};
 tools.append(backup,history,historyList);admin.append(tools);
 document.querySelectorAll('[data-tab="guides"],[data-tab="topics"]').forEach(b=>b.addEventListener('click',()=>api('/api/admin/all').then(r=>{window.academiaItems=r.content||[]}).catch(()=>{})));const adminEntry=byId('adminEntry');if(adminEntry)adminEntry.addEventListener('click',()=>list().catch(()=>{}));
-const tab=admin.querySelector('[data-tab="overview"]');if(tab)tab.addEventListener('click',()=>list().catch(()=>{}));
+const tab=document.querySelector('[data-tab="overview"]');if(tab)tab.addEventListener('click',()=>list().catch(()=>{}));list().catch(()=>{});
 })();
