@@ -2,6 +2,22 @@
 'use strict';
 const api=async(path,method='GET',data)=>{const r=await fetch(path,{method,credentials:'same-origin',headers:data?{'content-type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const result=await r.json();if(!r.ok)throw Error(result.error||'Erro ao salvar');return result};
 const admin=document.getElementById('adminContent');if(!admin||typeof courses==='undefined')return;
+const topicSection=document.createElement('section');topicSection.className='admin-form-card original-lessons-admin';
+const topicHeading=document.createElement('h3');topicHeading.textContent='Editar os oito tópicos da Academia';
+const topicHelp=document.createElement('p');topicHelp.textContent='Altere o nome, a descrição, a dificuldade e o símbolo de qualquer tópico existente, sem perder seus subtópicos.';
+const topicForm=document.createElement('form');topicForm.className='admin-form';
+const topicSelect=document.createElement('select');const topicTitle=document.createElement('input');topicTitle.required=true;topicTitle.maxLength=140;
+const topicDesc=document.createElement('textarea');topicDesc.rows=3;topicDesc.required=true;
+const topicLevel=document.createElement('select');for(const value of ['Iniciante','Intermediário','Avançado']){const opt=document.createElement('option');opt.value=value;opt.textContent=value;topicLevel.append(opt)}
+const topicIcon=document.createElement('input');topicIcon.maxLength=8;
+for(const [label,field] of [['Escolher tópico',topicSelect],['Nome do tópico',topicTitle],['Descrição',topicDesc],['Dificuldade',topicLevel],['Símbolo',topicIcon]]){const wrap=document.createElement('label');wrap.append(document.createTextNode(label),field);topicForm.append(wrap)}
+const topicSave=document.createElement('button');topicSave.className='primary';topicSave.type='submit';topicSave.textContent='Salvar alterações do tópico';
+const topicStatus=document.createElement('p');topicStatus.setAttribute('role','status');topicForm.append(topicSave,topicStatus);
+topicSection.append(topicHeading,topicHelp,topicForm);admin.prepend(topicSection);
+courses.forEach((c,i)=>{const opt=document.createElement('option');opt.value=i;opt.textContent=c.title;topicSelect.append(opt)});
+function fillTopic(){const c=courses[Number(topicSelect.value)];topicTitle.value=c.title;topicDesc.value=c.desc;topicLevel.value=c.level;topicIcon.value=c.icon}
+topicSelect.onchange=fillTopic;fillTopic();
+topicForm.onsubmit=async e=>{e.preventDefault();topicSave.disabled=true;try{const index=Number(topicSelect.value);await api('/api/admin/topic','POST',{index,title:topicTitle.value,desc:topicDesc.value,level:topicLevel.value,icon:topicIcon.value});Object.assign(courses[index],{title:topicTitle.value,desc:topicDesc.value,level:topicLevel.value,icon:topicIcon.value});topicSelect.options[index].textContent=topicTitle.value;topic.options[index].textContent=topicTitle.value;render();topicStatus.textContent='Tópico atualizado com sucesso.'}catch(err){topicStatus.textContent=err.message}finally{topicSave.disabled=false}};
 const section=document.createElement('section');section.className='admin-form-card original-lessons-admin';
 const heading=document.createElement('h3');heading.textContent='Editar os tópicos já existentes';
 const explanation=document.createElement('p');explanation.textContent='Escolha um dos oito tópicos e um subtópico para publicar ou atualizar a aula dentro dele.';
