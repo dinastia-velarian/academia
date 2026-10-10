@@ -11,7 +11,7 @@ if(form){
  const order=create('label','Ordem de exibição (menor aparece primeiro)');const num=create('input');num.name='sortOrder';num.type='number';num.min='0';num.max='9999';num.value='100';order.append(num);
  const video=form.elements.namedItem('videoUrl');video.closest('label').before(category,order);
  const list=byId('adminContentList');
- const observer=new MutationObserver(()=>{for(const row of list.querySelectorAll('.admin-list-item')){if(row.dataset.enhanced)return;row.dataset.enhanced='1';const title=row.querySelector('strong')?.textContent;const item=(window.adminData?.content||[]).find(x=>x.title===title);if(!item)continue;const tag=create('small','Categoria: '+(item.category||'Geral'));row.insertBefore(tag,row.querySelector('button'));const edit=[...row.querySelectorAll('button')].find(x=>x.textContent==='Editar');edit?.addEventListener('click',()=>{sel.value=item.category||'Geral';num.value=item.sortOrder??100})}});
+ api('/api/admin/all').then(r=>{window.academiaItems=r.content||[]}).catch(()=>{});const observer=new MutationObserver(()=>{for(const row of list.querySelectorAll('.admin-list-item')){if(row.dataset.enhanced)return;row.dataset.enhanced='1';const title=row.querySelector('strong')?.textContent;const item=window.academiaItems?.find(x=>x.title===title);if(!item)continue;const tag=create('small','Categoria: '+(item.category||'Geral'));row.insertBefore(tag,row.querySelector('button'));const edit=[...row.querySelectorAll('button')].find(x=>x.textContent==='Editar');edit?.addEventListener('click',()=>{sel.value=item.category||'Geral';num.value=item.sortOrder??100})}});
  observer.observe(list,{childList:true});
 }
 const support=byId('certificados');
@@ -51,6 +51,6 @@ const history=create('button','Consultar versões anteriores');history.className
 const historyList=create('div');historyList.className='knowledge-admin-list';
 history.onclick=async()=>{try{const data=await api('/api/admin/history');historyList.replaceChildren();const sorted=data.items.sort((a,b)=>b.savedAt.localeCompare(a.savedAt));if(!sorted.length)historyList.append(create('p','Ainda não há versões anteriores.'));for(const entry of sorted.slice(0,50)){const details=create('details');details.append(create('summary',entry.content.title+' — '+new Date(entry.savedAt).toLocaleString('pt-BR')));const pre=create('pre',entry.content.body);pre.className='history-body';details.append(pre);historyList.append(details)}}catch(e){historyList.replaceChildren(create('p',e.message))}};
 tools.append(backup,history,historyList);admin.append(tools);
-const adminEntry=byId('adminEntry');if(adminEntry)adminEntry.addEventListener('click',()=>list().catch(()=>{}));
+document.querySelectorAll('[data-tab="guides"],[data-tab="topics"]').forEach(b=>b.addEventListener('click',()=>api('/api/admin/all').then(r=>{window.academiaItems=r.content||[]}).catch(()=>{})));const adminEntry=byId('adminEntry');if(adminEntry)adminEntry.addEventListener('click',()=>list().catch(()=>{}));
 const tab=admin.querySelector('[data-tab="overview"]');if(tab)tab.addEventListener('click',()=>list().catch(()=>{}));
 })();
