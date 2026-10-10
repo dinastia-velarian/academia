@@ -25,7 +25,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   if(!env.ADMIN_SETUP_TOKEN)return fail('Configure o segredo ADMIN_SETUP_TOKEN antes.',503);
   const b=await body(req);if(!b||b.setupToken!==env.ADMIN_SETUP_TOKEN)return fail('Token de configuração inválido.',403);
   const exists=await env.DB.prepare("SELECT id FROM users WHERE role='admin' LIMIT 1").first();if(exists)return fail('Administrador já configurado.',409);
-  const name='Victor Velarian';if(typeof b.password!=='string'||b.password.length<12||b.password.length>200)return fail('Use senha de 12 a 200 caracteres.');
+  const name='Victor Velarian';if(typeof b.password!=='string'||b.password.length<6||b.password.length>12)return fail('Use senha de 6 a 12 caracteres.');
   const salt=token(),id=random();
   let passwordHash;
   try {
