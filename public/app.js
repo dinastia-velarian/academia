@@ -104,7 +104,7 @@ const pageFields={
 const pageNames={inicio:'Página inicial',guias:'Guias',topicos:'Tópicos',certificados:'Certificados',sobre:'Sobre',doacoes:'Doações',rodape:'Rodapé'};
 let selectedPage='inicio';
 const originalPageValues={};
-for(const fields of Object.values(pageFields))for(const [key,,selector,type]of fields){if(key in originalPageValues)continue;const el=document.querySelector(selector);if(!el)continue;if(type==='image'){if(key==='heroImage')originalPageValues[key]='assets/academia-imperial.webp';else if(key==='guidesImage')originalPageValues[key]='assets/guias-imperiais.webp';else if(key==='topicsImage')originalPageValues[key]='assets/topicos-imperiais.webp';else originalPageValues[key]=el.getAttribute('src')||''}else if(type==='url')originalPageValues[key]=el.getAttribute('href')||'';else originalPageValues[key]=el.textContent.trim();}
+for(const fields of Object.values(pageFields))for(const [key,,selector,type]of fields){if(key in originalPageValues)continue;const el=document.querySelector(selector);if(!el)continue;if(type==='image'){if(key==='heroImage')originalPageValues[key]='/assets/academia-imperial.webp';else if(key==='guidesImage')originalPageValues[key]='/assets/guias-imperiais.webp';else if(key==='topicsImage')originalPageValues[key]='/assets/topicos-imperiais.webp';else originalPageValues[key]=(el.getAttribute('src')||'').replace(/^assets\//,'/assets/')}else if(type==='url')originalPageValues[key]=el.getAttribute('href')||'';else originalPageValues[key]=el.textContent.trim();}
 function applyPageSettings(settings){
  for(const [key,value]of Object.entries(settings||{})){
   if(value===undefined||value===null||value==='')continue;
