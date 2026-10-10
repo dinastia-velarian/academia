@@ -8,7 +8,7 @@ const sha=async s=>hex(await crypto.subtle.digest('SHA-256',enc.encode(s)));
 const normalize=s=>String(s||'').normalize('NFKC').trim().replace(/\s+/g,' ');
 const usernameKey=s=>normalize(s).toLocaleLowerCase('pt-BR');
 const validName=s=>s.length>=3&&s.length<=48&&!/[<>\u0000-\u001f]/.test(s);
-const iter=310000;
+const iter=100000;
 async function derive(password,salt,iterations=iter){const key=await crypto.subtle.importKey('raw',enc.encode(password),'PBKDF2',false,['deriveBits']);return hex(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:enc.encode(salt),iterations},key,256));}
 async function body(request){if(Number(request.headers.get('content-length')||0)>120000)return null;try{return await request.json()}catch{return null}}
 function safeUrl(s){if(!s)return '';try{const u=new URL(s);return u.protocol==='https:'?u.href:''}catch{return ''}}
