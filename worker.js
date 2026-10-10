@@ -26,25 +26,43 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const b=await body(req);if(!b||b.setupToken!==env.ADMIN_SETUP_TOKEN)return fail('Token de configuração inválido.',403);
   const exists=await env.DB.prepare("SELECT id FROM users WHERE role='admin' LIMIT 1").first();if(exists)return fail('Administrador já configurado.',409);
   const name='Victor Velarian';if(typeof b.password!=='string'||b.password.length<12||b.password.length>200)return fail('Use senha de 12 a 200 caracteres.');
-  const salt=token(),id=random();try{await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES(?,?,?,?,?,?,?)').bind(id,name,usernameKey(name),await derive(b.password,salt),salt,iter,'admin').run();}catch{return fail('Nome já cadastrado.',409)}
+  const salt=token(),id=random();
+  let passwordHash;
+  try {
+    passwordHash=await derive(b.password,salt);
+  } catch(error) {
+    console.error('ADMIN_BOOTSTRAP_HASH_ERROR', error?.message, error?.stack);
+    return fail('Falha ao preparar a senha. Consulte os logs do Worker.',500);
+  }
+  try {
+    await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES(?,?,?,?,?,?,?)')
+      .bind(id,name,usernameKey(name),passwordHash,salt,iter,'admin').run();
+  } catch(error) {
+    console.error('ADMIN_BOOTSTRAP_DB_ERROR', error?.message, error?.cause?.message);
+    const message=String(error?.message||'');
+    if (/UNIQUE constraint failed|SQLITE_CONSTRAINT_UNIQUE|SQLITE_CONSTRAINT_PRIMARYKEY/i.test(message)) {
+      return fail('Nome já cadastrado.',409);
+    }
+    return fail('Falha ao gravar administrador no banco. Consulte os logs do Worker.',500);
+  }
   return json({ok:true,message:'Administrador Victor Velarian criado. Remova ADMIN_SETUP_TOKEN após configurar.'},201);
  }
  if(path==='/api/register'&&method==='POST'){
   const ip=req.headers.get('cf-connecting-ip')||'unknown';if(await rateLimit(env,'register:'+ip))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
   const b=await body(req);if(!b)return fail('Dados inválidos.');const name=normalize(b.username);if(!validName(name))return fail('Nome inválido (3 a 48 caracteres).');if(typeof b.password!=='string'||b.password.length<12||b.password.length>200)return fail('Senha deve ter 12 a 200 caracteres.');
   if(usernameKey(name)==='victor velarian')return fail('Nome reservado para a administração.',409);
-  const salt=token(),id=random();try{await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations) VALUES(?,?,?,?,?,?)').bind(id,name,usernameKey(name),await derive(b.password,salt),salt,iter).run();}
-catch (error) {
-  console.error('ADMIN_SETUP_ERROR', {
-    message: error?.message,
-    cause: error?.cause?.message
-  });
-
-  return fail(
-    'Não foi possível criar o administrador. Consulte os logs do Worker.',
-    500
-  );
-}}
+  const salt=token(),id=random();
+  try {
+    const passwordHash=await derive(b.password,salt);
+    await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations) VALUES(?,?,?,?,?,?)')
+      .bind(id,name,usernameKey(name),passwordHash,salt,iter).run();
+  } catch(error) {
+    console.error('USER_REGISTER_ERROR',error?.message);
+    if (/UNIQUE constraint failed|SQLITE_CONSTRAINT_UNIQUE|SQLITE_CONSTRAINT_PRIMARYKEY/i.test(String(error?.message||''))) {
+      return fail('Nome de usuário já está em uso.',409);
+    }
+    return fail('Não foi possível criar a conta. Consulte os logs do Worker.',500);
+  }
   const s=await makeSession(env,{id,username:name,role:'student'});return json({user:s.user},201,{'set-cookie':setCookie(s.t,7*86400)});
  }
  if(path==='/api/login'&&method==='POST'){
