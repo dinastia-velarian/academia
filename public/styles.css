@@ -170,3 +170,5 @@ body.admin-mode #admin{display:grid!important}
 .knowledge-admin>button{margin:8px 12px 8px 0}
 .history-body{max-height:280px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:14px;background:#160f0d;color:#f0ddc4}
 .certificate-note{margin:18px auto;max-width:1000px;color:#e3c79d;font-size:.9rem}
+
+.full-lesson-dialog{width:min(1040px,96vw);max-width:96vw;max-height:94vh;padding:clamp(20px,4vw,55px)}.full-lesson-dialog .course-detail,.full-lesson-dialog #courseDetail{max-width:860px;margin:auto}.full-lesson-dialog .article-body{font-size:1.07rem;line-height:1.9}.full-lesson-dialog .article-image{max-width:100%;height:auto;border-radius:8px}
