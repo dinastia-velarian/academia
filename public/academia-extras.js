@@ -14,6 +14,13 @@ if(form){
  api('/api/admin/all').then(r=>{window.academiaItems=r.content||[]}).catch(()=>{});const observer=new MutationObserver(()=>{for(const row of list.querySelectorAll('.admin-list-item')){if(row.dataset.enhanced)return;row.dataset.enhanced='1';const title=row.querySelector('strong')?.textContent;const item=window.academiaItems?.find(x=>x.title===title);if(!item)continue;const tag=create('small','Categoria: '+(item.category||'Geral'));row.insertBefore(tag,row.querySelector('button'));const edit=[...row.querySelectorAll('button')].find(x=>x.textContent==='Editar');edit?.addEventListener('click',()=>{sel.value=item.category||'Geral';num.value=item.sortOrder??100})}});
  observer.observe(list,{childList:true});
 }
+const dialog=byId('courseDialog');
+if(dialog){
+ dialog.classList.add('full-lesson-dialog');
+ dialog.addEventListener('close',()=>{const url=new URL(location.href);if(url.searchParams.has('aula')){url.searchParams.delete('aula');history.replaceState({},'',url)}});
+ document.addEventListener('click',event=>{const btn=event.target.closest('.public-content .text-link');if(!btn)return;const card=btn.closest('.public-content');const title=card?.querySelector('h3')?.textContent;if(!title)return;api('/api/public').then(data=>{const item=data.content.find(x=>x.title===title);if(!item)return;const url=new URL(location.href);url.searchParams.set('aula',item.id);history.replaceState({},'',url)}).catch(()=>{})});
+ const id=new URL(location.href).searchParams.get('aula');if(id)api('/api/public').then(data=>{const item=data.content.find(x=>x.id===id);if(item&&typeof openPublished==='function')openPublished(item)}).catch(()=>{});
+}
 const support=byId('certificados');
 if(support){const note=create('p','Não é necessário realizar prova para estudar ou solicitar informações sobre certificados. A emissão é opcional e combinada pelo Telegram.');note.className='certificate-note';support.append(note)}
 const host=create('section');host.id='consulta';host.className='section academia-knowledge';
