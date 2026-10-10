@@ -50,7 +50,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  // Cadastro público desativado: a Academia é aberta, sem contas de alunos.
  if(path==='/api/register')return fail('Cadastro de alunos desativado. O conteúdo é público.',403);
  if(path==='/api/login'&&method==='POST'){
-  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=usernameKey(b.username),ip=req.headers.get('cf-connecting-ip')||'unknown';if(await rateLimit(env,'login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=usernameKey(b.username),ip=req.headers.get('cf-connecting-ip')||'unknown';try{if(await rateLimit(env,'login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429)}catch(error){console.error('ADMIN_LOGIN_RATE_LIMIT_ERROR',error?.message);return fail('Falha no controle de tentativas de login. Consulte os logs do Worker.',500)}
   const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='admin'").bind(name).first();if(!u||typeof b.password!=='string')return fail('Usuário ou senha inválidos.',401);
   let candidate;try{candidate=await derive(b.password,u.salt,u.iterations)}catch(error){console.error('ADMIN_LOGIN_HASH_ERROR',error?.message);return fail('Erro na verificação da senha.',500)}if(candidate!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
   let session;try{session=await makeSession(env,u)}catch(error){console.error('ADMIN_LOGIN_SESSION_ERROR',error?.message);return fail('Erro ao iniciar a sessão administrativa.',500)}return json({user:session.user},200, {'set-cookie':setCookie(session.t,7*86400)});
