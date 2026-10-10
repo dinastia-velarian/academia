@@ -33,7 +33,18 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const ip=req.headers.get('cf-connecting-ip')||'unknown';if(await rateLimit(env,'register:'+ip))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
   const b=await body(req);if(!b)return fail('Dados inválidos.');const name=normalize(b.username);if(!validName(name))return fail('Nome inválido (3 a 48 caracteres).');if(typeof b.password!=='string'||b.password.length<12||b.password.length>200)return fail('Senha deve ter 12 a 200 caracteres.');
   if(usernameKey(name)==='victor velarian')return fail('Nome reservado para a administração.',409);
-  const salt=token(),id=random();try{await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations) VALUES(?,?,?,?,?,?)').bind(id,name,usernameKey(name),await derive(b.password,salt),salt,iter).run();}catch{return fail('Nome de usuário já está em uso.',409)}
+  const salt=token(),id=random();try{await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations) VALUES(?,?,?,?,?,?)').bind(id,name,usernameKey(name),await derive(b.password,salt),salt,iter).run();}
+catch (error) {
+  console.error('ADMIN_SETUP_ERROR', {
+    message: error?.message,
+    cause: error?.cause?.message
+  });
+
+  return fail(
+    'Não foi possível criar o administrador. Consulte os logs do Worker.',
+    500
+  );
+}}
   const s=await makeSession(env,{id,username:name,role:'student'});return json({user:s.user},201,{'set-cookie':setCookie(s.t,7*86400)});
  }
  if(path==='/api/login'&&method==='POST'){
