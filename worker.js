@@ -49,7 +49,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  }
  if(path==='/api/register'&&method==='POST'){
   const ip=req.headers.get('cf-connecting-ip')||'unknown';if(await rateLimit(env,'register:'+ip))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
-  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=normalize(b.username);if(!validName(name))return fail('Nome inválido (3 a 48 caracteres).');if(typeof b.password!=='string'||b.password.length<12||b.password.length>200)return fail('Senha deve ter 12 a 200 caracteres.');
+  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=normalize(b.username);if(!validName(name))return fail('Nome inválido (3 a 48 caracteres).');if(typeof b.password!=='string'||b.password.length<6||b.password.length>12)return fail('Senha deve ter 6 a 12 caracteres.');
   if(usernameKey(name)==='victor velarian')return fail('Nome reservado para a administração.',409);
   const salt=token(),id=random();
   try {
