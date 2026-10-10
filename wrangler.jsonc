@@ -1,3 +1,4 @@
+
 {
   "name": "academia",
   "main": "worker.js",
@@ -16,14 +17,14 @@
       "database_name": "academia-velarian-db",
       "database_id": "5750bd0a-fd2f-4345-80b2-c5abfd9d470a"
     }
-  ]
-}
-"observability": {
-  "enabled": true,
-  "logs": {
+  ],
+  "observability": {
     "enabled": true,
-    "head_sampling_rate": 1,
-    "invocation_logs": true,
-    "persist": true
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    }
   }
 }
