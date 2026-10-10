@@ -47,31 +47,15 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   }
   return json({ok:true,message:'Administrador Victor Velarian criado. Remova ADMIN_SETUP_TOKEN após configurar.'},201);
  }
- if(path==='/api/register'&&method==='POST'){
-  const ip=req.headers.get('cf-connecting-ip')||'unknown';if(await rateLimit(env,'register:'+ip))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
-  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=normalize(b.username);if(!validName(name))return fail('Nome inválido (3 a 48 caracteres).');if(typeof b.password!=='string'||b.password.length<6||b.password.length>12)return fail('Senha deve ter 6 a 12 caracteres.');
-  if(usernameKey(name)==='victor velarian')return fail('Nome reservado para a administração.',409);
-  const salt=token(),id=random();
-  try {
-    const passwordHash=await derive(b.password,salt);
-    await env.DB.prepare('INSERT INTO users(id,username,username_key,password_hash,salt,iterations) VALUES(?,?,?,?,?,?)')
-      .bind(id,name,usernameKey(name),passwordHash,salt,iter).run();
-  } catch(error) {
-    console.error('USER_REGISTER_ERROR',error?.message);
-    if (/UNIQUE constraint failed|SQLITE_CONSTRAINT_UNIQUE|SQLITE_CONSTRAINT_PRIMARYKEY/i.test(String(error?.message||''))) {
-      return fail('Nome de usuário já está em uso.',409);
-    }
-    return fail('Não foi possível criar a conta. Consulte os logs do Worker.',500);
-  }
-  const s=await makeSession(env,{id,username:name,role:'student'});return json({user:s.user},201,{'set-cookie':setCookie(s.t,7*86400)});
- }
+ // Cadastro público desativado: a Academia é aberta, sem contas de alunos.
+ if(path==='/api/register')return fail('Cadastro de alunos desativado. O conteúdo é público.',403);
  if(path==='/api/login'&&method==='POST'){
   const b=await body(req);if(!b)return fail('Dados inválidos.');const name=usernameKey(b.username),ip=req.headers.get('cf-connecting-ip')||'unknown';if(await rateLimit(env,'login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
-  const u=await env.DB.prepare('SELECT * FROM users WHERE username_key=?').bind(name).first();if(!u||typeof b.password!=='string')return fail('Usuário ou senha inválidos.',401);
-  const candidate=await derive(b.password,u.salt,u.iterations);if(candidate!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
-  const s=await makeSession(env,u);return json({user:s.user},200, {'set-cookie':setCookie(s.t,7*86400)});
+  const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='admin'").bind(name).first();if(!u||typeof b.password!=='string')return fail('Usuário ou senha inválidos.',401);
+  let candidate;try{candidate=await derive(b.password,u.salt,u.iterations)}catch(error){console.error('ADMIN_LOGIN_HASH_ERROR',error?.message);return fail('Erro na verificação da senha.',500)}if(candidate!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
+  let session;try{session=await makeSession(env,u)}catch(error){console.error('ADMIN_LOGIN_SESSION_ERROR',error?.message);return fail('Erro ao iniciar a sessão administrativa.',500)}return json({user:session.user},200, {'set-cookie':setCookie(session.t,7*86400)});
  }
- if(path==='/api/me'&&method==='GET'){const u=await current(req,env);return json({user:u||null})}
+ if(path==='/api/me'&&method==='GET'){const u=await current(req,env);return json({user:u?.role==='admin'?u:null})}
  if(path==='/api/logout'&&method==='POST'){const m=(req.headers.get('cookie')||'').match(/av_session=([a-f0-9]{64})/);if(m)await env.DB.prepare('DELETE FROM sessions WHERE id_hash=?').bind(await sha(m[1])).run();return json({ok:true},200,{'set-cookie':setCookie('',0)})}
  if(path==='/api/public'&&method==='GET'){const s=await env.DB.prepare('SELECT key,value FROM settings').all();const c=await env.DB.prepare("SELECT id,kind,title,summary,body,video_url AS videoUrl,image_url AS imageUrl FROM content WHERE status='published' ORDER BY updated_at DESC").all();return json({settings:Object.fromEntries((s.results||[]).map(x=>[x.key,x.value])),content:c.results||[]})}
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
