@@ -106,3 +106,15 @@ body.admin-mode #admin{display:grid!important}
 .admin-image-picker{width:min(850px,92vw);max-height:85vh;background:#1d1613;color:#f2e2cc;border:1px solid #896945;border-radius:14px;padding:25px}.admin-image-picker::backdrop{background:#000b}.admin-picker-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px}.admin-picker-head h2{font-size:1.7rem}.admin-picker-head p{color:#cbb6a3}.admin-message{margin-top:24px}
 @media(max-width:1050px){.admin-editor-layout{grid-template-columns:1fr}.admin-existing{position:static}.admin-welcome{align-items:flex-start;flex-direction:column}}
 @media(max-width:750px){.admin-workspace{grid-template-columns:1fr}.admin-sidebar{position:static;height:auto;padding:15px;gap:12px}.admin-brand{padding-bottom:12px}.admin-side-label{display:none}.admin-workspace .admin-tabs{flex-direction:row;overflow-x:auto;gap:4px}.admin-workspace .admin-tabs button{white-space:nowrap;width:auto;padding:10px}.admin-sidebar-foot{flex-direction:row;margin-top:0;padding-top:10px}.admin-main{padding:20px 18px 60px}.admin-stat-grid{grid-template-columns:1fr}.admin-topline{font-size:.67rem}.admin-page-head{padding:25px 0}.admin-welcome,.admin-help,.admin-form-card,.admin-existing,.admin-form-group{padding:20px}}
+
+/* Correção definitiva: imagem e texto em áreas separadas na capa */
+#inicio.hero{display:flex;align-items:center;justify-content:flex-start;min-height:620px;padding:90px max(5vw,32px);isolation:isolate;background:#18110f}
+#inicio .hero-glow{display:none!important}
+#inicio .hero-art{position:absolute!important;z-index:-1!important;left:auto!important;right:0!important;top:0!important;bottom:0!important;width:49%!important;opacity:1!important;filter:none!important;background-image:url('assets/academia-imperial.webp');background-position:center;background-size:cover;background-repeat:no-repeat;border-left:1px solid #725037}
+#inicio .hero-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#1b1210b8 0%,transparent 17%)}
+#inicio .hero-content{position:relative!important;z-index:2!important;max-width:49%!important;width:49%!important;margin:0!important;padding:0 clamp(15px,3vw,55px) 0 0!important;transform:none!important}
+#inicio .hero-content h1{font-size:clamp(2.8rem,4.4vw,5.3rem)!important;line-height:1.08;overflow-wrap:normal;text-shadow:none}
+#inicio .hero-content>p{max-width:630px;color:#dcc8b5;font-size:1.07rem;line-height:1.75}
+#inicio .hero-facts{gap:clamp(12px,2vw,32px)}
+@media(max-width:950px){#inicio.hero{min-height:auto;padding:65px 5vw 360px;align-items:flex-start}#inicio .hero-content{max-width:100%!important;width:100%!important;padding:0!important}#inicio .hero-art{top:auto!important;bottom:0!important;width:100%!important;height:330px!important;border-left:0;border-top:1px solid #725037}#inicio .hero-art:after{background:linear-gradient(180deg,#18110f 0%,transparent 35%)}}
+@media(max-width:600px){#inicio.hero{padding:48px 22px 275px}#inicio .hero-art{height:245px!important}#inicio .hero-content h1{font-size:clamp(2.5rem,10vw,3.8rem)!important}#inicio .hero-facts{gap:14px}#inicio .hero-facts small{font-size:.61rem}}
