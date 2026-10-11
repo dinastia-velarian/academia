@@ -261,3 +261,12 @@ body.admin-mode #admin{display:grid!important}
 }
 #adminContent select option,
 .admin-workspace .admin-main select option {background-color:#211712;color:#f6e6cf}
+
+/* Preservar na leitura pública as quebras de linha e os parágrafos digitados no editor administrativo. */
+#courseDetail .article-body,
+.full-lesson-dialog .article-body,
+.lesson-preview-content .article-body {
+  white-space:pre-wrap!important;
+  overflow-wrap:anywhere;
+  tab-size:4;
+}
