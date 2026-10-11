@@ -22,7 +22,7 @@ if(dialog){
  const id=new URL(location.href).searchParams.get('aula');if(id)api('/api/public').then(data=>{const item=data.content.find(x=>x.id===id);if(item&&typeof openPublished==='function')openPublished(item)}).catch(()=>{});
 }
 const support=byId('certificados');
-if(support){const note=create('p','Não é necessário realizar prova para estudar ou solicitar informações sobre certificados. A emissão é opcional e combinada pelo Telegram.');note.className='certificate-note';support.append(note)}
+if(support){const note=create('p','Para solicitar o certificado da Academia Velarian, é necessário alcançar pelo menos o nível 50 no Diplomacia e ter todas as habilidades no mínimo no nível 100. O estudo é gratuito e não exige cadastro. A emissão do certificado é opcional e deve ser solicitada pelo Telegram.');note.className='certificate-note';support.append(note)}
 const host=create('section');host.id='consulta';host.className='section academia-knowledge';
 host.innerHTML='<div class="section-heading"><div><div class="eyebrow">CENTRAL DE CONHECIMENTO</div><h2>Perguntas frequentes e glossário.</h2><p>Encontre respostas e conheça os termos usados no Diplomacia.</p></div></div>';
 const filter=create('input');filter.type='search';filter.placeholder='Pesquisar pergunta ou termo...';filter.className='knowledge-search';filter.setAttribute('aria-label','Pesquisar na central de conhecimento');
