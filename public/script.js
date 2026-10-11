@@ -1,6 +1,6 @@
 const publicLessonOrders={};
 const courses=[
-{title:'Primeiros Passos',icon:'♜',level:'Iniciante',desc:'Conheça o Diplomacia, os fundamentos do jogo e os primeiros conselhos da Academia.',lessons:['Introdução ao Diplomacia','Três conceitos importantes','Conselho da Academia']},
+{title:'Primeiros Passos',icon:'♜',level:'Iniciante',desc:'Conheça o Diplomacia, os fundamentos do jogo e os primeiros conselhos da Academia.',lessons:['O que é o Diplomacia?','Como começar a jogar','Os três pilares do iniciante']},
 {title:'Aprenda a desenvolver a sua conta',icon:'♛',level:'Iniciante',desc:'Perfil, habilidades, classes, Premium e planejamento da rotina de evolução.',lessons:['Seu perfil','Quatro habilidades principais','Habilidades passivas','Escolhendo sua classe','Premium, inventário e academia','Plano de evolução do iniciante']},
 {title:'Economia e Trabalho',icon:'◈',level:'Iniciante',desc:'Aprenda a ganhar dinheiro, trabalhar e administrar recursos em cinco aulas rápidas.',lessons:['Como funciona a economia','Trabalho, comprimidos e HP','Fábricas e salários','Recursos, produção e armazenamento','Rotina econômica do iniciante']},
 {title:'Mercado e Comércio',icon:'◆',level:'Intermediário',desc:'Mercado, compra e venda, preços e planejamento comercial.',lessons:['Como navegar no mercado','Como comprar recursos','Como anunciar produtos','Entendendo oferta e demanda','Calculando custos e margens','Boas práticas de negociação']},
