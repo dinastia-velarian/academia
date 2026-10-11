@@ -1,30 +1,6 @@
 {
   "items": [
     {
-      "topic": 0,
-      "index": 0,
-      "title": "Introdução ao Diplomacia",
-      "body": "O Diplomacia é um jogo de estratégia e geopolítica no qual os jogadores participam de um mundo formado por países, regiões, organizações e disputas de poder.\n\nDiferentemente de jogos em que o progresso depende apenas de vencer batalhas, no Diplomacia a participação política, a organização econômica, a cooperação entre jogadores e a atuação militar também fazem parte da experiência.\n\nAo longo de sua trajetória, você poderá desenvolver seu personagem, conhecer os sistemas do jogo, participar de atividades econômicas, integrar grupos organizados e contribuir para objetivos coletivos.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 0,
-      "index": 1,
-      "title": "Três conceitos importantes",
-      "body": "Evolução individual — desenvolver sua conta, aprender as mecânicas e administrar seus recursos.\n\nParticipação coletiva — colaborar com outros jogadores em partidos, organizações e atividades coordenadas.\n\nEstratégia — tomar decisões considerando recursos, oportunidades e consequências.\n\nVocê não precisa dominar todos os sistemas no primeiro dia. O mais importante é compreender como eles se relacionam e construir uma rotina consistente de aprendizado.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 0,
-      "index": 2,
-      "title": "Conselho da Academia",
-      "body": "Antes de gastar recursos ou tomar decisões importantes, procure entender a finalidade de cada sistema. Conhecimento também é uma forma de poder.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
       "topic": 2,
       "index": 0,
       "title": "Como funciona a economia",
@@ -109,6 +85,30 @@
       "index": 5,
       "title": "Plano de evolução do iniciante",
       "body": "1. Confira seu perfil e seus recursos.\n2. Considere iniciar na classe Acadêmicos.\n3. Evolua Suprimento e Instrução até 100.\n4. Depois priorize Cientista, Técnicas de Guerra e Quartel.\n5. Distribua as passivas de forma planejada.\n6. Trabalhe e mantenha uma reserva de dinheiro.\n\nDICA VELARIAN\nEvolua com constância. Evite gastar tudo em itens que não ajudam no início.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 0,
+      "index": 0,
+      "title": "O que é o Diplomacia?",
+      "body": "Diplomacia é um jogo de estratégia e geopolítica. Nele, os jogadores desenvolvem personagens, participam da economia, integram partidos e disputam influência em países e regiões.\n\nVocê pode evoluir individualmente, colaborar com outros jogadores e participar de atividades políticas ou militares.\n\nDICA VELARIAN\nNão precisa aprender tudo de uma vez. Comece conhecendo sua conta e os sistemas básicos.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 0,
+      "index": 1,
+      "title": "Como começar a jogar",
+      "body": "Se você acabou de entrar no Diplomacia, siga estes passos:\n\n1. Abra seu Perfil e confira nível, XP e recursos.\n2. Conheça suas habilidades antes de gastar pontos.\n3. Entenda como funcionam trabalho, dinheiro e diamantes.\n4. Observe os partidos e a organização do seu país.\n5. Acompanhe as orientações de jogadores experientes.\n\nPRÓXIMO PASSO\nNo curso Desenvolvimento da Conta, você aprenderá a evoluir habilidades e escolher sua classe.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 0,
+      "index": 2,
+      "title": "Os três pilares do iniciante",
+      "body": "EVOLUÇÃO\nMelhore sua conta aos poucos e acompanhe seu progresso.\n\nCOOPERAÇÃO\nAprenda com outros jogadores e participe das atividades do seu grupo.\n\nESTRATÉGIA\nPense antes de gastar recursos ou entrar em conflitos.\n\nDICA VELARIAN\nUma conta forte começa com boas decisões, não com pressa. Seu próximo objetivo é aprender a desenvolver o personagem e construir uma rotina econômica.",
       "videoUrl": "",
       "imageUrl": ""
     }
