@@ -201,3 +201,8 @@ body.admin-mode #admin{display:grid!important}
 }
 #courseDetail button.secondary:disabled,
 #courseDetail .lesson-read-button:disabled {opacity:.55;cursor:not-allowed}
+
+/* Vídeo geral de cada tópico, acima da lista de aulas */
+#topicVideoSlot:has(.video-frame){padding:0;border:0;background:transparent}
+#topicVideoSlot .video-frame{display:block;width:100%;aspect-ratio:16/9;height:auto;min-height:220px;border:1px solid #88653e;border-radius:6px;background:#110d0d}
+@media(max-width:600px){#topicVideoSlot .video-frame{min-height:0}}
