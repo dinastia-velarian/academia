@@ -99,56 +99,40 @@
     {
       "topic": 2,
       "index": 0,
-      "title": "Introdução à economia do Diplomacia",
-      "body": "A economia permite melhorar habilidades, produzir tropas e investir na conta.\n\nCOMO GANHAR DINHEIRO\n• Trabalhar em fábricas.\n• Receber salários de partidos.\n• Fazer missões diárias e giros da sorte.\n• Vender recursos no mercado.\n\nONDE GASTAR\nHabilidades, quartel, academias, recursos, doações e baús de equipamentos.\n\nDICA DA ACADEMIA\nNão doe todo o dinheiro nem compre recursos ou academias sem necessidade. Priorize a evolução e mantenha uma reserva.",
+      "title": "Como funciona a economia",
+      "body": "O dinheiro permite evoluir habilidades, produzir tropas e investir na conta.\n\nCOMO GANHAR?\n• Trabalhando em fábricas.\n• Recebendo salários de partidos.\n• Fazendo missões diárias e giros da sorte.\n• Vendendo recursos no mercado.\n\nONDE GASTAR?\nHabilidades, quartel, academias militares, compras, doações e baús de equipamentos.\n\nDICA VELARIAN\nNão doe tudo nem compre materiais sem necessidade. Primeiro garanta dinheiro para evoluir.",
       "videoUrl": "",
       "imageUrl": ""
     },
     {
       "topic": 2,
       "index": 1,
-      "title": "Recursos do jogo",
-      "body": "Os quatro recursos principais são COURO, OURO, PETRÓLEO e TRM.\n\nPARA QUE SERVEM?\n• Produzir tropas no quartel.\n• Manter regiões.\n• Construir edifícios regionais.\n\nCOMO CONSEGUIR?\n• Comprar no mercado.\n• Produzir em fábricas de recursos após atingir Cientista nível 100.\n\nDIAMANTES\nSão diferentes desses recursos: 1 diamante pode ser convertido em 5 comprimidos de saúde.\n\nDICA DA ACADEMIA\nCompre recursos somente quando souber para que serão usados.",
+      "title": "Trabalho, comprimidos e HP",
+      "body": "Trabalhar em fábricas rende dinheiro e, conforme a fábrica, diamantes ou recursos.\n\n• Cada trabalho utiliza 100 comprimidos.\n• 1 diamante equivale a 5 comprimidos.\n• A rotina informada permite até 6 trabalhos por hora.\n\nRESERVA\nEm 24 horas, 144 trabalhos consumiriam 14.400 comprimidos. Para quem trabalha intensamente, a Academia sugere guardar cerca de 15.000.\n\nE O HP?\nO HP se regenera a cada 6 minutos, conforme o Índice de Saúde regional: índices 0–3 dão +3 HP; 4–6, +4; 7–9, +5; índice 10, +6; e a faixa superior, +7 (limite exato a confirmar).\n\nATENÇÃO\nA exigência de HP mínimo para trabalhar ainda precisa ser confirmada.",
       "videoUrl": "",
       "imageUrl": ""
     },
     {
       "topic": 2,
       "index": 2,
-      "title": "Comprimidos de saúde",
-      "body": "Comprimidos de saúde são consumidos ao trabalhar em fábricas.\n\nCONVERSÃO\n• 1 diamante = 5 comprimidos.\n• 1 trabalho = 100 comprimidos.\n• 20 diamantes = 100 comprimidos.\n\nQUANTOS GUARDAR?\nCom até 6 trabalhos por hora, são 144 trabalhos em 24 horas: 14.400 comprimidos.\n\nDICA DA ACADEMIA\nMantenha cerca de 15.000 comprimidos se fizer uma rotina intensa. Deixe o restante em diamantes e converta conforme precisar.\n\nEm uma fábrica de diamantes que rende 20 diamantes por trabalho, é possível repor os 100 comprimidos consumidos.",
+      "title": "Fábricas e salários",
+      "body": "O ganho em uma fábrica depende do nível do personagem, da habilidade Cientista, do nível da fábrica e dos bônus da região.\n\nO QUE OBSERVAR?\n• Salário líquido, depois dos impostos.\n• Bônus de Cientista e desenvolvimento.\n• Condições regionais, incluindo estradas.\n• Equipamentos que melhorem a produção.\n\nO Índice de Desenvolvimento informa bônus de 3% por nível para fábricas de diamantes (40% no nível 10+) e 2% para recursos (30% no nível 10+).\n\nEXEMPLO\nUma fábrica nas capturas estimava R$ 21.900 e 20 diamantes por trabalho. É um exemplo, não um salário fixo.\n\nDICA VELARIAN\nCompare o valor líquido antes de escolher onde trabalhar.",
       "videoUrl": "",
       "imageUrl": ""
     },
     {
       "topic": 2,
       "index": 3,
-      "title": "Trabalho e recuperação de HP",
-      "body": "Trabalhar em fábricas gera remuneração e utiliza 100 comprimidos por trabalho. A rotina informada permite até 6 trabalhos por hora.\n\nO QUE É HP?\nHP é a saúde do personagem. Sua regeneração depende do Índice de Saúde da região, a cada 6 minutos:\n\n• Índice 0–3: +3 HP.\n• Índice 4–6: +4 HP.\n• Índice 7–9: +5 HP.\n• Índice 10: +6 HP.\n• Faixa superior: +7 HP (limite exato a confirmar).\n\nATENÇÃO\nHP e comprimidos são indicadores diferentes. A exigência de HP mínimo para trabalhar ainda precisa ser confirmada.\n\nDICA DA ACADEMIA\nAntes de trabalhar, confira comprimidos, HP e ganhos estimados.",
+      "title": "Recursos, produção e armazenamento",
+      "body": "COURO, OURO, PETRÓLEO e TRM são usados na produção de tropas, manutenção de regiões e construção de edifícios.\n\nCOMO CONSEGUIR?\n• Comprando no mercado.\n• Trabalhando em fábricas de recursos após alcançar Cientista nível 100.\n\nCOMO PRODUZIR E GUARDAR MAIS?\n• Cientista melhora a produção e o armazenamento.\n• Bônus regionais e certos equipamentos podem aumentar a produção.\n• A passiva Armazém Grande dá +1% de capacidade por ponto, até +25%.\n\nDICA VELARIAN\nProduza ou compre de acordo com a necessidade e confira seu espaço disponível.",
       "videoUrl": "",
       "imageUrl": ""
     },
     {
       "topic": 2,
       "index": 4,
-      "title": "Fábricas e salários",
-      "body": "O salário depende do personagem, da fábrica e da região.\n\nO QUE AUMENTA OS GANHOS?\n• Nível do jogador e habilidade Cientista.\n• Nível da fábrica.\n• Bônus regionais, desenvolvimento e estradas.\n• Alguns equipamentos do inventário.\n\nIMPOSTOS\nO valor líquido é o que você realmente recebe após os descontos. A passiva Especialista em Impostos ajuda a reduzi-los.\n\nEXEMPLO\nUma fábrica mostrada no jogo estimava R$ 21.900 líquidos e 20 diamantes por trabalho. Esse valor varia entre jogadores.\n\nDICA DA ACADEMIA\nCompare o salário líquido antes de escolher onde trabalhar.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 2,
-      "index": 5,
-      "title": "Produção e armazenamento",
-      "body": "A partir do nível 100 em Cientista, o jogador pode trabalhar em fábricas de recursos.\n\nCOMO PRODUZIR MAIS?\n• Melhorar Cientista.\n• Aproveitar bônus de desenvolvimento da região.\n• Usar itens do inventário com bônus de produção.\n\nCOMO ARMAZENAR MAIS?\n• Cientista aumenta a capacidade.\n• A passiva Armazém Grande concede +1% por ponto, até +25%.\n\nDICA DA ACADEMIA\nNão produza ou compre mais recursos do que precisa sem considerar seu espaço de armazenamento.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 2,
-      "index": 6,
-      "title": "Organizando sua rotina econômica",
-      "body": "ROTINA ECONÔMICA DO INICIANTE\n\n1. Confira dinheiro, diamantes, comprimidos, HP e recursos.\n2. Trabalhe nas fábricas e aproveite missões, salários e oportunidades de venda.\n3. Separe comprimidos para sua rotina; até 15.000 é uma referência para uso intenso.\n4. Invista primeiro na evolução das habilidades.\n5. Evite doações excessivas, academias caras e compras desnecessárias.\n\nORDEM INICIAL RECOMENDADA\n• Suprimento e Instrução → nível 100.\n• Cientista → nível 100.\n• Técnicas de Guerra → nível 100.\n• Quartel → nível 100.\n\nDICA DA ACADEMIA\nMantenha uma reserva e faça uma rotina que consiga repetir todos os dias.",
+      "title": "Rotina econômica do iniciante",
+      "body": "Use este checklist sempre que entrar no Diplomacia:\n\n1. Confira dinheiro, diamantes, comprimidos, HP e recursos.\n2. Trabalhe quando possível e aproveite missões e outras fontes de renda.\n3. Separe comprimidos de acordo com a sua rotina.\n4. Invista nas habilidades antes de gastar com itens dispensáveis.\n5. Mantenha uma reserva para não interromper sua evolução.\n\nORDEM INICIAL RECOMENDADA PELA ACADEMIA\n• Suprimento e Instrução → nível 100.\n• Cientista → nível 100.\n• Técnicas de Guerra → nível 100.\n• Quartel → nível 100.\n\nEVITE\nDoar todo o dinheiro, investir cedo demais em academias militares ou comprar recursos sem um objetivo.\n\nDICA VELARIAN\nConstância vale mais do que gastos impulsivos.",
       "videoUrl": "",
       "imageUrl": ""
     }
