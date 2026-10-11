@@ -3,15 +3,15 @@
 const api=async(path,method='GET',data)=>{const r=await fetch(path,{method,credentials:'same-origin',headers:data?{'content-type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const result=await r.json();if(!r.ok)throw Error(result.error||'Erro ao salvar');return result};
 const admin=document.getElementById('adminContent');if(!admin||typeof courses==='undefined')return;
 const topicSection=document.createElement('section');topicSection.className='admin-form-card original-lessons-admin';
-const topicHeading=document.createElement('h3');topicHeading.textContent='Editar os nove tópicos da Academia';
-const topicHelp=document.createElement('p');topicHelp.textContent='Altere o nome, a descrição, a dificuldade e o símbolo de qualquer tópico existente, sem perder seus subtópicos.';
+const topicHeading=document.createElement('h3');topicHeading.textContent='VÍDEO GERAL DO TÓPICO E CONFIGURAÇÕES';
+const topicHelp=document.createElement('p');topicHelp.textContent='Cole aqui o vídeo que aparecerá acima de todas as aulas do tópico. Você também pode alterar o nome, a descrição, a dificuldade e o símbolo.';
 const topicForm=document.createElement('form');topicForm.className='admin-form';
 const topicSelect=document.createElement('select');const topicTitle=document.createElement('input');topicTitle.required=true;topicTitle.maxLength=140;
 const topicDesc=document.createElement('textarea');topicDesc.rows=3;topicDesc.required=true;
 const topicLevel=document.createElement('select');for(const value of ['Iniciante','Intermediário','Avançado']){const opt=document.createElement('option');opt.value=value;opt.textContent=value;topicLevel.append(opt)}
 const topicIcon=document.createElement('input');topicIcon.maxLength=8;
 for(const [label,field] of [['Escolher tópico',topicSelect],['Nome do tópico',topicTitle],['Descrição',topicDesc],['Dificuldade',topicLevel],['Símbolo',topicIcon]]){const wrap=document.createElement('label');wrap.append(document.createTextNode(label),field);topicForm.append(wrap)}
-const videoLabel=document.createElement('label');videoLabel.textContent='Vídeo geral do tópico (YouTube)';const topicVideo=document.createElement('input');topicVideo.type='url';topicVideo.placeholder='https://www.youtube.com/watch?v=...';videoLabel.append(topicVideo);topicForm.append(videoLabel);
+const videoLabel=document.createElement('label');videoLabel.textContent='VÍDEO DO TÓPICO (YouTube) — aparece acima da lista de aulas';const topicVideo=document.createElement('input');topicVideo.type='url';topicVideo.placeholder='https://www.youtube.com/watch?v=...';videoLabel.append(topicVideo);topicForm.append(videoLabel);
 const videoHelp=document.createElement('p');videoHelp.textContent='Um único vídeo por tópico, exibido acima da lista de subtópicos. Deixe em branco para remover.';topicForm.append(videoHelp);
 let topicVideos={};fetch('/api/topic-videos').then(r=>r.json()).then(d=>{topicVideos=Object.fromEntries((d.items||[]).map(x=>[x.topic,x.videoUrl]));topicVideo.value=topicVideos[Number(topicSelect.value)]||''}).catch(()=>{});
 const topicSave=document.createElement('button');topicSave.className='primary';topicSave.type='submit';topicSave.textContent='Salvar alterações do tópico';
@@ -23,19 +23,19 @@ topicSelect.onchange=fillTopic;fillTopic();
 topicForm.onsubmit=async e=>{e.preventDefault();topicSave.disabled=true;try{const index=Number(topicSelect.value);await api('/api/admin/topic','POST',{index,title:topicTitle.value,desc:topicDesc.value,level:topicLevel.value,icon:topicIcon.value});await api('/api/admin/topic-video','POST',{topic:index,videoUrl:topicVideo.value.trim()});topicVideos[index]=topicVideo.value.trim();Object.assign(courses[index],{title:topicTitle.value,desc:topicDesc.value,level:topicLevel.value,icon:topicIcon.value});topicSelect.options[index].textContent=topicTitle.value;topic.options[index].textContent=topicTitle.value;render();topicStatus.textContent='Tópico atualizado com sucesso.'}catch(err){topicStatus.textContent=err.message}finally{topicSave.disabled=false}};
 const section=document.createElement('section');section.className='admin-form-card original-lessons-admin';
 const heading=document.createElement('h3');heading.textContent='Editar os tópicos já existentes';
-const explanation=document.createElement('p');explanation.textContent='Escolha um dos nove tópicos e um subtópico para publicar ou atualizar a aula dentro dele.';
+const explanation=document.createElement('p');explanation.textContent='Edite os textos individuais das aulas abaixo. O vídeo geral do tópico é configurado na seção acima.';
 const form=document.createElement('form');form.className='admin-form';
 function field(label,element){const wrapper=document.createElement('label');wrapper.append(document.createTextNode(label),element);form.append(wrapper);return element}
 function select(){return document.createElement('select')}
 const topic=field('Tópico existente',select()),lesson=field('Subtópico',select());
 const title=field('Nome do subtópico (você pode alterar)',document.createElement('input'));title.required=true;
 const body=field('Texto completo da aula',document.createElement('textarea'));body.rows=12;
-const video=field('Vídeo do YouTube (opcional)',document.createElement('input'));video.type='url';video.placeholder='https://www.youtube.com/watch?v=...';
+const video=field('Vídeo desta aula (opcional, diferente do vídeo geral do tópico)',document.createElement('input'));video.type='url';video.placeholder='https://www.youtube.com/watch?v=...';
 const image=field('Imagem da aula (opcional)',document.createElement('input'));image.placeholder='/media/...';
 const pick=document.createElement('button');pick.type='button';pick.className='secondary';pick.textContent='Escolher imagem da biblioteca';pick.onclick=()=>{const original=document.querySelector('[data-image-target="imageUrl"]');if(original){const input=document.getElementById('contentForm').elements.namedItem('imageUrl');original.click();const dialog=document.getElementById('imagePicker');if(dialog){const observer=new MutationObserver(()=>{if(!dialog.open){image.value=input.value;observer.disconnect()}});observer.observe(dialog,{attributes:true,attributeFilter:['open']})}}};form.append(pick);
 const save=document.createElement('button');save.type='submit';save.className='primary';save.textContent='Salvar aula neste subtópico';form.append(save);
 const status=document.createElement('p');status.setAttribute('role','status');form.append(status);
-section.append(heading,explanation,form);admin.prepend(section);
+section.append(heading,explanation,form);topicSection.insertAdjacentElement('afterend',section);
 courses.forEach((c,i)=>{const option=document.createElement('option');option.value=i;option.textContent=c.title;topic.append(option)});
 let orders={};
 const manage=document.createElement('div');manage.className='admin-form-card';
@@ -60,5 +60,5 @@ function fill(){const i=Number(topic.value),j=Number(lesson.value),record=items.
 topic.onchange=fillLessons;lesson.onchange=fill;
 form.onsubmit=async event=>{event.preventDefault();save.disabled=true;try{await api('/api/admin/lesson','POST',{topic:Number(topic.value),index:Number(lesson.value),title:title.value,body:body.value,videoUrl:video.value,imageUrl:image.value});status.textContent='Nome e conteúdo do subtópico salvos! A alteração aparecerá na lista pública.';items=(await api('/api/lessons')).items||[];lesson.selectedOptions[0].textContent=title.value;if(Number(lesson.value)<courses[Number(topic.value)].lessons.length)courses[Number(topic.value)].lessons[Number(lesson.value)]=title.value}catch(e){status.textContent=e.message}finally{save.disabled=false}};
 fillLessons();load();
-const nav=document.querySelector('[data-tab="topics"]');nav?.addEventListener('click',()=>{load();section.scrollIntoView({block:'nearest'})});
+const nav=document.querySelector('[data-tab="topics"]');nav?.addEventListener('click',()=>{load();topicSection.scrollIntoView({block:'nearest'})});
 })();
