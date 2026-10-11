@@ -270,3 +270,86 @@ body.admin-mode #admin{display:grid!important}
   overflow-wrap:anywhere;
   tab-size:4;
 }
+
+
+/* Academia Velarian — refinamento visual responsivo (outubro/2026) */
+:root{--gold-bright:#efcb83;--gold-soft:#c8a66b;--radius-ui:16px}
+body{overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
+:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid var(--gold-bright);outline-offset:3px}
+.top{min-height:76px;box-shadow:0 8px 32px #0003}
+.top nav a{padding:10px 2px;transition:color .2s ease}
+.top nav a:focus-visible{border-radius:4px}
+#inicio.hero{isolation:isolate}
+#inicio .hero-content h1{letter-spacing:-.045em;text-wrap:balance}
+#inicio .hero-content>p{text-wrap:pretty}
+.actions .primary,.section .primary{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;border-radius:9px;transition:transform .2s,box-shadow .2s}
+.actions .primary:hover,.section .primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px #0005}
+.section-heading h2{text-wrap:balance}
+.filters{align-items:stretch}
+.filters .search-wrap{min-width:0}
+.filters input,.filters select{min-height:48px;border-radius:10px}
+.cards{align-items:stretch}
+.cards .course{border-radius:var(--radius-ui);overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.cards .course:hover{transform:translateY(-4px);border-color:#bd9458;box-shadow:0 18px 45px #0005}
+.cards .course .bottom button{min-height:44px;border-radius:8px}
+#courseDialog{width:min(960px,calc(100% - 32px));max-width:960px;max-height:min(92dvh,950px);border-radius:18px;border:1px solid #9e794c;box-shadow:0 30px 100px #000b;overscroll-behavior:contain}
+#courseDialog::backdrop{background:#050303d9;backdrop-filter:blur(5px)}
+#courseDetail{min-width:0;overflow-wrap:anywhere}
+#courseDetail .lesson{gap:14px}
+#courseDetail .lesson-main{min-width:0}
+#courseDetail .article-body{max-width:72ch;margin-inline:auto;color:#ead9c5;line-height:1.85}
+#courseDetail .article-image{max-width:100%;height:auto}
+#courseDetail .lesson-read-button{min-height:44px}
+@media(max-width:950px){
+ .top{padding:12px 22px}
+ #inicio.hero{padding-top:55px}
+ .section{padding-left:clamp(18px,5vw,42px);padding-right:clamp(18px,5vw,42px)}
+}
+@media(max-width:700px){
+ html{scroll-padding-top:76px}
+ .top{min-height:66px;padding:9px 16px;gap:10px}
+ .brand{min-width:0;gap:9px;font-size:.89rem;letter-spacing:.01em}
+ .brand img{width:41px;height:41px;flex-shrink:0}
+ .brand span{min-width:0}
+ .brand small{font-size:8px;letter-spacing:.14em}
+ .menu{min-width:44px;min-height:44px;display:grid;place-items:center;flex-shrink:0;border-radius:10px;border:1px solid #85633f;background:#281b17;color:#f7e5c9;font-size:1.45rem}
+ .top nav{position:absolute;top:100%;left:12px;right:12px;z-index:30;display:none;flex-direction:column;align-items:stretch;gap:2px;padding:12px;background:#201613;border:1px solid #87633f;border-radius:0 0 14px 14px;box-shadow:0 20px 35px #0009}
+ .top nav.open{display:flex}
+ .top nav a{display:block;padding:13px 15px;min-height:46px;border-radius:8px}
+ .top nav a:hover,.top nav a:focus-visible{background:#38271e}
+ #inicio.hero{min-height:0;padding:42px 20px 245px}
+ #inicio .hero-content h1{font-size:clamp(2.25rem,10vw,3.5rem)!important;line-height:1.1}
+ #inicio .hero-content>p{font-size:1rem;line-height:1.65}
+ #inicio .hero-art{height:220px!important}
+ #inicio .hero-facts{flex-wrap:wrap;gap:16px}
+ .hero-facts>div{min-width:0}
+ .eyebrow{letter-spacing:.12em;font-size:.65rem}
+ .intro-strip{gap:12px;padding:15px 20px}
+ .section{padding:54px 18px}
+ .section-heading h2{font-size:clamp(2rem,8vw,3rem)}
+ .filters{display:grid;grid-template-columns:1fr;gap:12px}
+ .filters .search-wrap,.filters input,.filters select{width:100%;min-width:0}
+ .cards{grid-template-columns:1fr;gap:16px}
+ .cards .course{min-width:0}
+ .cards .course:hover{transform:none}
+ .cards .course .bottom{gap:12px;flex-wrap:wrap}
+ .cards .course .bottom button{min-height:46px}
+ #courseDialog{width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;padding:64px 18px 28px;overflow-y:auto}
+ #courseDialog .close{position:fixed;top:12px;right:16px;z-index:5;min-width:44px;min-height:44px;border-radius:12px;background:#35241d;color:#fff1dc;border:1px solid #b18a57}
+ #courseDetail h2{font-size:clamp(1.8rem,7vw,2.6rem);overflow-wrap:anywhere}
+ #courseDetail .lesson{padding:15px 0}
+ #courseDetail .lesson-index{flex-shrink:0}
+ #courseDetail .state{font-size:.7rem}
+ #courseDetail .lesson-main{flex:1}
+ #courseDetail .lesson-read-button{display:block;width:100%;margin-top:12px}
+ #courseDetail .article-body{font-size:1rem;line-height:1.8}
+ .full-lesson-dialog{width:100%;max-width:100%;max-height:100dvh;border-radius:0}
+ .page-preview-dialog{width:100%;max-width:100%;height:100dvh;max-height:100dvh;border-radius:0}
+ .page-preview-dialog iframe{height:calc(100dvh - 86px)}
+ .page-preview-header{padding:12px}
+ .admin-workspace,.admin-main,#adminContent{min-width:0;max-width:100%}
+ .admin-workspace input,.admin-workspace textarea,.admin-workspace select{max-width:100%}
+}
+@media(max-width:380px){.brand{font-size:.78rem}.brand small{letter-spacing:.08em}#inicio.hero{padding-left:16px;padding-right:16px}.section{padding-left:15px;padding-right:15px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
