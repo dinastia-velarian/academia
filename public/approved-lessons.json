@@ -151,6 +151,46 @@
       "body": "CHECKLIST DO COMERCIANTE\n1. Confirme o produto e a quantidade.\n2. Confira o preço total e o preço por unidade.\n3. Não comprometa toda a sua reserva.\n4. Revise os dados da operação.\n5. Guarde recursos necessários para suas próximas atividades.\n\nEVITE\nComprar por impulso, anunciar sem comparar preços ou assumir que uma oferta será vendida rapidamente.\n\nDICA VELARIAN\nUma boa negociação é aquela que atende ao seu objetivo sem prejudicar a evolução da conta.",
       "videoUrl": "",
       "imageUrl": ""
+    },
+    {
+      "topic": 4,
+      "index": 0,
+      "title": "Entendendo o quartel",
+      "body": "O quartel é a área em que você organiza e treina suas unidades militares.\n\nNA TELA MILITAR\n• Poder militar: força total mostrada pelo jogo.\n• Unidades totais: quantidade de tropas.\n• Capacidade: ocupação do limite disponível.\n• Nível do Quartel: habilidade ligada ao desenvolvimento militar.\n\nDICA VELARIAN\nAntes de treinar, confira a capacidade e os recursos disponíveis.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 4,
+      "index": 1,
+      "title": "Os cinco tipos de tropas",
+      "body": "O Diplomacia apresenta cinco tipos de unidades:\n\n• Infantaria: força terrestre básica, poder 1 por unidade.\n• Tanque: unidade terrestre blindada, poder 2.\n• Navio de Guerra: unidade naval, poder 3.\n• Caça: unidade aérea, poder 4; pode atacar terra e mar.\n• Míssil Balístico: unidade de maior poder, 5 por unidade.\n\nCada tipo possui custos e usos diferentes.\n\nDICA VELARIAN\nNão escolha tropas apenas pelo poder. Observe também os recursos necessários e os objetivos da operação.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 4,
+      "index": 2,
+      "title": "Como treinar tropas",
+      "body": "Para treinar unidades, abra a área Militar e escolha o tipo de tropa.\n\nPASSO A PASSO\n1. Confira o custo em dinheiro e recursos.\n2. Veja o saldo disponível.\n3. Escolha a quantidade (+1 ou +10, conforme a tela).\n4. Use Treinar para confirmar.\n\nNas capturas, as tropas exigem combinações de couro, ouro, petróleo e TRM. O custo muda conforme o tipo de unidade e os bônus da conta.\n\nDICA VELARIAN\nComece com quantidades que consiga manter e repor. Não gaste toda a reserva de recursos.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 4,
+      "index": 3,
+      "title": "Poder, capacidade e reserva",
+      "body": "PODER MILITAR\nÉ a soma do poder das unidades. Na captura, 717 mísseis de poder 5 representam 3.585 de poder militar.\n\nCAPACIDADE\nA tela indica quanto do limite de unidades está ocupado. Verifique esse indicador antes de produzir mais tropas.\n\nRESERVA\nO jogo também mostra uma seção de Exército de Reserva. Ela deve ser consultada ao organizar as unidades, sem confundi-la com as tropas já exibidas no exército principal.\n\nDICA VELARIAN\nQuantidade de tropas e poder militar são medidas diferentes.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 4,
+      "index": 4,
+      "title": "Planejando seu primeiro exército",
+      "body": "Antes de investir em tropas, responda:\n\n1. Vou participar de uma guerra ou apenas me preparar?\n2. Que tipo de unidade será útil?\n3. Tenho dinheiro e recursos para treiná-la?\n4. Minha capacidade permite novas unidades?\n5. Conseguirei repor as perdas depois?\n\nRECOMENDAÇÃO VELARIAN\nAprenda a usar o quartel antes de investir pesado. Para operações coordenadas, siga o planejamento do seu grupo.\n\nPRÓXIMO CURSO\nEm Guerras e Estratégia, veremos como se preparar e participar dos fronts.",
+      "videoUrl": "",
+      "imageUrl": ""
     }
   ]
 }
