@@ -193,46 +193,6 @@
       "imageUrl": ""
     },
     {
-      "topic": 5,
-      "index": 0,
-      "title": "O que é um front?",
-      "body": "No Diplomacia, os fronts são os cenários de confronto militar entre participantes de uma guerra.\n\nANTES DE ENTRAR\n• Confira quais lados estão envolvidos.\n• Entenda o objetivo da operação.\n• Verifique se seu grupo definiu alguma orientação.\n\nDICA VELARIAN\nNão entre em uma operação apenas porque ela está acontecendo. Primeiro entenda o objetivo e como poderá contribuir.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 5,
-      "index": 1,
-      "title": "Preparando-se para uma guerra",
-      "body": "Antes de participar de um front, revise sua conta.\n\nCHECKLIST\n1. Confira suas tropas e o poder militar.\n2. Veja dinheiro, recursos e capacidade de reposição.\n3. Verifique os bônus e equipamentos disponíveis.\n4. Entenda a orientação do seu partido ou grupo.\n5. Reserve recursos para continuar jogando depois da operação.\n\nDICA VELARIAN\nNão comprometa toda a sua economia em uma única guerra.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 5,
-      "index": 2,
-      "title": "Participando e acompanhando fronts",
-      "body": "Durante uma operação, acompanhe as informações que o jogo apresentar sobre o conflito e as orientações da sua equipe.\n\nOBSERVE\n• Qual é o objetivo do front.\n• Como sua participação está contribuindo.\n• Se há mudanças nas instruções do grupo.\n• O estado das suas tropas e recursos.\n\nDICA VELARIAN\nUma participação organizada costuma ser mais útil do que agir sem coordenação. As regras exatas de ataque e pontuação devem ser conferidas na interface do front.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 5,
-      "index": 3,
-      "title": "Ataque, defesa e coordenação",
-      "body": "Em guerras, a estratégia depende do objetivo coletivo: avançar, defender uma posição ou apoiar uma operação.\n\nBOAS PRÁTICAS\n• Saiba qual tarefa seu grupo atribuiu a você.\n• Não confunda maior poder militar com vitória garantida.\n• Evite gastar recursos sem saber a prioridade da operação.\n• Comunique dificuldades ou falta de tropas aos responsáveis.\n\nDICA VELARIAN\nA coordenação entre jogadores é parte da estratégia. Nem sempre agir sozinho é a melhor escolha.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
-      "topic": 5,
-      "index": 4,
-      "title": "Depois da guerra: aprender e repor",
-      "body": "Quando um front terminar, avalie o resultado e prepare sua conta para os próximos desafios.\n\nCHECKLIST\n1. Confira o resultado da operação.\n2. Observe sua participação e os recursos gastos.\n3. Verifique quais tropas precisam ser repostas.\n4. Reorganize dinheiro e materiais.\n5. Anote o que funcionou e o que precisa melhorar.\n\nDICA VELARIAN\nCada guerra também serve para aprender. Evoluir a conta e preservar recursos ajuda nas próximas operações.",
-      "videoUrl": "",
-      "imageUrl": ""
-    },
-    {
       "topic": 6,
       "index": 0,
       "title": "Como funciona a política",
@@ -365,6 +325,70 @@
       "index": 5,
       "title": "Nível 75 — A virada de chave",
       "body": "O nível 75 é um marco importante na evolução da sua conta no Diplomacia.\n\nO QUE MUDA?\nAo alcançar o nível 75, você pode usar dinheiro do jogo para deixar suas habilidades se desenvolvendo automaticamente por até 24 horas.\n\nPOR QUE ISSO IMPORTA?\n• Você não precisa acompanhar cada melhoria manualmente durante esse período.\n• Fica mais fácil manter uma rotina constante de evolução.\n• O dinheiro passa a ser importante também para planejar esse desenvolvimento automático.\n\nMETA VELARIAN\nConsidere alcançar o nível 75 uma das primeiras grandes metas da conta. Ao desbloquear a função, confira o custo na interface e mantenha dinheiro reservado antes de ativá-la.\n\nDICA VELARIAN\nAutomatizar não substitui o planejamento: escolha quais habilidades deseja priorizar.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 0,
+      "title": "Declaração de guerra e fronteiras",
+      "body": "Uma guerra formal começa com uma lei de declaração de guerra. Segundo o guia publicado, qualquer parlamentar pode apresentar essa lei, mas o Ministro das Relações Exteriores tem aprovação imediata.\n\nREGRA DE FRONTEIRA\nO país atacante precisa ter uma província com fronteira direta com o território-alvo. Sem essa ligação, não é possível abrir o front.\n\nEXEMPLO DO GUIA\nUma ação partindo do Rio de Janeiro pode atingir Bahia ou São Paulo, por serem províncias vizinhas.\n\nDICA VELARIAN\nAntes de planejar uma guerra, confira o mapa, as fronteiras e a situação política.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 1,
+      "title": "Fases e preparação do front",
+      "body": "O guia descreve uma fase de preparação, quando os dois lados podem organizar participantes e recursos antes do combate valer para o resultado.\n\nEm seguida, há 24 horas de combate ativo: nesse período, o dano é contabilizado para decidir a disputa pela região.\n\nANTES DO COMBATE\n• Confirme qual província está em disputa.\n• Organize participantes e horários.\n• Confira tropas, recursos e equipamentos.\n• Combine o objetivo com seu grupo.\n\nDICA VELARIAN\nUma boa preparação reduz decisões apressadas quando o dano começar a contar.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 2,
+      "title": "Modos de combate e participação",
+      "body": "O artigo apresenta dois modos de combate:\n\nMODO HORÁRIO (AUTOMÁTICO)\nRealiza um ataque por hora, sem custo de vida.\n\nMODO FOCO TOTAL\nConsome pílulas de saúde a cada ataque e permite atacar aproximadamente a cada 9–10 minutos.\n\nCOMO ESCOLHER?\nConsidere a disponibilidade de tempo, a quantidade de pílulas e o planejamento da equipe.\n\nDICA VELARIAN\nAcompanhe o front e as instruções do grupo. Atacar com frequência nem sempre é mais útil do que guardar recursos para o momento certo.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 3,
+      "title": "Ataque, defesa e coordenação",
+      "body": "Uma guerra não depende apenas do poder individual. É importante saber quando atacar, defender ou apoiar a operação.\n\nBOAS PRÁTICAS\n• Conheça o objetivo do front.\n• Confirme quem coordena a operação.\n• Informe se faltarem tropas ou recursos.\n• Evite gastar tudo antes do momento combinado.\n• Acompanhe mudanças nas orientações.\n\nDICA VELARIAN\nA coordenação pode ser decisiva. Uma equipe que organiza seus ataques consegue executar planos que um jogador isolado não conseguiria.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 4,
+      "title": "Depois da guerra: aprender e repor",
+      "body": "Quando o front terminar, avalie o resultado e prepare a conta para as próximas atividades.\n\nCHECKLIST\n1. Confira quem venceu a disputa.\n2. Observe sua participação e os recursos consumidos.\n3. Verifique as tropas que precisam ser repostas.\n4. Reorganize dinheiro, materiais e pílulas.\n5. Registre o que funcionou e o que pode melhorar.\n\nDICA VELARIAN\nUma guerra também ensina planejamento. Não comprometa toda a economia em uma única operação.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 5,
+      "title": "Como calcular o dano",
+      "body": "O artigo explica que o dano é calculado em camadas.\n\n1. BÔNUS PERCENTUAIS SOMADOS\nSobre o dano bruto do exército, entram os bônus de Quartel, nível do jogador, Técnicas de Combate, arma equipada e Academia de Artilharia.\n\n2. MULTIPLICADORES EM SEQUÊNCIA\nAplicam-se o bônus de província e o bônus de classe.\n\n3. BÔNUS FINAL\nNas guerras formais (fronts), entra o bônus de nação. Nas operações militares, o guia indica o bônus Premium de +50% para assinantes.\n\nFÓRMULA RESUMIDA\nDano total = [dano bruto × (1 + soma dos bônus percentuais)] × bônus de província × bônus de classe × bônus final.\n\nATENÇÃO\nO artigo não informa todos os valores e critérios de cada bônus. Por isso, use a fórmula como estrutura de cálculo e confira os valores na interface do jogo.\n\nDICA VELARIAN\nDesenvolver diferentes fontes de bônus pode melhorar o resultado final.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 6,
+      "title": "Felicidade, rebeliões e estabilidade",
+      "body": "Guerra também pode afetar a política interna. Segundo o artigo, conflitos diminuem o índice de felicidade do país.\n\nZONA DE RISCO\nSe a felicidade cair abaixo de 50%, pode ocorrer uma rebelião. O guia informa preparação de 5 minutos e, em caso de vitória da rebelião, queda de todo o gabinete.\n\nINTERVALO\nO artigo também informa que uma nova revolta não pode ocorrer no mesmo país em menos de 3 dias.\n\nDICA VELARIAN\nAntes de iniciar uma sequência de guerras, monitore a felicidade. Ganhar território não compensa perder o governo por falta de estabilidade.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 7,
+      "title": "Táticas ofensivas e defensivas",
+      "body": "As estratégias abaixo são táticas descritas no artigo, não regras obrigatórias do jogo.\n\nBLITZKRIEG (GUERRA RELÂMPAGO)\nConcentrar o dano decisivo nas últimas 1–2 horas do combate ativo, tentando reduzir o tempo de reação do adversário. Depende de sigilo e coordenação.\n\nCONTRA-ATAQUE DIRETO\nQuando houver fronteira válida, avaliar abrir uma guerra contra a província inimiga de onde partiu o ataque, dividindo a atenção do agressor.\n\nBUFFER DIPLOMÁTICO\nO artigo descreve uma manobra em que um aliado inicia antecipadamente um front contra a região ameaçada do próprio país aliado. Se a região mudar de dono, o front ativo passaria a mirar o novo controlador, facilitando a recuperação. Essa interação específica deve ser conferida nas regras atuais do jogo antes de executá-la.\n\nDEFESA POLÍTICA\nAcompanhe a felicidade nacional durante a campanha para não abrir espaço a rebeliões.\n\nDICA VELARIAN\nUma boa estratégia combina dano, diplomacia e estabilidade interna.",
       "videoUrl": "",
       "imageUrl": ""
     }
