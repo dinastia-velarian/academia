@@ -206,3 +206,58 @@ body.admin-mode #admin{display:grid!important}
 #topicVideoSlot:has(.video-frame){padding:0;border:0;background:transparent}
 #topicVideoSlot .video-frame{display:block;width:100%;aspect-ratio:16/9;height:auto;min-height:220px;border:1px solid #88653e;border-radius:6px;background:#110d0d}
 @media(max-width:600px){#topicVideoSlot .video-frame{min-height:0}}
+
+/* Painel administrativo: impedir botões brancos com texto claro */
+#adminContent button:not(.admin-tabs button),
+.admin-workspace .admin-main button:not(.admin-tabs button),
+.admin-form-card button,
+.admin-list-item button,
+.admin-image-tile button,
+.admin-image-choice button {
+  appearance:none;
+  -webkit-appearance:none;
+  background-color:#39271f;
+  color:#f7e7cf;
+  border:1px solid #ae8454;
+  border-radius:6px;
+  font-weight:650;
+  text-shadow:none;
+  cursor:pointer;
+}
+#adminContent button.primary,
+.admin-workspace .admin-main button.primary,
+.admin-form-card button.primary {
+  background-color:#852f38;
+  color:#fff4e8;
+  border-color:#b66363;
+}
+#adminContent button:hover:not(:disabled),
+.admin-workspace .admin-main button:hover:not(:disabled),
+.admin-form-card button:hover:not(:disabled) {
+  background-color:#65412c;
+  color:#fff6e7;
+  border-color:#e1b575;
+}
+#adminContent button.primary:hover:not(:disabled),
+.admin-workspace .admin-main button.primary:hover:not(:disabled) {
+  background-color:#a33d47;
+  color:#fff8ec;
+}
+#adminContent button:focus-visible,
+.admin-workspace .admin-main button:focus-visible {outline:2px solid #e9bc77;outline-offset:2px}
+#adminContent button:disabled,
+.admin-workspace .admin-main button:disabled {opacity:.5;cursor:not-allowed}
+/* Campos de edição, inclusive selects nativos */
+#adminContent input:not([type=checkbox]):not([type=radio]),
+#adminContent textarea,
+#adminContent select,
+.admin-workspace .admin-main input:not([type=checkbox]):not([type=radio]),
+.admin-workspace .admin-main textarea,
+.admin-workspace .admin-main select {
+  background-color:#211712;
+  color:#f6e6cf;
+  border:1px solid #806044;
+  color-scheme:dark;
+}
+#adminContent select option,
+.admin-workspace .admin-main select option {background-color:#211712;color:#f6e6cf}
