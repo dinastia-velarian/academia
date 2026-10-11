@@ -172,3 +172,32 @@ body.admin-mode #admin{display:grid!important}
 .certificate-note{margin:18px auto;max-width:1000px;color:#e3c79d;font-size:.9rem}
 
 .full-lesson-dialog{width:min(1040px,96vw);max-width:96vw;max-height:94vh;padding:clamp(20px,4vw,55px)}.full-lesson-dialog .course-detail,.full-lesson-dialog #courseDetail{max-width:860px;margin:auto}.full-lesson-dialog .article-body{font-size:1.07rem;line-height:1.9}.full-lesson-dialog .article-image{max-width:100%;height:auto;border-radius:8px}
+
+/* Botões de navegação das aulas: contraste acessível no tema imperial */
+.full-lesson-dialog .course-detail button.secondary,
+.full-lesson-dialog #courseDetail button.secondary,
+#courseDetail button.secondary,
+#courseDetail .lesson-read-button {
+  appearance:none;
+  -webkit-appearance:none;
+  background-color:#34231c;
+  color:#f5e9d6;
+  border:1px solid #b58b53;
+  border-radius:6px;
+  font-weight:700;
+  cursor:pointer;
+  padding:12px 20px;
+  line-height:1.4;
+  text-shadow:none;
+}
+#courseDetail button.secondary:hover,
+#courseDetail .lesson-read-button:hover,
+#courseDetail button.secondary:focus-visible,
+#courseDetail .lesson-read-button:focus-visible {
+  background-color:#533722;
+  color:#fff4db;
+  border-color:#e5bb73;
+  outline-offset:3px;
+}
+#courseDetail button.secondary:disabled,
+#courseDetail .lesson-read-button:disabled {opacity:.55;cursor:not-allowed}
