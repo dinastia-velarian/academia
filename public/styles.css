@@ -361,3 +361,13 @@ button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
 .certificate-academy-seal{display:block;width:100px;height:auto;margin:0 0 14px;filter:drop-shadow(0 8px 18px #0008)}
 .footer-academy-seal{display:block;width:56px;height:56px;object-fit:contain;margin-bottom:9px}
 @media(max-width:700px){.hero-academy-seal{width:96px;margin:14px 0 -4px}.certificate-academy-seal{width:82px}.brand img{height:46px;width:46px}}
+
+/* Fundo harmonizado com a arte oficial: preto grafite, dourado e vinho */
+:root{--bg:#0b0a0c;--panel:#141114;--panel2:#21191b;--line:#48352e}
+body{background:#0b0a0c}
+.top{background:#0b0a0cf5;border-bottom-color:#433025}
+#inicio.hero{background:radial-gradient(ellipse at 72% 35%,#4a17204d,transparent 54%),linear-gradient(135deg,#100d10,#080809 78%)}
+.section,#certificados{background-color:#0d0b0e}
+.intro-strip,.support,.about,footer{background-color:#100d10}
+.brand img{background:#0b0a0c;border-color:#8c693c;object-fit:cover;padding:0}
+.hero-academy-seal,.certificate-academy-seal,.footer-academy-seal{background:#0b0a0c;border-radius:14px;filter:drop-shadow(0 8px 20px #0007)}
