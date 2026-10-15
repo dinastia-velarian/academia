@@ -353,3 +353,11 @@ button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
 }
 @media(max-width:380px){.brand{font-size:.78rem}.brand small{letter-spacing:.08em}#inicio.hero{padding-left:16px;padding-right:16px}.section{padding-left:15px;padding-right:15px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* Identidade visual da Academia Velarian — outubro 2026 */
+.brand img{object-fit:contain;background:#130e0f;border-color:#bd944b;padding:2px}
+.hero-academy-seal{display:block;width:clamp(92px,11vw,144px);height:auto;margin:20px 0 -8px;filter:drop-shadow(0 10px 25px #0009)}
+#certificados{position:relative}
+.certificate-academy-seal{display:block;width:100px;height:auto;margin:0 0 14px;filter:drop-shadow(0 8px 18px #0008)}
+.footer-academy-seal{display:block;width:56px;height:56px;object-fit:contain;margin-bottom:9px}
+@media(max-width:700px){.hero-academy-seal{width:96px;margin:14px 0 -4px}.certificate-academy-seal{width:82px}.brand img{height:46px;width:46px}}
