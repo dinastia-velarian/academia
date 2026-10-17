@@ -90,6 +90,15 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    return json({ok:true},200,{'set-cookie':studentCookie('',0)});
   }
   const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
+  if(path==='/api/student/change-password'&&method==='POST'){
+   const b=await body(req),old=b?.currentPassword,next=b?.newPassword;
+   if(typeof old!=='string'||typeof next!=='string'||next.length<6||next.length>128)return fail('Use uma nova senha de 6 a 128 caracteres.');
+   const account=await env.DB.prepare("SELECT password_hash,salt,iterations FROM users WHERE id=? AND role='student'").bind(u.id).first();
+   if(!account||await derive(old,account.salt,account.iterations)!==account.password_hash)return fail('Senha atual incorreta.',401);
+   const salt=token(),hash=await derive(next,salt);
+   await env.DB.prepare("UPDATE users SET password_hash=?,salt=?,iterations=? WHERE id=? AND role='student'").bind(hash,salt,iter,u.id).run();
+   return json({ok:true});
+  }
   if(path==='/api/student/progress')await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
   if(path==='/api/student/progress'&&method==='GET'){
    const rows=await env.DB.prepare('SELECT lesson_key,completed_at FROM student_progress WHERE user_id=?').bind(u.id).all();
