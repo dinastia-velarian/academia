@@ -631,3 +631,14 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 #comentarios .comment-card p{margin:12px 0 0;color:#e5d8c9;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
 #comentarios #commentRefresh{background:transparent;border:1px solid #796044;border-radius:10px;color:#ebc694;padding:11px 16px;cursor:pointer}
 @media(max-width:650px){main #comentarios.comments-section{width:calc(100% - 24px);margin:40px auto;padding:22px 17px}#comentarios .comment-form{padding:16px}#comentarios .comment-form-footer{flex-direction:column;align-items:stretch}#comentarios .comment-form button{width:100%}}
+
+#comentarios .comment-login-box{display:block;background:#27221e;border:1px solid #775b3d;border-radius:13px;padding:20px;margin:20px 0;color:#ead8c0}
+#comentarios .comment-login-box[hidden]{display:none!important}
+#comentarios .comment-login-box>strong{font:700 1.15rem Georgia,serif;color:#f0ca92}
+#comentarios .comment-login-box>p{margin:8px 0 16px;color:#c9b8a5}
+#comentarios .comment-login-form{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin:12px 0}
+#comentarios .comment-login-form label{display:grid;gap:7px;font-size:.83rem;color:#e8c999}
+#comentarios .comment-login-form input{min-width:0;width:100%;box-sizing:border-box;background:#141419;color:#f4e4cc;border:1px solid #7c6147;border-radius:9px;padding:12px;font:inherit}
+#comentarios .comment-login-form button{border:0;border-radius:9px;padding:12px 16px;background:#d3a66c;color:#23170f;font-weight:800;cursor:pointer}
+#comentarios #commentLoginStatus{color:#f0c28c}
+@media(max-width:700px){#comentarios .comment-login-form{grid-template-columns:1fr}}
