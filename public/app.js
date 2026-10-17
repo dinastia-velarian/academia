@@ -54,6 +54,15 @@ $('studentDeleteAccount').addEventListener('click',async()=>{
  if(!confirm('Confirmar exclusão IRREVERSÍVEL de '+student.username+'?'))return;
  try{await api('/api/admin/student-delete','POST',{id,username:name,confirm:true});selectedStudentId=null;$('studentAdminDetail').hidden=true;await refreshStudents();text($('studentAdminStatus'),'Cadastro de '+student.username+' excluído definitivamente.')}catch(e){text($('studentAccountNotice'),e.message)}
 });
+async function refreshAdminComments(){
+ const root=$('adminCommentsList');text($('adminCommentsStatus'),'Carregando comentários...');
+ try{const d=await api('/api/comments');root.replaceChildren();
+  for(const c of d.items){const row=make('article','admin-comment-row');row.append(make('strong','',c.username),make('small','',new Date(c.createdAt).toLocaleDateString('pt-BR')),make('p','',c.body));const del=make('button','secondary','Excluir comentário');del.type='button';del.onclick=async()=>{if(!confirm('Excluir o comentário de '+c.username+'?'))return;try{await api('/api/admin/comment-delete','POST',{id:c.id,confirm:true});await refreshAdminComments()}catch(e){text($('adminCommentsStatus'),e.message)}};row.append(del);root.append(row)}
+  if(!d.items.length)root.append(make('p','','Nenhum comentário publicado ainda.'));
+  text($('adminCommentsStatus'),d.total+' comentários publicados · 100 mais recentes.');
+ }catch(e){text($('adminCommentsStatus'),e.message)}
+}
+$('adminCommentsRefresh').addEventListener('click',refreshAdminComments);
 async function refreshStudents(){
  try{const d=await api('/api/admin/students');studentAdminData=d.items||[];text($('adminStudentCount'),String(d.total||0));text($('studentAdminStatus'),d.total+' alunos cadastrados · exibindo até 500 contas recentes.');renderStudents()}
  catch(e){text($('studentAdminStatus'),'Erro ao carregar alunos: '+e.message)}
