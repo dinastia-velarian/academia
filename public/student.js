@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const root=document.getElementById('studentArea');if(!root)return;
 const $=id=>document.getElementById(id);
-let user=null,completed=new Set();
+let user=null,completed=new Set(),notes={};
 function route(){const show=location.hash==='#minha-academia';root.hidden=!show;document.body.classList.toggle('student-page-mode',show);if(show)window.scrollTo({top:0,behavior:'instant'})}
 window.addEventListener('hashchange',route);route();
 async function api(path,method='GET',data){const r=await fetch('/api/student/'+path,{method,credentials:'same-origin',headers:data?{'content-type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const b=await r.json();if(!r.ok)throw Error(b.error||'Erro na solicitação');return b}
