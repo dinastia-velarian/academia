@@ -47,7 +47,27 @@ async function refreshStudents(){
 }
 $('studentAdminSearch').addEventListener('input',renderStudents);
 $('studentAdminRefresh').addEventListener('click',refreshStudents);
-async function refreshAdmin(){try{adminData=await api('/api/admin/all');for(const [k,v]of Object.entries(adminData.settings))if($('generalForm').elements.namedItem(k))$('generalForm').elements.namedItem(k).value=v;listContent();listMedia();if(!$('adminPages').hidden)renderPageEditor();text($('adminGuideCount'),adminData.content.filter(x=>x.kind==='guide').length);text($('adminTopicCount'),adminData.content.filter(x=>x.kind==='topic').length);text($('adminMediaCount'),adminData.media.length);await refreshStudents()}catch(e){text($('adminMessage'),e.message)}}
+async function refreshAnalytics(){
+ const status=$('analyticsStatus');if(!status)return;
+ try{
+  const d=await api('/api/admin/statistics');
+  text($('analyticsActive'),d.active30d);text($('analyticsNew'),d.new30d);text($('analyticsCompletions'),d.completions);text($('analyticsLearners'),d.learners);
+  const available=typeof courses!=='undefined'?courses:window.courses;
+  const visible=Array.isArray(available)?available.map((c,i)=>({c,i})).filter(x=>x.i!==7):[];
+  const totalLessons=visible.reduce((sum,x)=>sum+x.c.lessons.length,0);
+  const distribution=$('analyticsDistribution');distribution.replaceChildren();
+  const groups=[['Ainda não iniciaram',0],['1–24%',0],['25–49%',0],['50–79%',0],['80–99%',0],['100%',0]];
+  if(totalLessons){for(const count of d.studentTotals){const pct=100*Math.min(count,totalLessons)/totalLessons;const index=count===0?0:pct<25?1:pct<50?2:pct<80?3:pct<100?4:5;groups[index][1]++}}
+  for(const [label,count] of groups){const row=make('div','analytics-bar-row');const header=make('div','analytics-bar-label');header.append(make('span','',label),make('strong','',String(count)));const track=make('div','analytics-bar-track');const fill=make('div','analytics-bar-fill');fill.style.width=(d.students?100*count/d.students:0)+'%';track.append(fill);row.append(header,track);distribution.append(row)}
+  const ranking=$('analyticsTopLessons');ranking.replaceChildren();
+  for(const [index,item] of d.topLessons.entries()){const match=/^t(\d+)-l(\d+)$/.exec(item.lessonKey);const topic=match?available?.[Number(match[1])]:null;const lesson=topic?.lessons?.[Number(match?.[2])];const row=make('div','analytics-rank-row');row.append(make('span','analytics-rank-number',String(index+1).padStart(2,'0')),make('span','analytics-rank-name',lesson?(topic.title+' · '+lesson):item.lessonKey),make('strong','',String(item.completions)));ranking.append(row)}
+  if(!d.topLessons.length)ranking.append(make('p','analytics-empty','Nenhuma aula concluída até agora.'));
+  text($('analyticsProgressHint'),totalLessons?'Progresso considerando '+totalLessons+' aulas públicas por aluno.':'Não foi possível calcular o total de aulas.');
+  text(status,'Dados atualizados. Atividade considera somente marcações de conclusão, não visualizações.');
+ }catch(e){text(status,'Não foi possível carregar as estatísticas: '+e.message)}
+}
+$('analyticsRefresh').addEventListener('click',refreshAnalytics);
+async function refreshAdmin(){try{adminData=await api('/api/admin/all');for(const [k,v]of Object.entries(adminData.settings))if($('generalForm').elements.namedItem(k))$('generalForm').elements.namedItem(k).value=v;listContent();listMedia();if(!$('adminPages').hidden)renderPageEditor();text($('adminGuideCount'),adminData.content.filter(x=>x.kind==='guide').length);text($('adminTopicCount'),adminData.content.filter(x=>x.kind==='topic').length);text($('adminMediaCount'),adminData.media.length);await refreshStudents();await refreshAnalytics()}catch(e){text($('adminMessage'),e.message)}}
 $('generalForm').addEventListener('submit',async e=>{e.preventDefault();try{await api('/api/admin/settings','PUT',Object.fromEntries(new FormData(e.currentTarget)));text($('adminMessage'),'Configurações salvas e publicadas.');await refreshAdmin();await refreshPublic()}catch(err){text($('adminMessage'),err.message)}});
 function clearContent(){const form=$('contentForm');form.reset();form.elements.namedItem('id').value='';form.elements.namedItem('kind').value=currentKind;text($('adminEditingTitle'),'Criar novo '+(currentKind==='guide'?'guia':'tópico'))}
 $('newContent').addEventListener('click',clearContent);
