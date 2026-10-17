@@ -723,3 +723,30 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .academy-order-row button{min-width:42px;min-height:40px;padding:8px 12px!important;border-radius:8px}
 .academy-order-row button:disabled{opacity:.32;cursor:not-allowed}
 @media(max-width:600px){.academy-order-row{padding:11px 12px;gap:9px}.academy-order-row button{min-width:36px;padding:7px!important}}
+
+
+/* Mobile admin layout: prevent desktop grid tracks from narrowing editor cards. */
+@media (max-width:760px){
+ body.admin-mode .admin-workspace,
+ body.admin-mode .admin-main,
+ body.admin-mode .admin-section,
+ body.admin-mode .admin-form,
+ body.admin-mode .admin-form-group,
+ body.admin-mode .admin-editor-layout{min-width:0;max-width:100%;box-sizing:border-box}
+ body.admin-mode .admin-main{width:100%;padding-inline:16px}
+ body.admin-mode .admin-form-group,
+ body.admin-mode .admin-editor-layout{display:grid;grid-template-columns:minmax(0,1fr)}
+ body.admin-mode .admin-form-group>*,
+ body.admin-mode .admin-editor-layout>*,
+ body.admin-mode .admin-section>*{min-width:0;max-width:100%;box-sizing:border-box}
+ body.admin-mode .admin-form-card,
+ body.admin-mode .admin-info,
+ body.admin-mode .admin-existing,
+ body.admin-mode .admin-form-group{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding:18px}
+ body.admin-mode .admin-form input,
+ body.admin-mode .admin-form textarea,
+ body.admin-mode .admin-form select{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+ body.admin-mode .admin-page-head h1{font-size:clamp(2rem,9vw,3rem);overflow-wrap:anywhere}
+ body.admin-mode .admin-info p,
+ body.admin-mode .admin-info strong{overflow-wrap:anywhere}
+}
