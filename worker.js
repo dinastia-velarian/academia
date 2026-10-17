@@ -243,7 +243,10 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const activity=await env.DB.prepare("SELECT COUNT(DISTINCT user_id) AS active30d FROM student_progress WHERE completed_at >= ?").bind(Date.now()-30*86400000).first();
   const lessons=await env.DB.prepare("SELECT lesson_key AS lessonKey, COUNT(*) AS completions FROM student_progress GROUP BY lesson_key ORDER BY completions DESC,lesson_key ASC LIMIT 10").all();
   const studentTotals=await env.DB.prepare("SELECT u.id,COUNT(p.lesson_key) AS completed FROM users u LEFT JOIN student_progress p ON p.user_id=u.id WHERE u.role='student' GROUP BY u.id").all();
-  return json({students:Number(overview?.students||0),new30d:Number(overview?.new30d||0),learners:Number(progress?.learners||0),active30d:Number(activity?.active30d||0),completions:Number(progress?.completions||0),completions30d:Number(progress?.completions30d||0),topLessons:lessons.results||[],studentTotals:(studentTotals.results||[]).map(x=>Number(x.completed||0))});
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_site_visits (session_id TEXT PRIMARY KEY,created_at INTEGER NOT NULL)").run();
+  const visits=await env.DB.prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) AS last7d, SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) AS last30d FROM academy_site_visits").bind(Date.now()-7*86400000,Date.now()-30*86400000).first();
+
+  return json({students:Number(overview?.students||0),new30d:Number(overview?.new30d||0),learners:Number(progress?.learners||0),active30d:Number(activity?.active30d||0),completions:Number(progress?.completions||0),completions30d:Number(progress?.completions30d||0),visits:{total:Number(visits?.total||0),last7d:Number(visits?.last7d||0),last30d:Number(visits?.last30d||0)},topLessons:lessons.results||[],studentTotals:(studentTotals.results||[]).map(x=>Number(x.completed||0))});
  }
  if(path==='/api/admin/students'&&method==='GET'){
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();
