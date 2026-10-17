@@ -409,3 +409,5 @@ body.student-page-mode .ornament{pointer-events:none}
 .student-back{display:inline-flex;margin-top:16px;text-decoration:none}
 body.student-page-mode .student-area .section-heading{display:block}
 @media(max-width:760px){body.student-page-mode #studentArea{padding-top:28px}}
+
+.student-forgot-link{display:inline-flex;align-self:flex-start;color:#e8bf79;text-decoration:underline;text-underline-offset:4px;font-size:.92rem;margin-top:2px}.student-forgot-link:hover{color:#ffe3aa}
