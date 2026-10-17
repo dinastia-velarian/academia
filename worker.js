@@ -101,6 +101,25 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    return json({ok:true},200,{'set-cookie':studentCookie('',0)});
   }
   const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
+  if(path==='/api/student/hub'&&method==='GET'){await ensureHub(env);const messages=await env.DB.prepare('SELECT id,kind,body,status,reply,created_at AS createdAt FROM academy_messages WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(u.id).all();const cert=await env.DB.prepare('SELECT code,status,created_at AS createdAt FROM academy_certificates WHERE user_id=?').bind(u.id).first();return json({messages:messages.results||[],certificate:cert||null})}
+  if(path==='/api/student/hub'&&method==='POST'){
+   const b=await body(req),kind=String(b?.kind||''),bodyText=String(b?.body||'').trim();
+   if(!['suggestion','certificate'].includes(kind))return fail('Solicitação inválida.');
+   if(kind==='suggestion'&&(bodyText.length<10||bodyText.length>1500))return fail('Escreva entre 10 e 1.500 caracteres.');
+   await ensureHub(env);
+   if(kind==='certificate'){
+    const existing=await env.DB.prepare('SELECT id,status FROM academy_certificates WHERE user_id=?').bind(u.id).first();
+    if(existing)return fail('Já existe uma solicitação de certificado: '+existing.status,409);
+    const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM student_progress WHERE user_id=?').bind(u.id).first();
+    if(Number(count?.total||0)<1)return fail('Conclua as aulas antes de solicitar o certificado.');
+    await env.DB.prepare('INSERT INTO academy_certificates(id,user_id,code,status,created_at,updated_at) VALUES(?,?,?,?,?,?)').bind(random(),u.id,'AV-'+token().slice(0,12).toUpperCase(),'pending',Date.now(),Date.now()).run();
+   }else{
+    const recent=await env.DB.prepare("SELECT created_at FROM academy_messages WHERE user_id=? AND kind='suggestion' ORDER BY created_at DESC LIMIT 1").bind(u.id).first();
+    if(recent&&Date.now()-Number(recent.created_at)<60000)return fail('Aguarde um minuto antes de enviar outra sugestão.',429);
+    await env.DB.prepare('INSERT INTO academy_messages(id,user_id,kind,body,created_at,updated_at) VALUES(?,?,?,?,?,?)').bind(random(),u.id,kind,bodyText,Date.now(),Date.now()).run();
+   }
+   await hubLog(env,u.id,u.username,'student_'+kind,kind);return json({ok:true},201);
+  }
   if(path==='/api/student/comments'&&method==='POST'){
    const b=await body(req),comment=String(b?.body||'').trim();
    if(comment.length<3||comment.length>1000)return fail('Escreva um comentário de 3 a 1.000 caracteres.');
@@ -148,6 +167,8 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  if(path==='/api/lessons'&&method==='GET'){const rows=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'lesson:%' OR key LIKE 'lesson_v2:%' OR key LIKE 'lesson_v3:%' OR key LIKE 'lesson_v4:%' OR key LIKE 'lesson_v5:%' OR key LIKE 'lesson_v6:%' OR key LIKE 'lesson_v7:%' OR key LIKE 'lesson_v8:%' OR key LIKE 'lesson_v9:%' OR key LIKE 'lesson_v10:%' OR key LIKE 'lesson_v11:%' OR key LIKE 'lesson_v12:%' OR key LIKE 'lesson_v13:%'").all();const items=new Map();for(const x of rows.results||[]){try{const v=JSON.parse(x.value);const old=x.key.startsWith('lesson:');if(old&&(v.topic===0||v.topic===1||v.topic===3))continue;if((x.key.startsWith('lesson_v2:')||x.key.startsWith('lesson_v3:'))&&v.topic===2)continue;if(x.key.startsWith('lesson_v9:')&&v.topic===5)continue;if(x.key.startsWith('lesson_v2:')&&(v.topic===1||v.topic===0||v.topic===3||v.topic===4||v.topic===5||v.topic===6||v.topic===7||v.topic===8))continue;const topic=old?v.topic+1:v.topic;items.set(topic+':'+v.index,{...v,topic})}catch{}}return json({items:[...items.values()]})}
  if(path==='/api/catalog'&&method==='GET'){const rows=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'catalog:%'").all();return json({items:rows.results||[]})}
  if(path==='/api/public'&&method==='GET'){const s=await env.DB.prepare('SELECT key,value FROM settings').all();const c=await env.DB.prepare("SELECT id,kind,title,summary,body,video_url AS videoUrl,image_url AS imageUrl FROM content WHERE status='published' ORDER BY updated_at DESC").all();return json({settings:Object.fromEntries((s.results||[]).filter(x=>!x.key.includes(':')).map(x=>[x.key,x.value])),content:(c.results||[]).map(x=>{const m=(s.results||[]).find(z=>z.key==='content_meta:'+x.id);let meta={};try{meta=JSON.parse(m?.value||'{}')}catch{}return {...x,...meta}})})}
+ if(path==='/api/academy/notices'&&method==='GET'){await ensureHub(env);const rows=await env.DB.prepare('SELECT id,title,body,created_at AS createdAt FROM academy_notices WHERE active=1 ORDER BY created_at DESC LIMIT 10').all();return json({items:rows.results||[]})}
+ if(path==='/api/academy/certificate'&&method==='GET'){await ensureHub(env);const code=String(url.searchParams.get('code')||'').trim().toUpperCase();if(!/^[A-Z0-9-]{8,36}$/.test(code))return fail('Código inválido.',400);const row=await env.DB.prepare("SELECT c.code,c.status,u.username FROM academy_certificates c JOIN users u ON u.id=c.user_id WHERE c.code=? AND c.status='approved'").bind(code).first();return json({valid:!!row,certificate:row||null})}
  if(path==='/api/comments'&&method==='GET'){
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();
   const rows=await env.DB.prepare("SELECT c.id,c.body,c.created_at AS createdAt,u.username FROM site_comments c JOIN users u ON u.id=c.user_id ORDER BY c.created_at DESC LIMIT 100").all();
