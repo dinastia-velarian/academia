@@ -191,6 +191,41 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   return json({ok:true},201);
  }
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
+ if(path==='/api/admin/hub'&&method==='GET'){
+  await ensureHub(env);
+  const messages=await env.DB.prepare("SELECT m.id,m.user_id AS userId,u.username,m.kind,m.body,m.status,m.reply,m.created_at AS createdAt FROM academy_messages m JOIN users u ON u.id=m.user_id ORDER BY m.created_at DESC LIMIT 200").all();
+  const certs=await env.DB.prepare("SELECT c.id,c.user_id AS userId,u.username,c.code,c.status,c.created_at AS createdAt FROM academy_certificates c JOIN users u ON u.id=c.user_id ORDER BY c.created_at DESC LIMIT 200").all();
+  const notices=await env.DB.prepare('SELECT id,title,body,active,created_at AS createdAt FROM academy_notices ORDER BY created_at DESC LIMIT 40').all();
+  const events=await env.DB.prepare('SELECT actor,action,detail,created_at AS createdAt FROM academy_events ORDER BY created_at DESC LIMIT 100').all();
+  return json({messages:messages.results||[],certificates:certs.results||[],notices:notices.results||[],events:events.results||[]});
+ }
+ if(path==='/api/admin/hub-action'&&method==='POST'){
+  const b=await body(req),kind=String(b?.kind||''),id=String(b?.id||'');
+  await ensureHub(env);
+  if(kind==='notice'){
+   const title=String(b?.title||'').trim(),bodyText=String(b?.body||'').trim();
+   if(title.length<3||title.length>120||bodyText.length<3||bodyText.length>1000)return fail('Título ou aviso inválido.');
+   await env.DB.prepare('INSERT INTO academy_notices(id,title,body,created_at,active) VALUES(?,?,?,?,1)').bind(random(),title,bodyText,Date.now()).run();
+  }else if(kind==='notice-toggle'){
+   await env.DB.prepare('UPDATE academy_notices SET active=CASE WHEN active=1 THEN 0 ELSE 1 END WHERE id=?').bind(id).run();
+  }else if(kind==='suggestion'){
+   if(!['resolved','rejected','pending'].includes(b?.status))return fail('Status inválido.');
+   await env.DB.prepare("UPDATE academy_messages SET status=?,reply=?,updated_at=? WHERE id=? AND kind='suggestion'").bind(b.status,String(b.reply||'').slice(0,1500),Date.now(),id).run();
+  }else if(kind==='certificate'){
+   if(!['approved','rejected','pending'].includes(b?.status))return fail('Status inválido.');
+   await env.DB.prepare('UPDATE academy_certificates SET status=?,updated_at=? WHERE id=?').bind(b.status,Date.now(),id).run();
+  }else return fail('Ação inválida.');
+  await hubLog(env,null,user.username,'admin_'+kind,id||String(b.title||''));return json({ok:true});
+ }
+ if(path==='/api/admin/student-profile'&&method==='GET'){
+  const id=String(url.searchParams.get('id')||'');const u=await env.DB.prepare("SELECT id,username,created_at AS createdAt FROM users WHERE id=? AND role='student'").bind(id).first();if(!u)return fail('Aluno não encontrado.',404);
+  await ensureHub(env);
+  const comments=await env.DB.prepare('SELECT id,body,created_at AS createdAt FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(id).all();
+  const events=await env.DB.prepare('SELECT action,detail,created_at AS createdAt FROM academy_events WHERE user_id=? ORDER BY created_at DESC LIMIT 40').bind(id).all();
+  const certificate=await env.DB.prepare('SELECT code,status,created_at AS createdAt FROM academy_certificates WHERE user_id=?').bind(id).first();
+  const activity=await env.DB.prepare('SELECT MAX(completed_at) AS lastLesson FROM student_progress WHERE user_id=?').bind(id).first();
+  return json({student:u,comments:comments.results||[],events:events.results||[],certificate:certificate||null,lastLesson:activity?.lastLesson||null});
+ }
  if(path==='/api/admin/statistics'&&method==='GET'){
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
   const overview=await env.DB.prepare("SELECT COUNT(*) AS students, SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) AS new30d FROM users WHERE role='student'").bind(Date.now()-30*86400000).first();
