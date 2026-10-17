@@ -35,7 +35,7 @@ async function loadAdmin(){
  }catch(e){$('adminHubStatus').textContent=e.message}
 }
 function exportCSV(){
- const rows=[['tipo','jogador','detalhe','status','data'],...data.messages.map(x=>['sugestao',x.username,x.body,x.status,date(x.createdAt)]),...data.certificates.map(x=>['certificado',x.username,x.code,x.status,date(x.createdAt)]),...data.events.map(x=>['evento',x.actor,x.action+' '+x.detail,'',date(x.createdAt)])];
+ const rows=[['tipo','jogador','detalhe','status','data'],...(data.students||[]).map(x=>['aluno',x.username,'Cadastro','',''+date(x.createdAt)]),...data.messages.map(x=>['sugestao',x.username,x.body,x.status,date(x.createdAt)]),...data.certificates.map(x=>['certificado',x.username,x.code,x.status,date(x.createdAt)]),...data.events.map(x=>['evento',x.actor,x.action+' '+x.detail,'',date(x.createdAt)])];
  const csv='\uFEFF'+rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\r\n');
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='academia-velarian-relatorio.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
@@ -55,6 +55,7 @@ async function profile(){
   const events=panel('Atividades registradas');for(const x of d.events)line(events,x.action,x.detail+' · '+date(x.createdAt));root.append(events);
  }catch(e){root.append(el('p',e.message))}
 }
+$('academyVerifyForm')?.addEventListener('submit',async e=>{e.preventDefault();const output=$('academyVerifyResult');try{const code=$('academyVerifyCode').value.trim().toUpperCase();const d=await request('/api/academy/certificate?code='+encodeURIComponent(code));output.textContent=d.valid?'Certificado válido · '+d.certificate.username+' · Código '+d.certificate.code:'Nenhum certificado aprovado encontrado para este código.'}catch(err){output.textContent=err.message}});
 window.academiaHubProfile=profile;
 window.addEventListener('hashchange',()=>{if(location.hash==='#minha-academia')studentLoad()});
 document.addEventListener('click',e=>{if(e.target.closest('#studentAdminList button'))setTimeout(profile,350)});
