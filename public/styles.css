@@ -371,3 +371,24 @@ body{background:#0b0a0c}
 .intro-strip,.support,.about,footer{background-color:#100d10}
 .brand img{background:#0b0a0c;border-color:#8c693c;object-fit:cover;padding:0}
 .hero-academy-seal,.certificate-academy-seal,.footer-academy-seal{background:#0b0a0c;border-radius:14px;filter:drop-shadow(0 8px 20px #0007)}
+
+/* Área opcional dos alunos */
+.student-area{background:#0e0c0f;color:#f4e7d4}
+.student-area .section-heading{margin-bottom:24px}
+.student-auth{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.student-form,.student-course{background:#191317;border:1px solid #6a4c36;border-radius:15px;padding:23px}
+.student-form{display:flex;flex-direction:column;gap:14px}
+.student-form h3{color:#e7bd73;margin:0 0 6px}
+.student-form label{display:flex;flex-direction:column;gap:7px;color:#e8d5b9;font-size:.92rem}
+.student-form input{width:100%;background:#100e10;color:#fff1dc;border:1px solid #765b43;border-radius:8px;padding:12px;font:inherit}
+.student-form button{align-self:flex-start}
+.student-notice{font-size:.85rem;color:#c6b3a0;line-height:1.5}
+#studentMessage:not(:empty){margin:14px 0;color:#e4c188}
+#studentLogout{margin-bottom:18px}
+.student-track{height:12px;background:#2e2524;border-radius:20px;overflow:hidden;max-width:700px}
+#studentProgressBar{height:100%;width:0;background:#d5a34e;transition:width .2s}
+#studentCourseList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
+.student-course h3{margin:0 0 14px;color:#e7bd73}
+.student-lesson{display:flex;align-items:flex-start;gap:10px;padding:8px 0;line-height:1.4;cursor:pointer}
+.student-lesson input{accent-color:#c79a4f;width:18px;height:18px;flex-shrink:0}
+@media(max-width:760px){.student-auth,#studentCourseList{grid-template-columns:1fr}.student-form,.student-course{padding:17px}}
