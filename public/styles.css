@@ -562,3 +562,24 @@ body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:
 .student-trade-foot{font-size:.75rem;color:#b2a399;margin:13px 0 0}
 @media(max-width:760px){.student-trade-products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:440px){.student-trade-products{grid-template-columns:1fr}.student-trade-contact{display:flex}.student-trade-gem{display:none}}
+
+/* Admin academic intelligence */
+.admin-analytics{margin:26px 0 30px;padding:clamp(18px,2.5vw,28px);border:1px solid #65503f;border-radius:18px;background:linear-gradient(140deg,#231d20,#17161b)}
+.admin-analytics-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+.admin-analytics-head>div>span{font-size:.67rem;letter-spacing:.16em;font-weight:800;color:#d4a56c}
+.admin-analytics-head h3{font:700 clamp(1.5rem,2.5vw,2rem) Georgia,serif;color:#f3dfc2;margin:7px 0}
+.admin-analytics-head p,.admin-analytics-panels p{font-size:.84rem;color:#bcae9f;margin:0}
+.admin-analytics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:17px}
+.admin-analytics-grid article,.admin-analytics-panels article{padding:20px;background:#1b1b21;border:1px solid #4c403d;border-radius:13px;min-width:0}
+.admin-analytics-grid small{display:block;color:#c9ac87;font-size:.67rem;letter-spacing:.08em;font-weight:700}
+.admin-analytics-grid strong{display:block;font:700 2.4rem Georgia,serif;color:#f1d5ac;margin:10px 0}
+.admin-analytics-grid article>span{color:#b9ada3;font-size:.77rem}
+.admin-analytics-panels{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.admin-analytics-panels h4{font:700 1.2rem Georgia,serif;color:#f1d5ac;margin:0 0 7px}
+.analytics-bar-row{margin:17px 0}.analytics-bar-label{display:flex;justify-content:space-between;gap:12px;color:#e0d1be;font-size:.85rem;margin-bottom:8px}
+.analytics-bar-track{height:8px;background:#363038;border-radius:12px;overflow:hidden}.analytics-bar-fill{height:100%;background:linear-gradient(90deg,#9c7346,#e2b476);border-radius:12px}
+.analytics-rank-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff14;color:#e3d5c5;font-size:.83rem}
+.analytics-rank-row:last-child{border-bottom:0}.analytics-rank-number{color:#d7aa74;font-weight:800}.analytics-rank-name{flex:1;min-width:0}.analytics-rank-row strong{color:#f0c994}
+.analytics-empty,#analyticsStatus{color:#c5b6a5;font-size:.81rem}#analyticsStatus{margin:14px 0 0}
+@media(max-width:1050px){.admin-analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:690px){.admin-analytics-head{align-items:flex-start;flex-direction:column}.admin-analytics-panels{grid-template-columns:1fr}.admin-analytics-grid article{padding:15px}.admin-analytics-grid strong{font-size:1.9rem}}
