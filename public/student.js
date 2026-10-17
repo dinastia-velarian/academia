@@ -2,6 +2,8 @@
 const root=document.getElementById('studentArea');if(!root)return;
 const $=id=>document.getElementById(id);
 let user=null,completed=new Set();
+function route(){const show=location.hash==='#minha-academia';root.hidden=!show;document.body.classList.toggle('student-page-mode',show);if(show)window.scrollTo({top:0,behavior:'instant'})}
+window.addEventListener('hashchange',route);route();
 async function api(path,method='GET',data){const r=await fetch('/api/student/'+path,{method,credentials:'same-origin',headers:data?{'content-type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const b=await r.json();if(!r.ok)throw Error(b.error||'Erro na solicitação');return b}
 function message(t){$('studentMessage').textContent=t}
 function safeText(el,value){el.textContent=value}
@@ -16,9 +18,9 @@ $('studentProgressBar').style.width=(100*count/Math.max(1,total()))+'%';
 const list=$('studentCourseList');list.replaceChildren();
 for(const {c,i} of visibleCourses()){const section=document.createElement('section');section.className='student-course';const heading=document.createElement('h3');heading.textContent=c.title;section.append(heading);for(let j=0;j<c.lessons.length;j++){const key='t'+i+'-l'+j;const label=document.createElement('label');label.className='student-lesson';const check=document.createElement('input');check.type='checkbox';check.checked=completed.has(key);check.addEventListener('change',async()=>{check.disabled=true;try{await mark(i,j,check.checked)}catch(e){check.checked=!check.checked;message(e.message)}finally{check.disabled=false}});const span=document.createElement('span');span.textContent=c.lessons[j];label.append(check,span);section.append(label)}list.append(section)}}
 async function mark(i,j,value){if(!user)throw Error('Entre na sua conta para salvar o progresso.');const key='t'+i+'-l'+j;await api('progress','POST',{lessonKey:key,completed:value});if(value)completed.add(key);else completed.delete(key);render()}
-window.AcademiaStudent={mark,isLogged:()=>!!user,isDone:(i,j)=>completed.has('t'+i+'-l'+j),open:()=>{root.hidden=false;root.scrollIntoView({behavior:'smooth'})}};
+window.AcademiaStudent={mark,isLogged:()=>!!user,isDone:(i,j)=>completed.has('t'+i+'-l'+j),open:()=>{location.hash='minha-academia';route()}};
 $('studentRegister').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.currentTarget));if(d.password!==d.confirm){message('As senhas não coincidem.');return}try{await api('register','POST',{username:d.username,password:d.password});e.currentTarget.reset();message('Conta criada!');await refresh()}catch(err){message(err.message)}});
-$('studentLogin').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.currentTarget));try{await api('login','POST',d);e.currentTarget.reset();message('Login realizado.');await refresh()}catch(err){message(err.message)}});
+$('studentLogin').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.currentTarget));try{await api('login','POST',d);e.currentTarget.reset();message('Login realizado.');await refresh()}catch(err){if(err.message!=='Usuário ou senha inválidos.'){message(err.message);return}try{const r=await fetch('/api/login',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(d)});const data=await r.json();if(!r.ok)throw Error(data.error||'Usuário ou senha inválidos.');if(data.user?.role!=='admin')throw Error('Acesso inválido.');e.currentTarget.reset();location.hash='admin';location.reload()}catch(adminError){message(adminError.message)}}});
 $('studentLogout').addEventListener('click',async()=>{try{await api('logout','POST');message('Você saiu da sua conta.');await refresh()}catch(e){message(e.message)}});
 refresh();
 })();
