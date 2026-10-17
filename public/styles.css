@@ -520,3 +520,20 @@ body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:
 .student-page-mode .student-password-settings{max-width:100%;margin-top:20px;background:#1b1b22}
 @media(max-width:800px){.student-page-mode #studentCourseList,.student-tools-grid{grid-template-columns:1fr}.student-dash-hero img{width:95px;opacity:.5}.student-dash-stats{gap:9px}.student-dash-stats>div{padding:15px}.student-dash-stats strong{font-size:2rem}}
 @media(max-width:480px){.student-dash-hero img{display:none}.student-dash-stats{grid-template-columns:1fr}.student-page-mode .student-course{padding:18px}}
+
+/* Certificado do aluno */
+.student-certificate{margin:24px 0 28px;padding:clamp(20px,3vw,32px);background:linear-gradient(120deg,#272026,#19191f);border:1px solid #8d6946;border-radius:18px;box-shadow:0 14px 38px #0002;color:#efe6d8}
+.student-certificate-heading{display:flex;align-items:center;gap:18px}
+.student-certificate-icon{width:56px;height:56px;flex-shrink:0;display:grid;place-items:center;border-radius:14px;background:#d1a36720;border:1px solid #ad8354;color:#e8bd80;font-size:2rem}
+.student-certificate-heading h3{font:700 clamp(1.3rem,2.3vw,1.8rem) Georgia,serif;color:#f5ddbb;margin:5px 0}
+.student-certificate-heading p{color:#c8b9a9;margin:0;font-size:.91rem}
+.student-certificate-progress{margin:24px 0 16px}
+.student-certificate-progress-label{display:flex;justify-content:space-between;gap:12px;align-items:center;color:#d5c3b0;font-size:.88rem;margin-bottom:10px}
+.student-certificate-progress-label strong{color:#e8c48c;font-size:1.1rem}
+.student-certificate-track{height:9px;background:#383038;border-radius:20px;overflow:hidden}
+#studentCertificateFill{height:100%;width:0;background:linear-gradient(90deg,#ab7941,#e8bb74);border-radius:20px;transition:width .25s}
+.student-certificate-requirements{max-width:760px;color:#b8ada4;font-size:.87rem;line-height:1.65;margin:14px 0 20px}
+.student-certificate-action{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:11px 18px;border-radius:10px;background:#d0a269;color:#241811;font-weight:800;text-decoration:none}
+.student-certificate-action:hover{background:#e5b981;color:#20150e}
+.student-certificate-action.is-locked{background:#3a3335;border:1px solid #655957;color:#b7aaa4;cursor:not-allowed;pointer-events:none}
+@media(max-width:550px){.student-certificate-heading{align-items:flex-start;gap:12px}.student-certificate-icon{width:43px;height:43px;font-size:1.5rem}.student-certificate-action{display:flex;width:100%}}
