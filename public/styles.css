@@ -605,3 +605,29 @@ body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:
 .admin-comment-row small{color:#b5a393}.admin-comment-row p{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
 .admin-comment-row button{justify-self:start}
 @media(max-width:600px){.comments-section{margin:32px 12px;padding:22px 16px}.comment-form-footer{align-items:stretch;flex-direction:column}}
+
+/* Refined homepage community area */
+main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width:1100px;box-sizing:border-box;margin:75px auto 85px;padding:clamp(24px,4vw,52px);border:1px solid #715335;border-radius:22px;background:radial-gradient(circle at 90% 0%,#45301d55,transparent 46%),linear-gradient(145deg,#211b1c,#121116 78%);box-shadow:0 22px 65px #0005;display:block;color:#f2e4d0}
+#comentarios .comments-heading{max-width:720px;margin:0 0 28px}
+#comentarios .comments-heading>span{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.19em;color:#e4b778;margin-bottom:6px}
+#comentarios .comments-heading h2{font:700 clamp(1.85rem,3.3vw,2.75rem)/1.16 Georgia,serif;color:#f7e8d2;margin:10px 0 14px}
+#comentarios .comments-heading p{font-size:.96rem;line-height:1.7;color:#c5b8aa}
+#comentarios .comment-form{display:flex;flex-direction:column;gap:12px;background:#ffffff06;border:1px solid #5b473a;border-radius:16px;padding:22px;margin:24px 0 16px}
+#comentarios .comment-form label{display:block;color:#ebc89c;font-weight:700;font-size:.9rem}
+#comentarios .comment-form textarea{display:block;width:100%;min-height:125px;box-sizing:border-box;background:#121217;border:1px solid #63503d;color:#f6e6d0;border-radius:12px;padding:17px 18px;font:inherit;line-height:1.6;resize:vertical}
+#comentarios .comment-form textarea::placeholder{color:#998d83}
+#comentarios .comment-form textarea:focus{outline:2px solid #d5a466;outline-offset:1px}
+#comentarios .comment-form-footer{display:flex;align-items:center;justify-content:space-between;gap:16px}
+#comentarios .comment-form-footer small{font-size:.78rem;color:#a99a8b}
+#comentarios .comment-form button{background:#cba16c;border:0;border-radius:10px;color:#21170f;padding:13px 23px;font-weight:800;cursor:pointer}
+#comentarios #commentLoginHint{background:#2b251f;border-left:3px solid #cba16c;padding:12px 15px;border-radius:6px;color:#e2cbb0;line-height:1.5}
+#comentarios #commentLoginHint a{color:#f1c98f;font-weight:700}
+#comentarios #commentMessage{min-height:1.2em;color:#efc48d}
+#comentarios .comment-list{display:grid;gap:14px;margin:28px 0 20px}
+#comentarios .comment-card{background:#1b1a20;border:1px solid #4e4139;border-radius:13px;padding:22px}
+#comentarios .comment-card-head{display:flex;justify-content:space-between;align-items:center;gap:14px}
+#comentarios .comment-card-head strong{color:#eec48b;font-weight:800}
+#comentarios .comment-card-head time{font-size:.78rem;color:#a99b8e}
+#comentarios .comment-card p{margin:12px 0 0;color:#e5d8c9;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+#comentarios #commentRefresh{background:transparent;border:1px solid #796044;border-radius:10px;color:#ebc694;padding:11px 16px;cursor:pointer}
+@media(max-width:650px){main #comentarios.comments-section{width:calc(100% - 24px);margin:40px auto;padding:22px 17px}#comentarios .comment-form{padding:16px}#comentarios .comment-form-footer{flex-direction:column;align-items:stretch}#comentarios .comment-form button{width:100%}}
