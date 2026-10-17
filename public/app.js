@@ -26,7 +26,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAdminNav()});
 for(const btn of document.querySelectorAll('[data-tab]'))btn.addEventListener('click',()=>{selectTab(btn.dataset.tab);closeAdminNav()});for(const btn of document.querySelectorAll('[data-go]'))btn.addEventListener('click',()=>selectTab(btn.dataset.go));$('adminSignOut').addEventListener('click',()=> $('logoutButton').click());
 let studentAdminData=[];let selectedStudentId=null;
 function courseLessonName(key){const m=/^t(\d+)-l(\d+)$/.exec(key);if(!m)return key;const topic=Number(m[1]),lesson=Number(m[2]);const c=typeof courses!=='undefined'?courses[topic]:null;return c?c.title+' — '+(c.lessons[lesson]||'Aula '+(lesson+1)):key}
-async function showStudentDetail(id){selectedStudentId=id;const panel=$('studentAdminDetail');panel.hidden=false;text($('studentDetailTitle'),'Carregando aluno...');text($('studentDetailStats'),'');$('studentDetailLessons').replaceChildren();text($('studentResetNotice'),'');try{const d=await api('/api/admin/student-detail?id='+encodeURIComponent(id));if(selectedStudentId!==id)return;text($('studentDetailTitle'),d.student.username);text($('studentDetailStats'),d.progress.length+' aulas concluídas');const list=$('studentDetailLessons');if(!d.progress.length){list.append(make('p','', 'Este aluno ainda não marcou aulas como concluídas.'))}for(const x of d.progress){const row=make('div','student-detail-lesson');row.append(make('span','',courseLessonName(x.lessonKey)),make('small','',new Date(x.completedAt).toLocaleDateString('pt-BR')));list.append(row)}panel.scrollIntoView({behavior:'smooth',block:'nearest'})}catch(e){text($('studentDetailTitle'),e.message)}}
+async function showStudentDetail(id){selectedStudentId=id;const panel=$('studentAdminDetail');panel.hidden=false;text($('studentDetailTitle'),'Carregando aluno...');text($('studentDetailStats'),'');$('studentDetailLessons').replaceChildren();text($('studentResetNotice'),'');text($('studentAccountNotice'),'');const current=studentAdminData.find(x=>x.id===id);text($('studentToggleBlock'),current?.blocked?'Desbloquear acesso':'Bloquear acesso');try{const d=await api('/api/admin/student-detail?id='+encodeURIComponent(id));if(selectedStudentId!==id)return;text($('studentDetailTitle'),d.student.username);text($('studentDetailStats'),d.progress.length+' aulas concluídas');const list=$('studentDetailLessons');if(!d.progress.length){list.append(make('p','', 'Este aluno ainda não marcou aulas como concluídas.'))}for(const x of d.progress){const row=make('div','student-detail-lesson');row.append(make('span','',courseLessonName(x.lessonKey)),make('small','',new Date(x.completedAt).toLocaleDateString('pt-BR')));list.append(row)}panel.scrollIntoView({behavior:'smooth',block:'nearest'})}catch(e){text($('studentDetailTitle'),e.message)}}
 $('studentResetPassword').addEventListener('click',async()=>{const id=selectedStudentId;if(!id)return;const student=studentAdminData.find(x=>x.id===id);if(!student||!confirm('Gerar uma nova senha temporária para '+student.username+'? A senha anterior e as sessões atuais deixarão de funcionar. Confirme a identidade do aluno antes de enviar.'))return;try{const d=await api('/api/admin/student-reset','POST',{id,confirm:true});const notice=$('studentResetNotice');notice.replaceChildren();notice.append(make('strong','', 'Senha temporária (exibida somente agora): '));const secret=make('code','',d.temporaryPassword);notice.append(secret);const copy=make('button','secondary','Copiar senha');copy.type='button';copy.onclick=()=>navigator.clipboard.writeText(d.temporaryPassword);notice.append(copy);notice.append(make('p','', 'Envie ao aluno em conversa privada, após confirmar que é o titular. Peça para trocar a senha após entrar.'))}catch(e){text($('studentResetNotice'),e.message)}});
 
 function renderStudents(){
@@ -37,10 +37,23 @@ function renderStudents(){
   const row=document.createElement('article');row.className='admin-student-row';
   const name=document.createElement('strong');name.textContent=x.username;
   const date=document.createElement('span');date.textContent='Cadastro: '+(x.createdAt?new Date(x.createdAt.replace(' ','T')+'Z').toLocaleDateString('pt-BR'):'Não informado');
-  const progress=document.createElement('span');progress.textContent=Number(x.completedLessons||0)+' aulas concluídas';
-  const details=make('button','secondary','Ver progresso e senha');details.type='button';details.addEventListener('click',()=>showStudentDetail(x.id));row.append(name,date,progress,details);list.append(row)
+  const progress=document.createElement('span');progress.textContent=Number(x.completedLessons||0)+' aulas concluídas';const status=make('span',x.blocked?'student-blocked-status':'student-active-status',x.blocked?'● Acesso bloqueado':'● Acesso liberado');
+  const details=make('button','secondary','Ver progresso e senha');details.type='button';details.addEventListener('click',()=>showStudentDetail(x.id));row.append(name,date,progress,status,details);list.append(row)
  }
 }
+$('studentToggleBlock').addEventListener('click',async()=>{
+ const id=selectedStudentId,student=studentAdminData.find(x=>x.id===id);if(!student)return;
+ const blocked=!Boolean(student.blocked),action=blocked?'bloquear':'desbloquear';
+ if(!confirm('Deseja '+action+' o acesso de '+student.username+'?'+(blocked?' As sessões atuais serão encerradas.':'')))return;
+ try{await api('/api/admin/student-block','POST',{id,blocked,confirm:true});text($('studentAccountNotice'),'Acesso '+(blocked?'bloqueado':'liberado')+' com sucesso.');await refreshStudents();text($('studentToggleBlock'),blocked?'Desbloquear acesso':'Bloquear acesso')}catch(e){text($('studentAccountNotice'),e.message)}
+});
+$('studentDeleteAccount').addEventListener('click',async()=>{
+ const id=selectedStudentId,student=studentAdminData.find(x=>x.id===id);if(!student)return;
+ const name=prompt('EXCLUSÃO DEFINITIVA: o cadastro, as sessões e o progresso serão apagados. Digite exatamente o nome do aluno para confirmar: '+student.username);
+ if(name===null)return;if(name!==student.username){text($('studentAccountNotice'),'Nome incorreto. Exclusão cancelada.');return}
+ if(!confirm('Confirmar exclusão IRREVERSÍVEL de '+student.username+'?'))return;
+ try{await api('/api/admin/student-delete','POST',{id,username:name,confirm:true});selectedStudentId=null;$('studentAdminDetail').hidden=true;await refreshStudents();text($('studentAdminStatus'),'Cadastro de '+student.username+' excluído definitivamente.')}catch(e){text($('studentAccountNotice'),e.message)}
+});
 async function refreshStudents(){
  try{const d=await api('/api/admin/students');studentAdminData=d.items||[];text($('adminStudentCount'),String(d.total||0));text($('studentAdminStatus'),d.total+' alunos cadastrados · exibindo até 500 contas recentes.');renderStudents()}
  catch(e){text($('studentAdminStatus'),'Erro ao carregar alunos: '+e.message)}
