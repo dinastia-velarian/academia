@@ -94,6 +94,15 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    return json({ok:true},200,{'set-cookie':studentCookie('',0)});
   }
   const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
+  if(path==='/api/student/comments'&&method==='POST'){
+   const b=await body(req),comment=String(b?.body||'').trim();
+   if(comment.length<3||comment.length>1000)return fail('Escreva um comentário de 3 a 1.000 caracteres.');
+   await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();
+   const recent=await env.DB.prepare('SELECT created_at FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 1').bind(u.id).first();
+   if(recent&&Date.now()-Number(recent.created_at)<60000)return fail('Aguarde um minuto antes de comentar novamente.',429);
+   await env.DB.prepare('INSERT INTO site_comments(id,user_id,body,created_at) VALUES(?,?,?,?)').bind(random(),u.id,comment,Date.now()).run();
+   return json({ok:true},201);
+  }
   if(path==='/api/student/change-password'&&method==='POST'){
    const b=await body(req),old=b?.currentPassword,next=b?.newPassword;
    if(typeof old!=='string'||typeof next!=='string'||next.length<6||next.length>128)return fail('Use uma nova senha de 6 a 128 caracteres.');
