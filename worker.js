@@ -25,6 +25,7 @@ async function ensureHub(env){await env.DB.batch([
  env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_events (id TEXT PRIMARY KEY,user_id TEXT,actor TEXT NOT NULL,action TEXT NOT NULL,detail TEXT NOT NULL,created_at INTEGER NOT NULL)")
  ])}
 async function hubLog(env,userId,actor,action,detail){await ensureHub(env);await env.DB.prepare('INSERT INTO academy_events(id,user_id,actor,action,detail,created_at) VALUES(?,?,?,?,?,?)').bind(random(),userId||null,actor,action,String(detail).slice(0,500),Date.now()).run()}
+async function recordLastLogin(env,u){if(u.role!=='student')return;await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();await env.DB.prepare("INSERT INTO student_last_login(user_id,logged_at) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET logged_at=excluded.logged_at").bind(u.id,Date.now()).run()}
 async function ensureStudentBlocks(env){await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_blocks (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, blocked_at INTEGER NOT NULL)").run()}
 async function rateLimit(env,key){const now=Date.now(),start=now-60*1000;const r=await env.DB.prepare('SELECT count,window_start FROM login_attempts WHERE key=?').bind(key).first();if(r&&r.window_start>start&&r.count>=30)return true;await env.DB.prepare('INSERT INTO login_attempts(key,count,window_start) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN window_start<? THEN 1 ELSE count+1 END,window_start=CASE WHEN window_start<? THEN ? ELSE window_start END').bind(key,now,start,start,now).run();return false}
 async function api(req,env,url){const path=url.pathname,method=req.method;
@@ -64,7 +65,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const u=await env.DB.prepare('SELECT * FROM users WHERE username_key=?').bind(name).first();
   if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
   if(u.role==='student'){await ensureStudentBlocks(env);if(await env.DB.prepare('SELECT user_id FROM student_blocks WHERE user_id=?').bind(u.id).first())return fail('Seu cadastro está bloqueado. Entre em contato com a administração.',403)}
-  const session=await makeSession(env,u);
+  const session=await makeSession(env,u);await recordLastLogin(env,u);
   const cookie=u.role==='admin'?setCookie(session.t,7*86400):`av_student=${session.t}; Path=/api/student; HttpOnly; Secure; SameSite=Strict; Max-Age=${7*86400}`;
   return json({user:session.user},200,{'set-cookie':cookie});
  }
@@ -93,7 +94,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='student'").bind(name).first();
    if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
    if(await env.DB.prepare('SELECT user_id FROM student_blocks WHERE user_id=?').bind(u.id).first())return fail('Seu cadastro está bloqueado. Entre em contato com a administração.',403);
-   const session=await makeSession(env,u);await hubLog(env,u.id,u.username,'login','Acesso ao painel do aluno');return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
+   const session=await makeSession(env,u);await recordLastLogin(env,u);await hubLog(env,u.id,u.username,'login','Acesso ao painel do aluno');return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
   }
   if(path==='/api/student/me'&&method==='GET')return json({user:await student()});
   if(path==='/api/student/logout'&&method==='POST'){
@@ -225,8 +226,8 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();const comments=await env.DB.prepare('SELECT id,body,created_at AS createdAt FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(id).all();
   const events=await env.DB.prepare('SELECT action,detail,created_at AS createdAt FROM academy_events WHERE user_id=? ORDER BY created_at DESC LIMIT 40').bind(id).all();
   const certificate=await env.DB.prepare('SELECT id,code,status,created_at AS createdAt,updated_at AS updatedAt FROM academy_certificates WHERE user_id=?').bind(id).first();
-  const activity=await env.DB.prepare('SELECT MAX(completed_at) AS lastLesson FROM student_progress WHERE user_id=?').bind(id).first();
-  return json({student:u,comments:comments.results||[],events:events.results||[],certificate:certificate||null,lastLesson:activity?.lastLesson||null});
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();const login=await env.DB.prepare('SELECT logged_at AS lastLoginAt FROM student_last_login WHERE user_id=?').bind(id).first();const activity=await env.DB.prepare('SELECT MAX(completed_at) AS lastLesson FROM student_progress WHERE user_id=?').bind(id).first();
+  return json({student:u,comments:comments.results||[],events:events.results||[],certificate:certificate||null,lastLesson:activity?.lastLesson||null,lastLoginAt:login?.lastLoginAt||null});
  }
  if(path==='/api/admin/statistics'&&method==='GET'){
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
@@ -238,9 +239,10 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   return json({students:Number(overview?.students||0),new30d:Number(overview?.new30d||0),learners:Number(progress?.learners||0),active30d:Number(activity?.active30d||0),completions:Number(progress?.completions||0),completions30d:Number(progress?.completions30d||0),topLessons:lessons.results||[],studentTotals:(studentTotals.results||[]).map(x=>Number(x.completed||0))});
  }
  if(path==='/api/admin/students'&&method==='GET'){
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
   await ensureStudentBlocks(env);
-  const students=await env.DB.prepare("SELECT u.id,u.username,u.created_at AS createdAt,CASE WHEN b.user_id IS NOT NULL THEN 1 ELSE 0 END AS blocked,COUNT(p.lesson_key) AS completedLessons,MAX(p.completed_at) AS lastProgressAt FROM users u LEFT JOIN student_progress p ON p.user_id=u.id LEFT JOIN student_blocks b ON b.user_id=u.id WHERE u.role='student' GROUP BY u.id,u.username,u.created_at,b.user_id ORDER BY u.created_at DESC LIMIT 500").all();
+  const students=await env.DB.prepare("SELECT u.id,u.username,u.created_at AS createdAt,CASE WHEN b.user_id IS NOT NULL THEN 1 ELSE 0 END AS blocked,COUNT(p.lesson_key) AS completedLessons,MAX(p.completed_at) AS lastProgressAt,MAX(l.logged_at) AS lastLoginAt FROM users u LEFT JOIN student_progress p ON p.user_id=u.id LEFT JOIN student_blocks b ON b.user_id=u.id LEFT JOIN student_last_login l ON l.user_id=u.id WHERE u.role='student' GROUP BY u.id,u.username,u.created_at,b.user_id ORDER BY u.created_at DESC LIMIT 500").all();
   const count=await env.DB.prepare("SELECT COUNT(*) AS total FROM users WHERE role='student'").first();
   return json({total:count?.total||0,items:students.results||[]});
  }
