@@ -103,7 +103,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    return json({ok:true},200,{'set-cookie':studentCookie('',0)});
   }
   const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
-  if(path==='/api/student/hub'&&method==='GET'){await ensureHub(env);const messages=await env.DB.prepare('SELECT id,kind,body,status,reply,created_at AS createdAt FROM academy_messages WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(u.id).all();const cert=await env.DB.prepare('SELECT code,status,created_at AS createdAt FROM academy_certificates WHERE user_id=?').bind(u.id).first();return json({messages:messages.results||[],certificate:cert||null})}
+  if(path==='/api/student/hub'&&method==='GET'){await ensureHub(env);const messages=await env.DB.prepare('SELECT id,kind,body,status,reply,created_at AS createdAt FROM academy_messages WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(u.id).all();const cert=await env.DB.prepare('SELECT code,status,created_at AS createdAt,updated_at AS updatedAt FROM academy_certificates WHERE user_id=?').bind(u.id).first();return json({messages:messages.results||[],certificate:cert||null})}
   if(path==='/api/student/hub'&&method==='POST'){
    const b=await body(req),kind=String(b?.kind||''),bodyText=String(b?.body||'').trim();
    if(!['suggestion','certificate'].includes(kind))return fail('Solicitação inválida.');
