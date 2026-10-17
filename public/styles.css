@@ -537,3 +537,7 @@ body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:
 .student-certificate-action:hover{background:#e5b981;color:#20150e}
 .student-certificate-action.is-locked{background:#3a3335;border:1px solid #655957;color:#b7aaa4;cursor:not-allowed;pointer-events:none}
 @media(max-width:550px){.student-certificate-heading{align-items:flex-start;gap:12px}.student-certificate-icon{width:43px;height:43px;font-size:1.5rem}.student-certificate-action{display:flex;width:100%}}
+
+/* Student suggestions only */
+.student-page-mode .student-tools-grid{display:block}
+.student-page-mode .student-tools-grid .student-tool-card{max-width:100%;width:100%}
