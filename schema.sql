@@ -6,3 +6,6 @@ CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, mime TEXT NOT NULL, data 
 CREATE TABLE IF NOT EXISTS login_attempts (key TEXT PRIMARY KEY, count INTEGER NOT NULL DEFAULT 0, window_start INTEGER NOT NULL);
 CREATE INDEX IF NOT EXISTS idx_content_kind ON content(kind,status);
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
+
+CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key));
+CREATE INDEX IF NOT EXISTS idx_student_progress_user ON student_progress(user_id);
