@@ -642,3 +642,19 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 #comentarios .comment-login-form button{border:0;border-radius:9px;padding:12px 16px;background:#d3a66c;color:#23170f;font-weight:800;cursor:pointer}
 #comentarios #commentLoginStatus{color:#f0c28c}
 @media(max-width:700px){#comentarios .comment-login-form{grid-template-columns:1fr}}
+
+/* Student-only comment composer and public read-only feed */
+#comentarios .comment-readonly-notice{background:#2a241e;border:1px solid #71573b;border-radius:12px;padding:16px 19px;color:#e8d5b9;line-height:1.65}
+#comentarios .comment-readonly-notice a{color:#f3c88a;font-weight:800}
+.student-comment-section{margin:24px 0;padding:clamp(20px,3vw,30px);background:linear-gradient(135deg,#252025,#16151b);border:1px solid #846441;border-radius:17px;color:#e9d8c2}
+.student-comment-header span{font-size:.72rem;letter-spacing:.16em;color:#d8ad72;font-weight:800}
+.student-comment-header h3{font:700 clamp(1.45rem,2.7vw,1.95rem) Georgia,serif;color:#f5dfc1;margin:9px 0}
+.student-comment-header p{color:#c6b7a7;line-height:1.6}
+#studentCommentForm{display:grid;gap:12px;margin-top:20px}
+#studentCommentForm label{font-weight:700;color:#edc99b}
+#studentCommentBody{box-sizing:border-box;width:100%;min-height:115px;background:#15151a;border:1px solid #74583d;border-radius:11px;color:#f3e3d1;padding:15px;font:inherit;resize:vertical}
+#studentCommentBody:focus{outline:2px solid #d4a468;outline-offset:1px}
+.student-comment-actions{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.student-comment-actions small{color:#baa994}
+#studentCommentStatus{color:#e7bd83;font-size:.85rem}
+@media(max-width:650px){.student-comment-actions{flex-direction:column;align-items:stretch}}
