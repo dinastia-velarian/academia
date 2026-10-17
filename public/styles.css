@@ -544,3 +544,21 @@ body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:
 
 /* Aula list prominence in Minha Academia */
 .student-lessons-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin:34px 0 15px}.student-lessons-heading h3{font:700 clamp(1.5rem,2.4vw,2rem) Georgia,serif;color:#f3dfbf;margin:7px 0}.student-lessons-heading p{margin:0;color:#bcb0a6;font-size:.91rem}.student-lessons-heading a{color:#e7bc7d;text-decoration:none;font-weight:700}.student-page-mode #studentCourseList{margin-top:0}.student-page-mode .student-certificate{margin-top:28px}@media(max-width:650px){.student-lessons-heading{align-items:flex-start;flex-direction:column}}
+
+/* Trade Velarian — student storefront */
+.student-trade{background:linear-gradient(130deg,#282126,#17171e 80%);border:1px solid #9b7348;border-radius:19px;padding:clamp(22px,3vw,32px);margin:26px 0;box-shadow:0 14px 36px #0003}
+.student-trade[hidden]{display:none!important}
+.student-trade-top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:20px}
+.student-trade-top h3{font:700 clamp(1.8rem,3vw,2.4rem) Georgia,serif;color:#f5e2c6;margin:7px 0}
+.student-trade-top h3 em{color:#d9ab70;font-style:normal}
+.student-trade-top p{color:#c7b7a5;margin:0}
+.student-trade-gem{display:grid;place-items:center;font-size:2.6rem;color:#e4b777;width:65px;height:65px;background:#d7a36b18;border:1px solid #795c3c;border-radius:16px}
+.student-trade-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin-bottom:20px}
+.student-trade-product{display:flex;flex-direction:column;gap:9px;background:#17171d;border:1px solid #53443d;border-radius:12px;padding:16px}
+.student-trade-product span{font-size:.85rem;color:#d1c2b0}
+.student-trade-product strong{font:700 1.6rem Georgia,serif;color:#f1c88d}
+.student-trade-contact{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;background:#c99a5c;border-radius:10px;color:#21150f;text-decoration:none;font-weight:800}
+.student-trade-contact:hover{background:#e4b779;color:#21150f}
+.student-trade-foot{font-size:.75rem;color:#b2a399;margin:13px 0 0}
+@media(max-width:760px){.student-trade-products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:440px){.student-trade-products{grid-template-columns:1fr}.student-trade-contact{display:flex}.student-trade-gem{display:none}}
