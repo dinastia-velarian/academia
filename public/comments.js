@@ -12,7 +12,7 @@ async function load(){
 $('commentForm').addEventListener('submit',async e=>{
  e.preventDefault();const input=$('commentBody'),body=input.value.trim(),msg=$('commentMessage');if(body.length<3){msg.textContent='Escreva pelo menos 3 caracteres.';return}
  const button=e.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
- try{const r=await fetch('/api/comments',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({body})});const d=await r.json();if(!r.ok)throw Error(d.error||'Não foi possível publicar');input.value='';msg.textContent='Comentário publicado com sucesso!';await load()}
+ try{let r=await fetch('/api/student/comments',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({body})});let d=await r.json();if(r.status===401){r=await fetch('/api/comments',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({body})});d=await r.json()}if(!r.ok)throw Error(d.error||'Não foi possível publicar');input.value='';msg.textContent='Comentário publicado com sucesso!';await load()}
  catch(err){msg.textContent=err.message}finally{button.disabled=false}
 });
 $('commentRefresh').addEventListener('click',load);load();
