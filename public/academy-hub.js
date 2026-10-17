@@ -23,7 +23,7 @@ async function loadAdmin(){
    const box=panel('Sugestões recebidas');for(const m of data.messages.filter(x=>x.kind==='suggestion'))line(box,m.username+' · '+m.status,m.body+' · '+date(m.createdAt)+(m.reply?' · Resposta: '+m.reply:''),[btn('Responder',()=>{const reply=prompt('Resposta ao aluno:',m.reply||'');if(reply!==null)action({kind:'suggestion',id:m.id,status:'resolved',reply})}),btn('Rejeitar',()=>action({kind:'suggestion',id:m.id,status:'rejected',reply:m.reply}))]);if(!box.querySelector('.hub-entry'))box.append(el('p','Nenhuma sugestão recebida até agora. Quando um aluno enviar uma sugestão em Minha Academia, ela aparecerá aqui para você responder ou rejeitar.'));root.append(box);
   }
   if(active==='certificates'){
-   const box=panel('Solicitações de certificado');for(const c of data.certificates){const approve=btn('Aprovar',()=>{if(confirm('Confirma que verificou os requisitos no jogo?'))action({kind:'certificate',id:c.id,status:'approved'});});const reject=btn('Rejeitar',()=>action({kind:'certificate',id:c.id,status:'rejected'}));line(box,c.username+' · '+c.status,'Código: '+c.code+' · '+date(c.createdAt),[approve,reject]);}if(!box.querySelector('.hub-entry'))box.append(el('p','Nenhum certificado solicitado ainda. Os alunos precisam concluir pelo menos 80% das aulas e enviar o pedido pelo painel. Depois você poderá aprovar ou rejeitar cada solicitação.'));root.append(box);
+   const box=panel('Solicitações de certificado');const pending=data.certificates.filter(c=>c.status==='pending').length;box.append(el('p',pending?pending+' solicitação(ões) aguardando sua análise.':'Nenhuma solicitação pendente no momento.'));for(const c of [...data.certificates].sort((a,b)=>(a.status==='pending'?0:1)-(b.status==='pending'?0:1))){const approve=btn('Aprovar',()=>{if(confirm('Confirma que verificou os requisitos no jogo?'))action({kind:'certificate',id:c.id,status:'approved'});});const reject=btn('Rejeitar',()=>action({kind:'certificate',id:c.id,status:'rejected'}));line(box,c.username+' · '+c.status,'Código: '+c.code+' · '+date(c.createdAt),[approve,reject]);}if(!box.querySelector('.hub-entry'))box.append(el('p','Nenhum certificado solicitado ainda. Os alunos precisam concluir pelo menos 80% das aulas e enviar o pedido pelo painel. Depois você poderá aprovar ou rejeitar cada solicitação.'));root.append(box);
   }
   if(active==='history'){const box=panel('Últimas 100 ações registradas');for(const x of data.events)line(box,x.actor+' · '+x.action,x.detail+' · '+date(x.createdAt));if(!data.events.length)box.append(el('p','Ainda não há atividades registradas. Novos acessos, conclusões de aulas, sugestões e ações administrativas serão exibidos aqui.'));root.append(box)}
   if(active==='reports'){
@@ -44,11 +44,24 @@ window.academiaHubTab=tab=>{active=hubTabs.includes(tab)?tab:'';if(active){$('ad
 async function studentLoad(){
  try{const [me,notices]=await Promise.all([request('/api/student/me'),request('/api/academy/notices')]);const logged=!!me.user;const notice=$('studentNotices');notice.hidden=!logged||!notices.items.length;const list=$('studentNoticeList');list.replaceChildren();for(const n of notices.items){const card=panel(n.title);card.append(el('p',n.body));list.append(card)}
   if(!logged)return;
-  const d=await request('/api/student/hub');const root=$('studentHubRequests');root.replaceChildren();for(const m of d.messages)line(root,'Sugestão · '+m.status,m.body+(m.reply?' · Resposta: '+m.reply:''));$('studentHubCertificateStatus').textContent=d.certificate?'Solicitação: '+d.certificate.status+(d.certificate.status==='approved'?' · Código: '+d.certificate.code:''):'Nenhuma solicitação enviada.';
+  const d=await request('/api/student/hub');$('studentHubCertificate').disabled=!!d.certificate;const root=$('studentHubRequests');root.replaceChildren();for(const m of d.messages)line(root,'Sugestão · '+m.status,m.body+(m.reply?' · Resposta: '+m.reply:''));$('studentHubCertificateStatus').textContent=d.certificate?'Solicitação: '+d.certificate.status+(d.certificate.status==='approved'?' · Código: '+d.certificate.code:''):'Nenhuma solicitação enviada.';
  }catch(e){$('studentHubSuggestionStatus').textContent=e.message}
 }
 $('studentHubSuggestionForm')?.addEventListener('submit',async e=>{e.preventDefault();try{await request('/api/student/hub','POST',{kind:'suggestion',body:$('studentHubSuggestion').value});$('studentHubSuggestion').value='';$('studentHubSuggestionStatus').textContent='Sugestão enviada!';studentLoad()}catch(err){$('studentHubSuggestionStatus').textContent=err.message}});
-$('studentHubCertificate')?.addEventListener('click',async()=>{const percent=parseInt($('studentPercent')?.textContent||'0',10);if(percent<80){$('studentHubCertificateStatus').textContent='Conclua pelo menos 80% das aulas antes de solicitar.';return}try{await request('/api/student/hub','POST',{kind:'certificate'});studentLoad()}catch(e){$('studentHubCertificateStatus').textContent=e.message}});
+let certificateSending=false;
+async function sendCertificateRequest(){
+ const status=$('studentHubCertificateStatus'),button=$('studentHubCertificate');
+ if(certificateSending)return;
+ const percent=parseInt($('studentCertificatePercent')?.textContent||'0',10);
+ if(percent<80){status.textContent='Conclua pelo menos 80% das aulas antes de solicitar.';return}
+ if(!confirm('Enviar sua solicitação para análise da administração da Academia Velarian?'))return;
+ certificateSending=true;if(button)button.disabled=true;status.textContent='Enviando solicitação...';
+ try{await request('/api/student/hub','POST',{kind:'certificate'});status.textContent='Solicitação enviada ao ADM! Aguarde a análise e a verificação dos requisitos.';await studentLoad()}
+ catch(e){status.textContent=e.message}
+ finally{certificateSending=false;if(button)button.disabled=false}
+}
+window.academiaSendCertificateRequest=sendCertificateRequest;
+$('studentHubCertificate')?.addEventListener('click',sendCertificateRequest);
 let profileRequestId=0;async function profile(){
  const id=window.academiaSelectedStudent?.();if(!id)return;const requestId=++profileRequestId;const root=$('studentProfileContent');root.replaceChildren();
  try{const d=await request('/api/admin/student-profile?id='+encodeURIComponent(id));if(requestId!==profileRequestId||window.academiaSelectedStudent?.()!==id)return;root.append(el('p','Cadastro: '+date(d.student.createdAt)+' · Última conclusão: '+date(d.lastLesson)));root.append(el('p','Certificado: '+(d.certificate?.status||'Não solicitado')));
