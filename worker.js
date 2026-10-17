@@ -18,7 +18,7 @@ function originOK(req){const origin=req.headers.get('origin');return !origin||or
 async function current(req,env){const cookie=req.headers.get('cookie')||'';const m=cookie.match(/(?:^|;\s*)av_session=([a-f0-9]{64})(?:;|$)/);if(!m)return null;const hash=await sha(m[1]);return env.DB.prepare('SELECT u.id,u.username,u.role FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.id_hash=? AND s.expires_at>?').bind(hash,Date.now()).first()}
 function setCookie(t,maxAge){return `av_session=${t}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`}
 async function makeSession(env,u){const t=token();await env.DB.prepare('INSERT INTO sessions(id_hash,user_id,expires_at) VALUES(?,?,?)').bind(await sha(t),u.id,Date.now()+7*86400000).run();return {t, user:{id:u.id,username:u.username,role:u.role}}}
-async function rateLimit(env,key){const now=Date.now(),start=now-15*60000;const r=await env.DB.prepare('SELECT count,window_start FROM login_attempts WHERE key=?').bind(key).first();if(r&&r.window_start>start&&r.count>=12)return true;await env.DB.prepare('INSERT INTO login_attempts(key,count,window_start) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN window_start<? THEN 1 ELSE count+1 END,window_start=CASE WHEN window_start<? THEN ? ELSE window_start END').bind(key,now,start,start,now).run();return false}
+async function rateLimit(env,key){const now=Date.now(),start=now-60*1000;const r=await env.DB.prepare('SELECT count,window_start FROM login_attempts WHERE key=?').bind(key).first();if(r&&r.window_start>start&&r.count>=30)return true;await env.DB.prepare('INSERT INTO login_attempts(key,count,window_start) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN window_start<? THEN 1 ELSE count+1 END,window_start=CASE WHEN window_start<? THEN ? ELSE window_start END').bind(key,now,start,start,now).run();return false}
 async function api(req,env,url){const path=url.pathname,method=req.method;
  if(method!=='GET'&&!originOK(req))return fail('Origem não autorizada.',403);
  if(path==='/api/bootstrap'&&method==='POST'){
@@ -52,7 +52,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const b=await body(req),name=usernameKey(b?.username),password=b?.password;
   if(!name||typeof password!=='string')return fail('Informe seu usuário e sua senha.',400);
   const ip=req.headers.get('cf-connecting-ip')||'unknown';
-  if(await rateLimit(env,'unified-login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+  if(await rateLimit(env,'unified-login:'+ip+':'+name))return fail('Muitas tentativas de acesso. Tente novamente em instantes.',429);
   const u=await env.DB.prepare('SELECT * FROM users WHERE username_key=?').bind(name).first();
   if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
   const session=await makeSession(env,u);
@@ -69,7 +69,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    const b=await body(req);const name=normalize(b?.username),password=b?.password;
    if(!validName(name)||typeof password!=='string'||password.length<6||password.length>128)return fail('Informe nome válido e senha de 6 a 128 caracteres.');
    const ip=req.headers.get('cf-connecting-ip')||'unknown';
-   if(await rateLimit(env,'student-register:'+ip))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+   if(await rateLimit(env,'student-register:'+ip))return fail('Muitas tentativas de acesso. Tente novamente em instantes.',429);
    const id=random(),salt=token(),hash=await derive(password,salt);
    try{await env.DB.prepare("INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES(?,?,?,?,?,?,'student')").bind(id,name,usernameKey(name),hash,salt,iter).run()}
    catch(e){if(/UNIQUE|CONSTRAINT/i.test(String(e)))return fail('Nome de jogador já cadastrado.',409);throw e}
@@ -79,7 +79,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   if(path==='/api/student/login'&&method==='POST'){
    const b=await body(req),name=usernameKey(b?.username),password=b?.password,ip=req.headers.get('cf-connecting-ip')||'unknown';
    if(!name||typeof password!=='string')return fail('Usuário ou senha inválidos.',401);
-   if(await rateLimit(env,'student-login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+   if(await rateLimit(env,'student-login:'+ip+':'+name))return fail('Muitas tentativas de acesso. Tente novamente em instantes.',429);
    const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='student'").bind(name).first();
    if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
    const session=await makeSession(env,u);return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
@@ -106,7 +106,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  }
 
  if(path==='/api/login'&&method==='POST'){
-  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=usernameKey(b.username),ip=req.headers.get('cf-connecting-ip')||'unknown';try{if(await rateLimit(env,'login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429)}catch(error){console.error('ADMIN_LOGIN_RATE_LIMIT_ERROR',error?.message);return fail('Falha no controle de tentativas de login. Consulte os logs do Worker.',500)}
+  const b=await body(req);if(!b)return fail('Dados inválidos.');const name=usernameKey(b.username),ip=req.headers.get('cf-connecting-ip')||'unknown';try{if(await rateLimit(env,'login:'+ip+':'+name))return fail('Muitas tentativas de acesso. Tente novamente em instantes.',429)}catch(error){console.error('ADMIN_LOGIN_RATE_LIMIT_ERROR',error?.message);return fail('Falha no controle de tentativas de login. Consulte os logs do Worker.',500)}
   const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='admin'").bind(name).first();if(!u||typeof b.password!=='string')return fail('Usuário ou senha inválidos.',401);
   let candidate;try{candidate=await derive(b.password,u.salt,u.iterations)}catch(error){console.error('ADMIN_LOGIN_HASH_ERROR',error?.message);return fail('Erro na verificação da senha.',500)}if(candidate!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
   let session;try{session=await makeSession(env,u)}catch(error){console.error('ADMIN_LOGIN_SESSION_ERROR',error?.message);return fail('Erro ao iniciar a sessão administrativa.',500)}return json({user:session.user},200, {'set-cookie':setCookie(session.t,7*86400)});
