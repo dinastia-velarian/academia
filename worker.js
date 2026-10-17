@@ -47,6 +47,18 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   }
   return json({ok:true,message:'Administrador Victor Velarian criado. Remova ADMIN_SETUP_TOKEN após configurar.'},201);
  }
+ // Entrada unica: identifica o papel no servidor sem tentar autenticar duas vezes.
+ if(path==='/api/auth/login'&&method==='POST'){
+  const b=await body(req),name=usernameKey(b?.username),password=b?.password;
+  if(!name||typeof password!=='string')return fail('Informe seu usuário e sua senha.',400);
+  const ip=req.headers.get('cf-connecting-ip')||'unknown';
+  if(await rateLimit(env,'unified-login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+  const u=await env.DB.prepare('SELECT * FROM users WHERE username_key=?').bind(name).first();
+  if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
+  const session=await makeSession(env,u);
+  const cookie=u.role==='admin'?setCookie(session.t,7*86400):`av_student=${session.t}; Path=/api/student; HttpOnly; Secure; SameSite=Strict; Max-Age=${7*86400}`;
+  return json({user:session.user},200,{'set-cookie':cookie});
+ }
  // Contas opcionais de alunos: sessão separada do administrador.
  if(path.startsWith('/api/student/')){
   const cookie=req.headers.get('cookie')||'';
