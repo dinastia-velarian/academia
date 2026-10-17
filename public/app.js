@@ -158,7 +158,7 @@ function renderPageEditor(){
  for(const [key,label,selector,type]of pageFields[selectedPage]){
   const wrapper=make('label','admin-edit-field');const title=make('span','',label);const note=make('small','',type==='image'?'Escolha uma imagem da biblioteca ou mantenha a atual.':type==='url'?'Endereço completo começando com https://':'Este texto aparece diretamente na página pública.');
   const input=type==='textarea'?make('textarea'):make('input');input.name=key;if(type==='url')input.type='url';if(type==='image')input.type='text';if(type==='textarea')input.rows=4;
-  input.value=adminData.settings[key]??originalPageValues[key]??'';
+  const saved=adminData.settings?.[key];const live=document.querySelector(selector);const liveValue=live?(type==='image'?'':type==='url'?(live.getAttribute('href')||''):live.textContent.trim()):'';input.value=(saved!==undefined&&saved!==null&&String(saved).trim()!=='')?saved:(liveValue||originalPageValues[key]||'');
   wrapper.append(title,note,input);
   if(type==='image'){const pick=make('button','admin-pick-image','Escolher imagem');pick.type='button';pick.addEventListener('click',()=>openImagePicker(input));wrapper.append(pick);const preview=make('img','admin-current-image');preview.alt='Imagem atual';if(validImage(input.value))preview.src=input.value;else preview.hidden=true;input.addEventListener('input',()=>{preview.hidden=!validImage(input.value);if(!preview.hidden)preview.src=input.value});wrapper.append(preview)}
   fields.append(wrapper);
