@@ -1,7 +1,7 @@
 const $=id=>document.getElementById(id);
 let adminData={settings:{},content:[],media:[]},currentKind='guide';
 async function api(path,method='GET',data){const opt={method,credentials:'same-origin',headers:{}};if(data instanceof FormData)opt.body=data;else if(data!==undefined){opt.headers['content-type']='application/json';opt.body=JSON.stringify(data)}const res=await fetch(path,opt);const body=await res.json().catch(()=>({error:'Erro de comunicação.'}));if(!res.ok)throw Error(body.error||'Erro de conexão');return body}
-function text(node,value){if(node)node.textContent=value||''}
+function text(node,value){if(node)node.textContent=value===null||value===undefined?'':String(value)}
 function make(tag,cls,content){const el=document.createElement(tag);if(cls)el.className=cls;if(content!==undefined)el.textContent=content;return el}
 function validImage(url){try{const u=new URL(url,location.href);return ['https:','http:'].includes(u.protocol)}catch{return false}}
 function updatePublic(data){const s=data.settings||{};applyPageSettings(s);if(s.heroTitle)text(document.querySelector('.hero-content h1'),s.heroTitle);if(s.heroText)text(document.querySelector('.hero-content > p'),s.heroText);if(s.aboutText)text(document.querySelector('.about-copy > p'),s.aboutText);if(s.heroImage&&validImage(s.heroImage))document.querySelector('.hero-art').style.backgroundImage=`url(${JSON.stringify(s.heroImage)})`;if(s.supportImage&&validImage(s.supportImage))document.querySelector('.support-illustration img').src=s.supportImage;
