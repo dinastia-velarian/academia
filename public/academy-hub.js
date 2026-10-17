@@ -49,16 +49,16 @@ async function studentLoad(){
 }
 $('studentHubSuggestionForm')?.addEventListener('submit',async e=>{e.preventDefault();try{await request('/api/student/hub','POST',{kind:'suggestion',body:$('studentHubSuggestion').value});$('studentHubSuggestion').value='';$('studentHubSuggestionStatus').textContent='Sugestão enviada!';studentLoad()}catch(err){$('studentHubSuggestionStatus').textContent=err.message}});
 $('studentHubCertificate')?.addEventListener('click',async()=>{const percent=parseInt($('studentPercent')?.textContent||'0',10);if(percent<80){$('studentHubCertificateStatus').textContent='Conclua pelo menos 80% das aulas antes de solicitar.';return}try{await request('/api/student/hub','POST',{kind:'certificate'});studentLoad()}catch(e){$('studentHubCertificateStatus').textContent=e.message}});
-async function profile(){
- const id=window.academiaSelectedStudent?.();if(!id)return;const root=$('studentProfileContent');root.replaceChildren();
- try{const d=await request('/api/admin/student-profile?id='+encodeURIComponent(id));root.append(el('p','Cadastro: '+date(d.student.createdAt)+' · Última conclusão: '+date(d.lastLesson)));root.append(el('p','Certificado: '+(d.certificate?.status||'Não solicitado')));
+let profileRequestId=0;async function profile(){
+ const id=window.academiaSelectedStudent?.();if(!id)return;const requestId=++profileRequestId;const root=$('studentProfileContent');root.replaceChildren();
+ try{const d=await request('/api/admin/student-profile?id='+encodeURIComponent(id));if(requestId!==profileRequestId||window.academiaSelectedStudent?.()!==id)return;root.append(el('p','Cadastro: '+date(d.student.createdAt)+' · Última conclusão: '+date(d.lastLesson)));root.append(el('p','Certificado: '+(d.certificate?.status||'Não solicitado')));
   const box=panel('Comentários publicados');for(const c of d.comments)line(box,date(c.createdAt),c.body,[btn('Excluir',async()=>{if(!confirm('Excluir comentário?'))return;try{await request('/api/admin/comment-delete','POST',{id:c.id,confirm:true});profile()}catch(e){alert(e.message)}})]);root.append(box);
   const events=panel('Atividades registradas');for(const x of d.events)line(events,x.action,x.detail+' · '+date(x.createdAt));root.append(events);
- }catch(e){root.append(el('p',e.message))}
+ }catch(e){if(requestId===profileRequestId)root.append(el('p',e.message))}
 }
 $('academyVerifyForm')?.addEventListener('submit',async e=>{e.preventDefault();const output=$('academyVerifyResult');try{const code=$('academyVerifyCode').value.trim().toUpperCase();const d=await request('/api/academy/certificate?code='+encodeURIComponent(code));output.textContent=d.valid?'Certificado válido · '+d.certificate.username+' · Código '+d.certificate.code:'Nenhum certificado aprovado encontrado para este código.'}catch(err){output.textContent=err.message}});
 window.academiaHubProfile=profile;
 window.addEventListener('hashchange',()=>{if(location.hash==='#minha-academia')studentLoad()});
-document.addEventListener('click',e=>{if(e.target.closest('#studentAdminList button'))setTimeout(profile,350)});
+// Student detail profile is opened once by app.js after the selected student is set.
 studentLoad();
 })();
