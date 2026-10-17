@@ -411,3 +411,17 @@ body.student-page-mode .student-area .section-heading{display:block}
 @media(max-width:760px){body.student-page-mode #studentArea{padding-top:28px}}
 
 .student-forgot-link{display:inline-flex;align-self:flex-start;color:#e8bf79;text-decoration:underline;text-underline-offset:4px;font-size:.92rem;margin-top:2px}.student-forgot-link:hover{color:#ffe3aa}
+
+.admin-student-row{grid-template-columns:minmax(130px,1.4fr) 1fr 1fr auto}
+.admin-student-row button{white-space:nowrap}
+.student-admin-detail{margin-top:24px;padding:22px;border:1px solid #806040;border-radius:12px;background:#171216;color:#eee0ca}
+.student-admin-detail h3{color:#e7bd73}
+.student-detail-lesson{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid #493a30;padding:10px 0}
+.student-detail-lesson small{white-space:nowrap;color:#d5ba8b}
+.student-reset-actions{margin-top:22px}
+.student-reset-actions code{display:inline-block;margin:8px;padding:8px;background:#292126;color:#ffe4aa;user-select:all}
+.student-reset-actions p{margin:12px 0}
+.student-password-settings{margin-top:28px;max-width:650px;border:1px solid #806040;border-radius:10px;padding:16px}
+.student-password-settings summary{cursor:pointer;color:#e7bd73;font-weight:700}
+.student-password-settings .student-form{margin-top:14px}
+@media(max-width:760px){.admin-student-row{grid-template-columns:1fr}.student-detail-lesson{flex-direction:column;gap:4px}}
