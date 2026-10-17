@@ -18,6 +18,7 @@ function originOK(req){const origin=req.headers.get('origin');return !origin||or
 async function current(req,env){const cookie=req.headers.get('cookie')||'';const m=cookie.match(/(?:^|;\s*)av_session=([a-f0-9]{64})(?:;|$)/);if(!m)return null;const hash=await sha(m[1]);return env.DB.prepare('SELECT u.id,u.username,u.role FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.id_hash=? AND s.expires_at>?').bind(hash,Date.now()).first()}
 function setCookie(t,maxAge){return `av_session=${t}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`}
 async function makeSession(env,u){const t=token();await env.DB.prepare('INSERT INTO sessions(id_hash,user_id,expires_at) VALUES(?,?,?)').bind(await sha(t),u.id,Date.now()+7*86400000).run();return {t, user:{id:u.id,username:u.username,role:u.role}}}
+async function ensureStudentBlocks(env){await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_blocks (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, blocked_at INTEGER NOT NULL)").run()}
 async function rateLimit(env,key){const now=Date.now(),start=now-60*1000;const r=await env.DB.prepare('SELECT count,window_start FROM login_attempts WHERE key=?').bind(key).first();if(r&&r.window_start>start&&r.count>=30)return true;await env.DB.prepare('INSERT INTO login_attempts(key,count,window_start) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN window_start<? THEN 1 ELSE count+1 END,window_start=CASE WHEN window_start<? THEN ? ELSE window_start END').bind(key,now,start,start,now).run();return false}
 async function api(req,env,url){const path=url.pathname,method=req.method;
  if(method!=='GET'&&!originOK(req))return fail('Origem não autorizada.',403);
@@ -55,6 +56,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   if(await rateLimit(env,'unified-login:'+ip+':'+name))return fail('Muitas tentativas de acesso. Tente novamente em instantes.',429);
   const u=await env.DB.prepare('SELECT * FROM users WHERE username_key=?').bind(name).first();
   if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
+  if(u.role==='student'){await ensureStudentBlocks(env);if(await env.DB.prepare('SELECT user_id FROM student_blocks WHERE user_id=?').bind(u.id).first())return fail('Seu cadastro está bloqueado. Entre em contato com a administração.',403)}
   const session=await makeSession(env,u);
   const cookie=u.role==='admin'?setCookie(session.t,7*86400):`av_student=${session.t}; Path=/api/student; HttpOnly; Secure; SameSite=Strict; Max-Age=${7*86400}`;
   return json({user:session.user},200,{'set-cookie':cookie});
@@ -64,7 +66,8 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const cookie=req.headers.get('cookie')||'';
   const sessionToken=cookie.match(/(?:^|;\s*)av_student=([a-f0-9]{64})(?:;|$)/)?.[1];
   const studentCookie=(t,age)=>`av_student=${t}; Path=/api/student; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
-  const student=async()=>sessionToken?env.DB.prepare("SELECT u.id,u.username FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.id_hash=? AND s.expires_at>? AND u.role='student'").bind(await sha(sessionToken),Date.now()).first():null;
+  await ensureStudentBlocks(env);
+  const student=async()=>sessionToken?env.DB.prepare("SELECT u.id,u.username FROM sessions s JOIN users u ON u.id=s.user_id LEFT JOIN student_blocks b ON b.user_id=u.id WHERE s.id_hash=? AND s.expires_at>? AND u.role='student' AND b.user_id IS NULL").bind(await sha(sessionToken),Date.now()).first():null;
   if(path==='/api/student/register'&&method==='POST'){
    const b=await body(req);const name=normalize(b?.username),password=b?.password;
    if(!validName(name)||typeof password!=='string'||password.length<6||password.length>128)return fail('Informe nome válido e senha de 6 a 128 caracteres.');
@@ -82,6 +85,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    if(await rateLimit(env,'student-login:'+ip+':'+name))return fail('Muitas tentativas de acesso. Tente novamente em instantes.',429);
    const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='student'").bind(name).first();
    if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
+   if(await env.DB.prepare('SELECT user_id FROM student_blocks WHERE user_id=?').bind(u.id).first())return fail('Seu cadastro está bloqueado. Entre em contato com a administração.',403);
    const session=await makeSession(env,u);return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
   }
   if(path==='/api/student/me'&&method==='GET')return json({user:await student()});
@@ -140,7 +144,8 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  }
  if(path==='/api/admin/students'&&method==='GET'){
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
-  const students=await env.DB.prepare("SELECT u.id,u.username,u.created_at AS createdAt,COUNT(p.lesson_key) AS completedLessons,MAX(p.completed_at) AS lastProgressAt FROM users u LEFT JOIN student_progress p ON p.user_id=u.id WHERE u.role='student' GROUP BY u.id,u.username,u.created_at ORDER BY u.created_at DESC LIMIT 500").all();
+  await ensureStudentBlocks(env);
+  const students=await env.DB.prepare("SELECT u.id,u.username,u.created_at AS createdAt,CASE WHEN b.user_id IS NOT NULL THEN 1 ELSE 0 END AS blocked,COUNT(p.lesson_key) AS completedLessons,MAX(p.completed_at) AS lastProgressAt FROM users u LEFT JOIN student_progress p ON p.user_id=u.id LEFT JOIN student_blocks b ON b.user_id=u.id WHERE u.role='student' GROUP BY u.id,u.username,u.created_at,b.user_id ORDER BY u.created_at DESC LIMIT 500").all();
   const count=await env.DB.prepare("SELECT COUNT(*) AS total FROM users WHERE role='student'").first();
   return json({total:count?.total||0,items:students.results||[]});
  }
@@ -151,6 +156,29 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
   const p=await env.DB.prepare('SELECT lesson_key AS lessonKey,completed_at AS completedAt FROM student_progress WHERE user_id=? ORDER BY completed_at DESC').bind(id).all();
   return json({student:u,progress:p.results||[]});
+ }
+ if(path==='/api/admin/student-block'&&method==='POST'){
+  const b=await body(req),id=String(b?.id||'');
+  if(!b||b.confirm!==true||typeof b.blocked!=='boolean')return fail('Confirme a alteração de acesso.');
+  const u=await env.DB.prepare("SELECT id,username FROM users WHERE id=? AND role='student'").bind(id).first();
+  if(!u)return fail('Aluno não encontrado.',404);
+  await ensureStudentBlocks(env);
+  if(b.blocked){await env.DB.batch([env.DB.prepare('INSERT INTO student_blocks(user_id,blocked_at) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET blocked_at=excluded.blocked_at').bind(id,Date.now()),env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(id)])}
+  else await env.DB.prepare('DELETE FROM student_blocks WHERE user_id=?').bind(id).run();
+  return json({ok:true,blocked:b.blocked,username:u.username});
+ }
+ if(path==='/api/admin/student-delete'&&method==='POST'){
+  const b=await body(req),id=String(b?.id||'');
+  if(!b||b.confirm!==true||typeof b.username!=='string')return fail('Confirme a exclusão informando o nome do aluno.');
+  const u=await env.DB.prepare("SELECT id,username FROM users WHERE id=? AND role='student'").bind(id).first();
+  if(!u)return fail('Aluno não encontrado.',404);
+  if(b.username!==u.username)return fail('Nome de confirmação incorreto.');
+  await env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(id).run();
+  await env.DB.prepare('DELETE FROM student_progress WHERE user_id=?').bind(id).run();
+  const tables=await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('student_notes','student_suggestions','student_blocks')").all();
+  for(const table of tables.results||[])await env.DB.prepare('DELETE FROM '+table.name+' WHERE user_id=?').bind(id).run();
+  await env.DB.prepare("DELETE FROM users WHERE id=? AND role='student'").bind(id).run();
+  return json({ok:true,username:u.username});
  }
  if(path==='/api/admin/student-reset'&&method==='POST'){
   const b=await body(req),id=String(b?.id||'');
