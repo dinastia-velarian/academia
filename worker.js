@@ -149,7 +149,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   }
   if(path==='/api/student/progress'&&method==='POST'){
    const b=await body(req),key=b?.lessonKey;
-   if(typeof key!=='string'||!/^t(?:0|1|2|3|4|5|6|8)-l(?:0|[1-9]\d?)$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
+   if(typeof key!=='string'||!/^t[0-8]-l(?:0|[1-9]\d{0,2})$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
    if(b.completed)await env.DB.prepare('INSERT INTO student_progress(user_id,lesson_key,completed_at) VALUES(?,?,?) ON CONFLICT(user_id,lesson_key) DO UPDATE SET completed_at=excluded.completed_at').bind(u.id,key,Date.now()).run();
    else await env.DB.prepare('DELETE FROM student_progress WHERE user_id=? AND lesson_key=?').bind(u.id,key).run();
    await hubLog(env,u.id,u.username,b.completed?'lesson_completed':'lesson_unmarked',key);
