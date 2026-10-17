@@ -78,6 +78,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    return json({ok:true},200,{'set-cookie':studentCookie('',0)});
   }
   const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
+  if(path==='/api/student/progress')await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
   if(path==='/api/student/progress'&&method==='GET'){
    const rows=await env.DB.prepare('SELECT lesson_key,completed_at FROM student_progress WHERE user_id=?').bind(u.id).all();
    return json({items:rows.results||[]});
