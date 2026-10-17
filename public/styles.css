@@ -658,3 +658,20 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .student-comment-actions small{color:#baa994}
 #studentCommentStatus{color:#e7bd83;font-size:.85rem}
 @media(max-width:650px){.student-comment-actions{flex-direction:column;align-items:stretch}}
+
+/* Final student comment card — matches Academy dashboard */
+#studentDashboard #studentCommentSection.student-comment-section{display:block;box-sizing:border-box;width:100%;max-width:100%;margin:32px 0 12px;padding:clamp(24px,3vw,36px);background:linear-gradient(130deg,#2b2221 0%,#17171d 85%);border:1px solid #997044;border-radius:18px;box-shadow:0 14px 36px #0003}
+#studentCommentSection .student-comment-header{margin:0 0 22px}
+#studentCommentSection .student-comment-header span{display:block;color:#e0b77e;font-size:.7rem;font-weight:800;letter-spacing:.17em;margin-bottom:9px}
+#studentCommentSection .student-comment-header h3{font:700 clamp(1.6rem,3vw,2.15rem)/1.2 Georgia,serif;color:#f4dfc2;margin:0 0 10px}
+#studentCommentSection .student-comment-header p{font-size:.93rem;line-height:1.6;color:#cbbbaa;margin:0;max-width:680px}
+#studentCommentSection #studentCommentForm{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin:0}
+#studentCommentSection #studentCommentForm label{display:block;font-size:.86rem;color:#eac596;font-weight:700;margin:0}
+#studentCommentSection #studentCommentBody{display:block;box-sizing:border-box;width:100%;min-height:145px;padding:16px 18px;background:#131318;border:1px solid #69523d;border-radius:12px;color:#f6e6d0;font:inherit;line-height:1.6;resize:vertical}
+#studentCommentSection #studentCommentBody::placeholder{color:#9b8f84}
+#studentCommentSection .student-comment-actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:3px}
+#studentCommentSection .student-comment-actions small{color:#b8a899;font-size:.78rem}
+#studentCommentSection .student-comment-actions button{background:#cda16b;color:#22170f;border:0;border-radius:10px;padding:13px 21px;font-weight:800;cursor:pointer}
+#studentCommentSection .student-comment-actions button:hover{background:#e5bb83}
+#studentCommentSection #studentCommentStatus{margin:13px 0 0;color:#f0c48b;min-height:1.2em}
+@media(max-width:650px){#studentDashboard #studentCommentSection.student-comment-section{padding:21px 17px}#studentCommentSection .student-comment-actions{flex-direction:column;align-items:stretch}#studentCommentSection .student-comment-actions button{width:100%}}
