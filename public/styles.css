@@ -392,3 +392,12 @@ body{background:#0b0a0c}
 .student-lesson{display:flex;align-items:flex-start;gap:10px;padding:8px 0;line-height:1.4;cursor:pointer}
 .student-lesson input{accent-color:#c79a4f;width:18px;height:18px;flex-shrink:0}
 @media(max-width:760px){.student-auth,#studentCourseList{grid-template-columns:1fr}.student-form,.student-course{padding:17px}}
+
+.admin-student-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0}
+.admin-student-tools input{min-width:220px;flex:1;max-width:430px;padding:11px;border-radius:8px;border:1px solid #806040;background:#171316;color:#f5e9d8}
+.admin-student-list{display:grid;gap:10px;margin-top:18px}
+.admin-student-row{display:grid;grid-template-columns:minmax(140px,1.5fr) 1fr 1fr;gap:12px;align-items:center;background:#1a1418;border:1px solid #5e4839;border-radius:10px;padding:15px;color:#eee0ca}
+.admin-student-row strong{color:#e7bd73}
+.student-complete-button{margin:22px 0;padding:13px 18px;border-radius:9px;background:#a87b3b;color:#150f0d;border:1px solid #d5a458;font-weight:700;cursor:pointer}
+.student-complete-button:disabled{opacity:.55;cursor:wait}
+@media(max-width:680px){.admin-student-row{grid-template-columns:1fr;gap:5px}.admin-student-tools{align-items:stretch;flex-direction:column}.admin-student-tools input{width:100%;max-width:none}}
