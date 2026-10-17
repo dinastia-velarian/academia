@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),el=(tag,txt,cls)=>{const n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n};
 const request=async(path,method='GET',data)=>{const r=await fetch(path,{method,credentials:'same-origin',headers:data?{'content-type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const d=await r.json();if(!r.ok)throw Error(d.error||'Erro na solicitação');return d};
 const date=v=>v?new Date(v).toLocaleDateString('pt-BR'):'—';
-const hubTabs=['certificates','notices','suggestions','trade','reports','history'];
+const hubTabs=['notices','suggestions','trade','reports','history'];
 let active='',data=null,loadSequence=0;
 function btn(label,callback){const b=el('button',label,'secondary');b.type='button';b.addEventListener('click',callback);return b}
 function panel(title){const box=el('article',undefined,'hub-card');box.append(el('h3',title));return box}
@@ -64,7 +64,7 @@ window.academiaSendCertificateRequest=sendCertificateRequest;
 $('studentHubCertificate')?.addEventListener('click',sendCertificateRequest);
 let profileRequestId=0;async function profile(){
  const id=window.academiaSelectedStudent?.();if(!id)return;const requestId=++profileRequestId;const root=$('studentProfileContent');root.replaceChildren();
- try{const d=await request('/api/admin/student-profile?id='+encodeURIComponent(id));if(requestId!==profileRequestId||window.academiaSelectedStudent?.()!==id)return;root.append(el('p','Cadastro: '+date(d.student.createdAt)+' · Última conclusão: '+date(d.lastLesson)));root.append(el('p','Certificado: '+(d.certificate?.status||'Não solicitado')));
+ try{const d=await request('/api/admin/student-profile?id='+encodeURIComponent(id));if(requestId!==profileRequestId||window.academiaSelectedStudent?.()!==id)return;root.append(el('p','Cadastro: '+date(d.student.createdAt)+' · Última conclusão: '+date(d.lastLesson)));const certificateBox=panel('Certificado do aluno');const c=d.certificate;const names={pending:'Aguardando análise',approved:'Aprovado',rejected:'Rejeitado'};certificateBox.append(el('p',c?'Situação: '+(names[c.status]||c.status):'Este aluno ainda não solicitou certificado.'));if(c){certificateBox.append(el('p','Solicitado em: '+date(c.createdAt)));certificateBox.append(el('p','Código: '+c.code));const actions=el('div',undefined,'student-account-actions');for(const [status,label] of [['approved','Aprovar certificado'],['rejected','Rejeitar solicitação'],['pending','Reabrir análise']]){if(c.status===status)continue;actions.append(btn(label,async()=>{if(!confirm(status==='approved'?'Você conferiu o nível 50 e todas as habilidades exigidas no nível 100 dentro do Diplomacia?':'Confirmar alteração do status do certificado deste aluno?'))return;try{await request('/api/admin/hub-action','POST',{kind:'certificate',id:c.id,status});await profile()}catch(e){alert(e.message)}}))}certificateBox.append(actions)}root.append(certificateBox);
   const box=panel('Comentários publicados');for(const c of d.comments)line(box,date(c.createdAt),c.body,[btn('Excluir',async()=>{if(!confirm('Excluir comentário?'))return;try{await request('/api/admin/comment-delete','POST',{id:c.id,confirm:true});profile()}catch(e){alert(e.message)}})]);root.append(box);
   const events=panel('Atividades registradas');for(const x of d.events)line(events,x.action,x.detail+' · '+date(x.createdAt));root.append(events);
  }catch(e){if(requestId===profileRequestId)root.append(el('p',e.message))}
