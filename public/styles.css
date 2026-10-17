@@ -705,3 +705,12 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .student-account-actions .student-danger-button{background:#542c2a;border:1px solid #c37569;color:#ffdfda}
 .student-reset-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-top:1px solid #6e553e;padding-top:18px;margin-top:15px}
 @media(max-width:640px){.student-account-actions button,.student-reset-actions button{width:100%}#adminHub .hub-form button,.student-hub-extras form button{width:100%}}
+
+/* Fully populated admin hubs */
+#adminHub .hub-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin:18px 0}
+#adminHub .hub-metric{display:flex;flex-direction:column;gap:7px;background:#161419;border:1px solid #6f5338;border-radius:12px;padding:19px}
+#adminHub .hub-metric strong{font:700 2rem Georgia,serif;color:#f0c48b}
+#adminHub .hub-metric span{color:#cbb9a3;font-size:.83rem}
+#adminHub .hub-form label{display:grid;gap:7px;color:#e9c796;font-size:.88rem;font-weight:700}
+#adminHub .hub-form select{width:100%;background:#141419;color:#f4dfc0;border:1px solid #73583d;border-radius:10px;padding:13px;font:inherit}
+#adminHub .hub-card>p{color:#c7b8a9;line-height:1.7}
