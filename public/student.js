@@ -24,6 +24,14 @@ function firstPending(){for(const {c,i} of visibleCourses())for(let j=0;j<c.less
 $('studentContinue').onclick=()=>{const next=firstPending();if(next){location.hash='inicio';window.academiaOpenLesson?.(...next)}else message('Você concluiu todas as aulas!')};
 async function mark(i,j,value){if(!user)throw Error('Entre na sua conta para salvar o progresso.');const key='t'+i+'-l'+j;await api('progress','POST',{lessonKey:key,completed:value});if(value)completed.add(key);else completed.delete(key);render()}
 window.AcademiaStudent={mark,isLogged:()=>!!user,isDone:(i,j)=>completed.has('t'+i+'-l'+j),open:()=>{location.hash='minha-academia';route()}};
+$('studentCommentForm').addEventListener('submit',async e=>{
+ e.preventDefault();const form=e.currentTarget,input=$('studentCommentBody'),status=$('studentCommentStatus'),body=input.value.trim();
+ if(!user){status.textContent='Entre na sua conta para publicar.';return}
+ if(body.length<3){status.textContent='Escreva pelo menos 3 caracteres.';return}
+ const button=form.querySelector('button[type="submit"]');button.disabled=true;status.textContent='Publicando...';
+ try{await api('comments','POST',{body});input.value='';status.textContent='Comentário publicado! Ele já pode ser visto na página principal.'}
+ catch(err){status.textContent=err.message}finally{button.disabled=false}
+});
 $('studentRegister').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget;const d=Object.fromEntries(new FormData(form));if(d.password!==d.confirm){message('As senhas não coincidem.');return}try{await api('register','POST',{username:d.username,password:d.password});form.reset();message('Conta criada!');await refresh()}catch(err){message(err.message)}});
 $('studentLogin').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget;const d=Object.fromEntries(new FormData(form));try{const r=await fetch('/api/auth/login',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(d)});const data=await r.json();if(!r.ok)throw Error(data.error||'Não foi possível entrar.');form.reset();if(data.user?.role==='admin'){location.hash='admin';location.reload();return}message('Login realizado.');await refresh()}catch(err){message(err.message)}});
 $('studentChangePassword').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget,d=Object.fromEntries(new FormData(form));if(d.newPassword!==d.confirmPassword){$('studentChangeStatus').textContent='As novas senhas não coincidem.';return}try{await api('change-password','POST',{currentPassword:d.currentPassword,newPassword:d.newPassword});form.reset();$('studentChangeStatus').textContent='Senha atualizada com sucesso.'}catch(err){$('studentChangeStatus').textContent=err.message}});
