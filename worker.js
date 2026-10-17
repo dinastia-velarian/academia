@@ -126,6 +126,26 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const count=await env.DB.prepare("SELECT COUNT(*) AS total FROM users WHERE role='student'").first();
   return json({total:count?.total||0,items:students.results||[]});
  }
+ if(path==='/api/admin/student-detail'&&method==='GET'){
+  const id=url.searchParams.get('id')||'';
+  const u=await env.DB.prepare("SELECT id,username,created_at AS createdAt FROM users WHERE id=? AND role='student'").bind(id).first();
+  if(!u)return fail('Aluno não encontrado.',404);
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
+  const p=await env.DB.prepare('SELECT lesson_key AS lessonKey,completed_at AS completedAt FROM student_progress WHERE user_id=? ORDER BY completed_at DESC').bind(id).all();
+  return json({student:u,progress:p.results||[]});
+ }
+ if(path==='/api/admin/student-reset'&&method==='POST'){
+  const b=await body(req),id=String(b?.id||'');
+  if(!b||b.confirm!==true)return fail('Confirme a redefinição da senha.');
+  const u=await env.DB.prepare("SELECT id,username FROM users WHERE id=? AND role='student'").bind(id).first();
+  if(!u)return fail('Aluno não encontrado.',404);
+  const temporaryPassword=token().slice(0,16),salt=token(),hash=await derive(temporaryPassword,salt);
+  await env.DB.batch([
+   env.DB.prepare('UPDATE users SET password_hash=?,salt=?,iterations=? WHERE id=? AND role=\'student\'').bind(hash,salt,iter,id),
+   env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(id)
+  ]);
+  return json({ok:true,username:u.username,temporaryPassword,message:'Senha temporária gerada. Envie apenas ao titular após verificar sua identidade.'});
+ }
  if(path==='/api/admin/all'&&method==='GET'){const s=await env.DB.prepare('SELECT key,value FROM settings').all();const c=await env.DB.prepare('SELECT * FROM content ORDER BY updated_at DESC').all();const m=await env.DB.prepare('SELECT id,mime,created_at FROM media ORDER BY created_at DESC LIMIT 100').all();return json({settings:Object.fromEntries((s.results||[]).map(x=>[x.key,x.value])),content:(c.results||[]).map(x=>{const m=(s.results||[]).find(z=>z.key==='content_meta:'+x.id);let meta={};try{meta=JSON.parse(m?.value||'{}')}catch{}return {...x,...meta}}),media:m.results||[]})}
  if(path==='/api/admin/history'&&method==='GET'){const rows=await env.DB.prepare("SELECT value FROM settings WHERE key LIKE 'history:%' LIMIT 200").all();return json({items:(rows.results||[]).map(x=>JSON.parse(x.value))})}
  if(path==='/api/admin/topic'&&method==='POST'){const b=await body(req);const index=Number(b?.index);if(!Number.isInteger(index)||index<0||index>8)return fail('Topico invalido.');const item={index,title:String(b.title||'').trim().slice(0,140),desc:String(b.desc||'').trim().slice(0,900),level:String(b.level||'Iniciante'),icon:String(b.icon||'✦').slice(0,8)};if(!item.title||!['Iniciante','Intermediário','Avançado'].includes(item.level))return fail('Dados do topico invalidos.');await env.DB.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').bind('topic_v2:'+index,JSON.stringify(item)).run();return json({ok:true})}
