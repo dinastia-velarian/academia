@@ -76,7 +76,7 @@ async function refreshAnalytics(){
   text($('analyticsActive'),d.active30d);text($('analyticsNew'),d.new30d);text($('analyticsCompletions'),d.completions);text($('analyticsLearners'),d.learners);text($('adminVisitCount'),d.visits?.total??'—');text($('adminVisit7d'),d.visits?.last7d??'—');text($('adminVisit30d'),d.visits?.last30d??'—');
   const available=typeof courses!=='undefined'?courses:window.courses;
   const visible=Array.isArray(available)?available.map((c,i)=>({c,i})).filter(x=>x.i!==7):[];
-  const totalLessons=visible.reduce((sum,x)=>sum+x.c.lessons.length,0);
+  const [publishedLessons,publishedOrders]=await Promise.all([api('/api/lessons'),api('/api/lesson-order')]);const curriculumKeys=new Set();for(const {c,i} of visible){const stored=(publishedOrders.items||[]).find(x=>x.topic===i)?.order;const indexes=Array.isArray(stored)?stored:c.lessons.map((_,j)=>j);for(const j of indexes)if(Number.isInteger(j)&&j>=0&&j<=199)curriculumKeys.add('t'+i+'-l'+j)}const totalLessons=curriculumKeys.size;
   const distribution=$('analyticsDistribution');distribution.replaceChildren();
   const groups=[['Ainda não iniciaram',0],['1–24%',0],['25–49%',0],['50–79%',0],['80–99%',0],['100%',0]];
   if(totalLessons){for(const count of d.studentTotals){const pct=100*Math.min(count,totalLessons)/totalLessons;const index=count===0?0:pct<25?1:pct<50?2:pct<80?3:pct<100?4:5;groups[index][1]++}}
