@@ -750,3 +750,15 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
  body.admin-mode .admin-info p,
  body.admin-mode .admin-info strong{overflow-wrap:anywhere}
 }
+
+
+/* Override the desktop #admin grid rule (body.admin-mode #admin) on phones. */
+@media (max-width:760px){
+ body.admin-mode #admin.admin-workspace{display:block!important;grid-template-columns:none!important;width:100%!important;max-width:100%!important}
+ body.admin-mode #admin .admin-main{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;margin:0;padding:0 16px 56px}
+ body.admin-mode #admin #adminGeneral,
+ body.admin-mode #admin #generalForm,
+ body.admin-mode #admin #generalForm .admin-form-group,
+ body.admin-mode #admin .admin-info{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
+ body.admin-mode #admin .admin-topline{flex-wrap:wrap}
+}
