@@ -401,3 +401,11 @@ body{background:#0b0a0c}
 .student-complete-button{margin:22px 0;padding:13px 18px;border-radius:9px;background:#a87b3b;color:#150f0d;border:1px solid #d5a458;font-weight:700;cursor:pointer}
 .student-complete-button:disabled{opacity:.55;cursor:wait}
 @media(max-width:680px){.admin-student-row{grid-template-columns:1fr;gap:5px}.admin-student-tools{align-items:stretch;flex-direction:column}.admin-student-tools input{width:100%;max-width:none}}
+
+/* Minha Academia em tela própria, sem interferir nas aulas públicas */
+body.student-page-mode main>section:not(#studentArea){display:none!important}
+body.student-page-mode #studentArea{display:block!important;min-height:calc(100vh - 180px);padding-top:56px}
+body.student-page-mode .ornament{pointer-events:none}
+.student-back{display:inline-flex;margin-top:16px;text-decoration:none}
+body.student-page-mode .student-area .section-heading{display:block}
+@media(max-width:760px){body.student-page-mode #studentArea{padding-top:28px}}
