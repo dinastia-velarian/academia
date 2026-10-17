@@ -224,7 +224,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   await ensureHub(env);
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();const comments=await env.DB.prepare('SELECT id,body,created_at AS createdAt FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(id).all();
   const events=await env.DB.prepare('SELECT action,detail,created_at AS createdAt FROM academy_events WHERE user_id=? ORDER BY created_at DESC LIMIT 40').bind(id).all();
-  const certificate=await env.DB.prepare('SELECT code,status,created_at AS createdAt FROM academy_certificates WHERE user_id=?').bind(id).first();
+  const certificate=await env.DB.prepare('SELECT id,code,status,created_at AS createdAt,updated_at AS updatedAt FROM academy_certificates WHERE user_id=?').bind(id).first();
   const activity=await env.DB.prepare('SELECT MAX(completed_at) AS lastLesson FROM student_progress WHERE user_id=?').bind(id).first();
   return json({student:u,comments:comments.results||[],events:events.results||[],certificate:certificate||null,lastLesson:activity?.lastLesson||null});
  }
