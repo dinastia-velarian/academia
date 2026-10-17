@@ -265,7 +265,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   await ensureStudentBlocks(env);
   if(b.blocked){await env.DB.batch([env.DB.prepare('INSERT INTO student_blocks(user_id,blocked_at) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET blocked_at=excluded.blocked_at').bind(id,Date.now()),env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(id)])}
   else await env.DB.prepare('DELETE FROM student_blocks WHERE user_id=?').bind(id).run();
-  return json({ok:true,blocked:b.blocked,username:u.username});
+  await hubLog(env,id,user.username,b.blocked?'student_blocked':'student_unblocked',u.username);return json({ok:true,blocked:b.blocked,username:u.username});
  }
  if(path==='/api/admin/student-delete'&&method==='POST'){
   const b=await body(req),id=String(b?.id||'');
@@ -277,7 +277,9 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   await env.DB.prepare('DELETE FROM student_progress WHERE user_id=?').bind(id).run();
   const tables=await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('student_notes','student_suggestions','student_blocks','site_comments')").all();
   for(const table of tables.results||[])await env.DB.prepare('DELETE FROM '+table.name+' WHERE user_id=?').bind(id).run();
+  await ensureHub(env);for(const table of ['academy_messages','academy_certificates','academy_events'])await env.DB.prepare('DELETE FROM '+table+' WHERE user_id=?').bind(id).run();
   await env.DB.prepare("DELETE FROM users WHERE id=? AND role='student'").bind(id).run();
+  await hubLog(env,null,user.username,'student_deleted',u.username);
   return json({ok:true,username:u.username});
  }
  if(path==='/api/admin/student-reset'&&method==='POST'){
