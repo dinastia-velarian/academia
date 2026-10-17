@@ -675,3 +675,33 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 #studentCommentSection .student-comment-actions button:hover{background:#e5bb83}
 #studentCommentSection #studentCommentStatus{margin:13px 0 0;color:#f0c48b;min-height:1.2em}
 @media(max-width:650px){#studentDashboard #studentCommentSection.student-comment-section{padding:21px 17px}#studentCommentSection .student-comment-actions{flex-direction:column;align-items:stretch}#studentCommentSection .student-comment-actions button{width:100%}}
+
+/* Academia Velarian: administrative hubs and student services */
+#adminHub .hub-card,.student-hub-extras,.student-hub-notices,.student-profile-extra{background:linear-gradient(135deg,#241e20,#17171c);border:1px solid #71553b;border-radius:16px;padding:clamp(18px,2.5vw,27px);margin:18px 0;color:#ead7be}
+#adminHub .hub-card h3,.student-hub-extras h3,.student-hub-notices h3,.student-profile-extra h4{font:700 1.35rem Georgia,serif;color:#f1c88f;margin:0 0 15px}
+#adminHub .hub-entry,.student-profile-extra .hub-entry,.student-hub-extras .hub-entry{padding:15px 0;border-bottom:1px solid #ffffff20;overflow-wrap:anywhere}
+#adminHub .hub-entry:last-child,.student-profile-extra .hub-entry:last-child{border-bottom:0}
+#adminHub .hub-entry strong,.student-profile-extra .hub-entry strong{display:block;color:#f3d7ae;margin-bottom:7px}
+#adminHub .hub-entry p,.student-profile-extra .hub-entry p,.student-hub-extras p{color:#c7b8a9;line-height:1.6;white-space:pre-wrap}
+#adminHub .hub-entry button,.student-profile-extra .hub-entry button{margin:5px 9px 5px 0;padding:10px 15px}
+#adminHub .hub-form,.student-hub-extras form{display:grid;gap:12px;margin:18px 0}
+#adminHub .hub-form input,#adminHub .hub-form textarea,.student-hub-extras textarea{box-sizing:border-box;width:100%;min-height:44px;background:#141419;border:1px solid #73583d;border-radius:10px;color:#f2e1cc;padding:13px;font:inherit}
+#adminHub .hub-form textarea,.student-hub-extras textarea{min-height:115px;resize:vertical}
+#adminHub .hub-form button,.student-hub-extras form button{justify-self:start}
+.student-hub-extras label{display:grid;gap:10px;color:#e9c592;font-weight:700}
+.student-hub-cert{margin-top:22px;padding-top:20px;border-top:1px solid #70543b}
+.student-hub-cert h4{font:700 1.2rem Georgia,serif;color:#f0c68d}
+.student-hub-notices .hub-card{background:#17171c;border-left:3px solid #cda16c;padding:14px 18px;margin:12px 0;border-radius:9px}
+.student-hub-notices .hub-card h3{color:#f0c68d}
+.academy-verify-form{margin:24px 0;padding:20px;border:1px solid #73583d;border-radius:13px;background:#17171d}
+.academy-verify-form label{display:block;font-weight:700;margin-bottom:12px;color:#eac58c}
+.academy-verify-form>div{display:flex;flex-wrap:wrap;gap:10px}
+.academy-verify-form input{flex:1;min-width:190px;padding:13px;background:#111116;color:#f0e0cc;border:1px solid #775c41;border-radius:9px}
+#academyVerifyResult{color:#eac58c}
+#studentTradePromo{color:#e8c18a;font-weight:700;margin:12px 0}
+.student-trade-contact[aria-disabled="true"]{opacity:.55;cursor:not-allowed}
+.student-account-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:20px 0}
+.student-account-actions button{min-height:44px;padding:11px 17px;border-radius:10px;font-weight:700}
+.student-account-actions .student-danger-button{background:#542c2a;border:1px solid #c37569;color:#ffdfda}
+.student-reset-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-top:1px solid #6e553e;padding-top:18px;margin-top:15px}
+@media(max-width:640px){.student-account-actions button,.student-reset-actions button{width:100%}#adminHub .hub-form button,.student-hub-extras form button{width:100%}}
