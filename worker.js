@@ -47,8 +47,51 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   }
   return json({ok:true,message:'Administrador Victor Velarian criado. Remova ADMIN_SETUP_TOKEN após configurar.'},201);
  }
- // Cadastro público desativado: a Academia é aberta, sem contas de alunos.
- if(path==='/api/register')return fail('Cadastro de alunos desativado. O conteúdo é público.',403);
+ // Contas opcionais de alunos: sessão separada do administrador.
+ if(path.startsWith('/api/student/')){
+  const cookie=req.headers.get('cookie')||'';
+  const sessionToken=cookie.match(/(?:^|;\\s*)av_student=([a-f0-9]{64})(?:;|$)/)?.[1];
+  const studentCookie=(t,age)=>`av_student=${t}; Path=/api/student; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
+  const student=async()=>sessionToken?env.DB.prepare("SELECT u.id,u.username FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.id_hash=? AND s.expires_at>? AND u.role='student'").bind(await sha(sessionToken),Date.now()).first():null;
+  if(path==='/api/student/register'&&method==='POST'){
+   const b=await body(req);const name=normalize(b?.username),password=b?.password;
+   if(!validName(name)||typeof password!=='string'||password.length<6||password.length>128)return fail('Informe nome válido e senha de 6 a 128 caracteres.');
+   const ip=req.headers.get('cf-connecting-ip')||'unknown';
+   if(await rateLimit(env,'student-register:'+ip))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+   const id=random(),salt=token(),hash=await derive(password,salt);
+   try{await env.DB.prepare("INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES(?,?,?,?,?,?,'student')").bind(id,name,usernameKey(name),hash,salt,iter).run()}
+   catch(e){if(/UNIQUE|CONSTRAINT/i.test(String(e)))return fail('Nome de jogador já cadastrado.',409);throw e}
+   const session=await makeSession(env,{id,username:name,role:'student'});
+   return json({user:session.user},201,{'set-cookie':studentCookie(session.t,7*86400)});
+  }
+  if(path==='/api/student/login'&&method==='POST'){
+   const b=await body(req),name=usernameKey(b?.username),password=b?.password,ip=req.headers.get('cf-connecting-ip')||'unknown';
+   if(!name||typeof password!=='string')return fail('Usuário ou senha inválidos.',401);
+   if(await rateLimit(env,'student-login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429);
+   const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='student'").bind(name).first();
+   if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
+   const session=await makeSession(env,u);return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
+  }
+  if(path==='/api/student/me'&&method==='GET')return json({user:await student()});
+  if(path==='/api/student/logout'&&method==='POST'){
+   if(sessionToken)await env.DB.prepare('DELETE FROM sessions WHERE id_hash=?').bind(await sha(sessionToken)).run();
+   return json({ok:true},200,{'set-cookie':studentCookie('',0)});
+  }
+  const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
+  if(path==='/api/student/progress'&&method==='GET'){
+   const rows=await env.DB.prepare('SELECT lesson_key,completed_at FROM student_progress WHERE user_id=?').bind(u.id).all();
+   return json({items:rows.results||[]});
+  }
+  if(path==='/api/student/progress'&&method==='POST'){
+   const b=await body(req),key=b?.lessonKey;
+   if(typeof key!=='string'||!/^t(?:0|1|2|3|4|5|6|8)-l(?:0|[1-9]\\d?)$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
+   if(b.completed)await env.DB.prepare('INSERT INTO student_progress(user_id,lesson_key,completed_at) VALUES(?,?,?) ON CONFLICT(user_id,lesson_key) DO UPDATE SET completed_at=excluded.completed_at').bind(u.id,key,Date.now()).run();
+   else await env.DB.prepare('DELETE FROM student_progress WHERE user_id=? AND lesson_key=?').bind(u.id,key).run();
+   return json({ok:true});
+  }
+  return fail('Rota não encontrada.',404);
+ }
+
  if(path==='/api/login'&&method==='POST'){
   const b=await body(req);if(!b)return fail('Dados inválidos.');const name=usernameKey(b.username),ip=req.headers.get('cf-connecting-ip')||'unknown';try{if(await rateLimit(env,'login:'+ip+':'+name))return fail('Muitas tentativas. Aguarde 15 minutos.',429)}catch(error){console.error('ADMIN_LOGIN_RATE_LIMIT_ERROR',error?.message);return fail('Falha no controle de tentativas de login. Consulte os logs do Worker.',500)}
   const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='admin'").bind(name).first();if(!u||typeof b.password!=='string')return fail('Usuário ou senha inválidos.',401);
