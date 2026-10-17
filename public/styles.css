@@ -541,3 +541,6 @@ body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:
 /* Student suggestions only */
 .student-page-mode .student-tools-grid{display:block}
 .student-page-mode .student-tools-grid .student-tool-card{max-width:100%;width:100%}
+
+/* Aula list prominence in Minha Academia */
+.student-lessons-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin:34px 0 15px}.student-lessons-heading h3{font:700 clamp(1.5rem,2.4vw,2rem) Georgia,serif;color:#f3dfbf;margin:7px 0}.student-lessons-heading p{margin:0;color:#bcb0a6;font-size:.91rem}.student-lessons-heading a{color:#e7bc7d;text-decoration:none;font-weight:700}.student-page-mode #studentCourseList{margin-top:0}.student-page-mode .student-certificate{margin-top:28px}@media(max-width:650px){.student-lessons-heading{align-items:flex-start;flex-direction:column}}
