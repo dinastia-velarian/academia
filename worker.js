@@ -93,7 +93,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    const u=await env.DB.prepare("SELECT * FROM users WHERE username_key=? AND role='student'").bind(name).first();
    if(!u||await derive(password,u.salt,u.iterations)!==u.password_hash)return fail('Usuário ou senha inválidos.',401);
    if(await env.DB.prepare('SELECT user_id FROM student_blocks WHERE user_id=?').bind(u.id).first())return fail('Seu cadastro está bloqueado. Entre em contato com a administração.',403);
-   const session=await makeSession(env,u);return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
+   const session=await makeSession(env,u);await hubLog(env,u.id,u.username,'login','Acesso ao painel do aluno');return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
   }
   if(path==='/api/student/me'&&method==='GET')return json({user:await student()});
   if(path==='/api/student/logout'&&method==='POST'){
@@ -126,7 +126,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();
    const recent=await env.DB.prepare('SELECT created_at FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 1').bind(u.id).first();
    if(recent&&Date.now()-Number(recent.created_at)<60000)return fail('Aguarde um minuto antes de comentar novamente.',429);
-   await env.DB.prepare('INSERT INTO site_comments(id,user_id,body,created_at) VALUES(?,?,?,?)').bind(random(),u.id,comment,Date.now()).run();
+   await env.DB.prepare('INSERT INTO site_comments(id,user_id,body,created_at) VALUES(?,?,?,?)').bind(random(),u.id,comment,Date.now()).run();await hubLog(env,u.id,u.username,'comment_posted',comment.slice(0,120));
    return json({ok:true},201);
   }
   if(path==='/api/student/change-password'&&method==='POST'){
@@ -148,6 +148,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    if(typeof key!=='string'||!/^t(?:0|1|2|3|4|5|6|8)-l(?:0|[1-9]\d?)$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
    if(b.completed)await env.DB.prepare('INSERT INTO student_progress(user_id,lesson_key,completed_at) VALUES(?,?,?) ON CONFLICT(user_id,lesson_key) DO UPDATE SET completed_at=excluded.completed_at').bind(u.id,key,Date.now()).run();
    else await env.DB.prepare('DELETE FROM student_progress WHERE user_id=? AND lesson_key=?').bind(u.id,key).run();
+   await hubLog(env,u.id,u.username,b.completed?'lesson_completed':'lesson_unmarked',key);
    return json({ok:true});
   }
   return fail('Rota não encontrada.',404);
