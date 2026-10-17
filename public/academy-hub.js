@@ -40,7 +40,7 @@ function exportCSV(){
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='academia-velarian-relatorio.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 window.academiaHubTab=tab=>{active=hubTabs.includes(tab)?tab:'';if(active){$('adminHub').hidden=false;loadAdmin()}};
-document.querySelectorAll('[data-tab]').forEach(button=>{if(hubTabs.includes(button.dataset.tab))button.addEventListener('click',()=>window.academiaHubTab(button.dataset.tab))});
+// Admin tab navigation is handled centrally by app.js; do not attach a second click handler.
 async function studentLoad(){
  try{const [me,notices]=await Promise.all([request('/api/student/me'),request('/api/academy/notices')]);const logged=!!me.user;const notice=$('studentNotices');notice.hidden=!logged||!notices.items.length;const list=$('studentNoticeList');list.replaceChildren();for(const n of notices.items){const card=panel(n.title);card.append(el('p',n.body));list.append(card)}
   if(!logged)return;
