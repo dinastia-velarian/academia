@@ -480,3 +480,43 @@ body.admin-mode{background:#0d0e13}
 /* Garantir visibilidade e hierarquia dos valores do resumo */
 .admin-stat-grid article strong{display:block!important;visibility:visible!important;opacity:1!important;font-family:Georgia,serif;font-size:clamp(2.4rem,3vw,3.2rem);font-weight:700;line-height:1.15;color:#f9e6c5;margin:16px 0 7px}
 .admin-stat-grid article>span:not(.admin-stat-icon){display:block;font-size:.76rem;color:#a89a98}
+
+/* Student dashboard redesign */
+body.student-page-mode #studentArea{background:#0e0f14;color:#eee7dc;min-height:100vh;max-width:none;padding:35px clamp(18px,5vw,76px) 80px}
+.student-page-mode .student-area .section-heading{max-width:1240px;margin:0 auto 26px}
+.student-page-mode .student-area .section-heading h2{font-size:clamp(1.8rem,3vw,2.8rem);margin:6px 0}
+.student-page-mode .student-area .section-heading>p{color:#b7aca5}
+#studentDashboard{max-width:1240px;margin:auto}
+.student-dash-hero{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px;min-height:220px;padding:clamp(25px,4vw,45px);background:linear-gradient(115deg,#30231f,#191920 76%);border:1px solid #866448;border-radius:20px;overflow:hidden;margin-bottom:18px}
+.student-dash-hero>div{position:relative;z-index:1}
+.student-dash-kicker{font-size:.68rem;font-weight:800;letter-spacing:.17em;color:#ddb274}
+.student-dash-hero h3{font:700 clamp(1.8rem,3.1vw,2.9rem)/1.18 Georgia,serif;color:#fff1d9;margin:12px 0}
+.student-dash-hero p{color:#c5b8aa;margin:0 0 23px}
+.student-dash-hero img{width:170px;max-height:185px;object-fit:contain;filter:drop-shadow(0 8px 20px #0008);opacity:.85}
+.student-dash-hero button{background:#c89b60;color:#20140f;border:0;border-radius:10px;padding:12px 20px;font-weight:800;cursor:pointer}
+.student-dash-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:24px}
+.student-dash-stats>div{background:#1d1c23;border:1px solid #443b39;border-radius:15px;padding:23px}
+.student-dash-stats small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.12em;color:#c4aa88}
+.student-dash-stats strong{display:block;font:700 2.7rem Georgia,serif;color:#f6e4c5;margin-top:10px}
+.student-page-mode #studentStats{color:#c9bcb0;margin-bottom:12px}
+.student-page-mode .student-track{max-width:none;background:#2b2930;margin-bottom:28px}
+.student-page-mode #studentCourseList{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.student-page-mode .student-course{background:#1b1b22;border:1px solid #48403e;border-radius:16px;padding:23px;box-shadow:0 8px 25px #0002}
+.student-page-mode .student-course h3{font:700 1.25rem Georgia,serif;color:#f0d2a4;margin:0 0 6px}
+.student-course-progress{font-size:.81rem;color:#b4a9a1;margin:0 0 13px}
+.student-mini-track{height:6px;border-radius:20px;background:#333038;overflow:hidden;margin-bottom:15px}
+.student-mini-track div{height:100%;background:#cda164;border-radius:20px}
+.student-page-mode .student-lesson{align-items:center;gap:12px;border-bottom:1px solid #ffffff0b;padding:11px 0;margin:0}
+.student-page-mode .student-lesson:last-child{border:0}
+.student-lesson-link{border:0!important;background:transparent!important;color:#eee5db!important;font:inherit;text-align:left;cursor:pointer;padding:3px 0;flex:1;line-height:1.4}
+.student-lesson-link:hover{color:#e4b776!important;text-decoration:underline;text-underline-offset:4px}
+.student-lesson-link:focus-visible{outline:2px solid #e4b776;outline-offset:3px}
+.student-tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:25px}
+.student-tool-card{background:#1b1b22;border:1px solid #48403e;border-radius:16px;padding:25px;display:flex;flex-direction:column;gap:13px}
+.student-tool-card h3{font:700 1.4rem Georgia,serif;color:#eac48a;margin:0}
+.student-tool-card p{color:#bcb1a7;margin:0;font-size:.91rem}
+.student-tool-card textarea,.student-tool-card select{width:100%;background:#101117;color:#f6e8d8;border:1px solid #625145;border-radius:10px;padding:13px;font:inherit}
+.student-tool-card button{align-self:flex-start}
+.student-page-mode .student-password-settings{max-width:100%;margin-top:20px;background:#1b1b22}
+@media(max-width:800px){.student-page-mode #studentCourseList,.student-tools-grid{grid-template-columns:1fr}.student-dash-hero img{width:95px;opacity:.5}.student-dash-stats{gap:9px}.student-dash-stats>div{padding:15px}.student-dash-stats strong{font-size:2rem}}
+@media(max-width:480px){.student-dash-hero img{display:none}.student-dash-stats{grid-template-columns:1fr}.student-page-mode .student-course{padding:18px}}
