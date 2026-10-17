@@ -714,3 +714,12 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 #adminHub .hub-form label{display:grid;gap:7px;color:#e9c796;font-size:.88rem;font-weight:700}
 #adminHub .hub-form select{width:100%;background:#141419;color:#f4dfc0;border:1px solid #73583d;border-radius:10px;padding:13px;font:inherit}
 #adminHub .hub-card>p{color:#c7b8a9;line-height:1.7}
+
+/* Drag-free accessible ordering controls for topics and lessons */
+.academy-order-list{display:grid;gap:9px;margin:16px 0 20px}
+.academy-order-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 16px;border:1px solid #765638;border-radius:11px;background:linear-gradient(110deg,#251e1e,#151519);color:#f0d6ae}
+.academy-order-row strong{font-weight:650;line-height:1.45;overflow-wrap:anywhere}
+.academy-order-row>div{display:flex;gap:8px;flex-shrink:0}
+.academy-order-row button{min-width:42px;min-height:40px;padding:8px 12px!important;border-radius:8px}
+.academy-order-row button:disabled{opacity:.32;cursor:not-allowed}
+@media(max-width:600px){.academy-order-row{padding:11px 12px;gap:9px}.academy-order-row button{min-width:36px;padding:7px!important}}
