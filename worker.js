@@ -50,7 +50,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  // Contas opcionais de alunos: sessão separada do administrador.
  if(path.startsWith('/api/student/')){
   const cookie=req.headers.get('cookie')||'';
-  const sessionToken=cookie.match(/(?:^|;\\s*)av_student=([a-f0-9]{64})(?:;|$)/)?.[1];
+  const sessionToken=cookie.match(/(?:^|;\s*)av_student=([a-f0-9]{64})(?:;|$)/)?.[1];
   const studentCookie=(t,age)=>`av_student=${t}; Path=/api/student; HttpOnly; Secure; SameSite=Strict; Max-Age=${age}`;
   const student=async()=>sessionToken?env.DB.prepare("SELECT u.id,u.username FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.id_hash=? AND s.expires_at>? AND u.role='student'").bind(await sha(sessionToken),Date.now()).first():null;
   if(path==='/api/student/register'&&method==='POST'){
@@ -85,7 +85,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   }
   if(path==='/api/student/progress'&&method==='POST'){
    const b=await body(req),key=b?.lessonKey;
-   if(typeof key!=='string'||!/^t(?:0|1|2|3|4|5|6|8)-l(?:0|[1-9]\\d?)$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
+   if(typeof key!=='string'||!/^t(?:0|1|2|3|4|5|6|8)-l(?:0|[1-9]\d?)$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
    if(b.completed)await env.DB.prepare('INSERT INTO student_progress(user_id,lesson_key,completed_at) VALUES(?,?,?) ON CONFLICT(user_id,lesson_key) DO UPDATE SET completed_at=excluded.completed_at').bind(u.id,key,Date.now()).run();
    else await env.DB.prepare('DELETE FROM student_progress WHERE user_id=? AND lesson_key=?').bind(u.id,key).run();
    return json({ok:true});
