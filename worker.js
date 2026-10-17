@@ -111,7 +111,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
     const existing=await env.DB.prepare('SELECT id,status FROM academy_certificates WHERE user_id=?').bind(u.id).first();
     if(existing)return fail('Já existe uma solicitação de certificado: '+existing.status,409);
     const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM student_progress WHERE user_id=?').bind(u.id).first();
-    if(Number(count?.total||0)<1)return fail('Conclua as aulas antes de solicitar o certificado.');
+    if(Number(count?.total||0)<36)return fail('Conclua pelo menos 80% das 45 aulas para solicitar o certificado.');
     await env.DB.prepare('INSERT INTO academy_certificates(id,user_id,code,status,created_at,updated_at) VALUES(?,?,?,?,?,?)').bind(random(),u.id,'AV-'+token().slice(0,12).toUpperCase(),'pending',Date.now(),Date.now()).run();
    }else{
     const recent=await env.DB.prepare("SELECT created_at FROM academy_messages WHERE user_id=? AND kind='suggestion' ORDER BY created_at DESC LIMIT 1").bind(u.id).first();
@@ -193,11 +193,11 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
  if(path==='/api/admin/hub'&&method==='GET'){
   await ensureHub(env);
-  const messages=await env.DB.prepare("SELECT m.id,m.user_id AS userId,u.username,m.kind,m.body,m.status,m.reply,m.created_at AS createdAt FROM academy_messages m JOIN users u ON u.id=m.user_id ORDER BY m.created_at DESC LIMIT 200").all();
+  const messages=await env.DB.prepare("SELECT m.id,m.user_id AS userId,u.username,m.kind,m.body,m.status,m.reply,m.created_at AS createdAt FROM academy_messages m JOIN users u ON u.id=m.user_id ORDER BY m.created_at DESC LIMIT 200").all();const students=await env.DB.prepare("SELECT username,created_at AS createdAt FROM users WHERE role='student' ORDER BY created_at DESC LIMIT 500").all();
   const certs=await env.DB.prepare("SELECT c.id,c.user_id AS userId,u.username,c.code,c.status,c.created_at AS createdAt FROM academy_certificates c JOIN users u ON u.id=c.user_id ORDER BY c.created_at DESC LIMIT 200").all();
   const notices=await env.DB.prepare('SELECT id,title,body,active,created_at AS createdAt FROM academy_notices ORDER BY created_at DESC LIMIT 40').all();
   const events=await env.DB.prepare('SELECT actor,action,detail,created_at AS createdAt FROM academy_events ORDER BY created_at DESC LIMIT 100').all();
-  return json({messages:messages.results||[],certificates:certs.results||[],notices:notices.results||[],events:events.results||[]});
+  return json({messages:messages.results||[],certificates:certs.results||[],notices:notices.results||[],events:events.results||[],students:students.results||[]});
  }
  if(path==='/api/admin/hub-action'&&method==='POST'){
   const b=await body(req),kind=String(b?.kind||''),id=String(b?.id||'');
@@ -220,7 +220,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  if(path==='/api/admin/student-profile'&&method==='GET'){
   const id=String(url.searchParams.get('id')||'');const u=await env.DB.prepare("SELECT id,username,created_at AS createdAt FROM users WHERE id=? AND role='student'").bind(id).first();if(!u)return fail('Aluno não encontrado.',404);
   await ensureHub(env);
-  const comments=await env.DB.prepare('SELECT id,body,created_at AS createdAt FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(id).all();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();const comments=await env.DB.prepare('SELECT id,body,created_at AS createdAt FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(id).all();
   const events=await env.DB.prepare('SELECT action,detail,created_at AS createdAt FROM academy_events WHERE user_id=? ORDER BY created_at DESC LIMIT 40').bind(id).all();
   const certificate=await env.DB.prepare('SELECT code,status,created_at AS createdAt FROM academy_certificates WHERE user_id=?').bind(id).first();
   const activity=await env.DB.prepare('SELECT MAX(completed_at) AS lastLesson FROM student_progress WHERE user_id=?').bind(id).first();
