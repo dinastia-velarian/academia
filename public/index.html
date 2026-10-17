@@ -7,7 +7,7 @@
       <button type="button" data-tab="pages">✎ <span>Editar páginas</span></button>
       
       <button type="button" data-tab="topics">◈ <span>Tópicos</span></button>
-      <button type="button" data-tab="media">▧ <span>Biblioteca de imagens</span></button>
+      <button type="button" data-tab="media">▧ <span>Biblioteca de imagens</span></button><button type="button" data-tab="students">♙ <span>Alunos</span></button>
       <button type="button" data-tab="general">⚙ <span>Configurações</span></button>
     </div>
     <div class="admin-sidebar-foot"><a href="#inicio">← Voltar ao site público</a><button type="button" id="adminSignOut">Sair da conta</button></div>
@@ -16,11 +16,11 @@
     <div class="admin-topline"><span>PAINEL PRIVADO · VICTOR VELARIAN</span><a href="#inicio">Visualizar site ↗</a></div>
     <div class="admin-page-head"><div><div class="eyebrow">GESTÃO DA ACADEMIA</div><h1 id="adminPageTitle">Visão geral</h1><p id="adminPageDescription">Tudo o que você precisa para administrar a Academia, em um só lugar.</p></div></div>
     <div id="adminOverview" class="admin-section">
-      <div class="admin-stat-grid"><article><small>GUIAS</small><strong id="adminGuideCount">0</strong><span>Conteúdos cadastrados</span></article><article><small>TÓPICOS</small><strong id="adminTopicCount">0</strong><span>Conteúdos cadastrados</span></article><article><small>IMAGENS</small><strong id="adminMediaCount">0</strong><span>Na biblioteca</span></article></div>
+      <div class="admin-stat-grid"><article><small>GUIAS</small><strong id="adminGuideCount">0</strong><span>Conteúdos cadastrados</span></article><article><small>TÓPICOS</small><strong id="adminTopicCount">0</strong><span>Conteúdos cadastrados</span></article><article><small>IMAGENS</small><strong id="adminMediaCount">0</strong><span>Na biblioteca</span></article><article><small>ALUNOS</small><strong id="adminStudentCount">—</strong><span>Contas cadastradas</span></article></div>
       <div class="admin-welcome"><div><h2>O que deseja fazer hoje?</h2><p>Você não precisa mexer no código. Escolha uma ação e preencha os campos. Apenas conteúdos marcados como <strong>Publicado</strong> aparecem para os visitantes.</p></div><div class="admin-quick-actions"><button type="button" data-go="topics">+ Criar tópico</button><button type="button" data-go="media">Enviar imagem</button></div></div>
       <div class="admin-help"><h3>Como funciona a publicação?</h3><p><b>1.</b> Escreva o título e o conteúdo. <b>2.</b> Adicione uma imagem ou um vídeo, se quiser. <b>3.</b> Selecione “Publicado” e clique em salvar. Pronto: o material aparece no site.</p></div>
     </div>
-    <div id="adminPages" class="admin-section" hidden>
+    <div id="adminStudents" class="admin-section" hidden><div class="admin-info"><strong>Alunos cadastrados</strong><p>Veja nomes de jogadores, datas de cadastro e progresso nas aulas. Senhas nunca são exibidas.</p></div><div class="admin-student-tools"><label for="studentAdminSearch">Pesquisar aluno</label><input id="studentAdminSearch" type="search" placeholder="Digite o nome do jogador"><button type="button" id="studentAdminRefresh" class="secondary">Atualizar lista</button></div><p id="studentAdminStatus" role="status"></p><div id="studentAdminList" class="admin-student-list"></div></div><div id="adminPages" class="admin-section" hidden>
   <div class="admin-info"><strong>Edite cada parte do site público</strong><p>Escolha a página, altere os textos ou imagens e visualize antes de publicar. Os campos já vêm preenchidos com o conteúdo atual.</p></div>
   <div class="page-editor-nav" id="pageEditorNav" aria-label="Escolher página"></div>
   <form id="pageEditorForm" class="admin-form">
