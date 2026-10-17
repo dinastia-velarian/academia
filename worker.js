@@ -132,6 +132,27 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  if(path==='/api/lessons'&&method==='GET'){const rows=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'lesson:%' OR key LIKE 'lesson_v2:%' OR key LIKE 'lesson_v3:%' OR key LIKE 'lesson_v4:%' OR key LIKE 'lesson_v5:%' OR key LIKE 'lesson_v6:%' OR key LIKE 'lesson_v7:%' OR key LIKE 'lesson_v8:%' OR key LIKE 'lesson_v9:%' OR key LIKE 'lesson_v10:%' OR key LIKE 'lesson_v11:%' OR key LIKE 'lesson_v12:%' OR key LIKE 'lesson_v13:%'").all();const items=new Map();for(const x of rows.results||[]){try{const v=JSON.parse(x.value);const old=x.key.startsWith('lesson:');if(old&&(v.topic===0||v.topic===1||v.topic===3))continue;if((x.key.startsWith('lesson_v2:')||x.key.startsWith('lesson_v3:'))&&v.topic===2)continue;if(x.key.startsWith('lesson_v9:')&&v.topic===5)continue;if(x.key.startsWith('lesson_v2:')&&(v.topic===1||v.topic===0||v.topic===3||v.topic===4||v.topic===5||v.topic===6||v.topic===7||v.topic===8))continue;const topic=old?v.topic+1:v.topic;items.set(topic+':'+v.index,{...v,topic})}catch{}}return json({items:[...items.values()]})}
  if(path==='/api/catalog'&&method==='GET'){const rows=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'catalog:%'").all();return json({items:rows.results||[]})}
  if(path==='/api/public'&&method==='GET'){const s=await env.DB.prepare('SELECT key,value FROM settings').all();const c=await env.DB.prepare("SELECT id,kind,title,summary,body,video_url AS videoUrl,image_url AS imageUrl FROM content WHERE status='published' ORDER BY updated_at DESC").all();return json({settings:Object.fromEntries((s.results||[]).filter(x=>!x.key.includes(':')).map(x=>[x.key,x.value])),content:(c.results||[]).map(x=>{const m=(s.results||[]).find(z=>z.key==='content_meta:'+x.id);let meta={};try{meta=JSON.parse(m?.value||'{}')}catch{}return {...x,...meta}})})}
+ if(path==='/api/comments'&&method==='GET'){
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS site_comments (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,body TEXT NOT NULL,created_at INTEGER NOT NULL)").run();
+  const rows=await env.DB.prepare("SELECT c.id,c.body,c.created_at AS createdAt,u.username FROM site_comments c JOIN users u ON u.id=c.user_id ORDER BY c.created_at DESC LIMIT 100").all();
+  const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM site_comments').first();
+  return json({items:rows.results||[],total:Number(count?.total||0)});
+ }
+ if(path==='/api/comments'&&method==='POST'){
+  const b=await body(req),comment=String(b?.body||'').trim();
+  if(comment.length<3||comment.length>1000)return fail('Escreva um comentário de 3 a 1.000 caracteres.');
+  const user=await current(req,env);
+  let author=user;
+  if(!author){
+   const cookie=req.headers.get('cookie')||'',t=cookie.match(/(?:^|;\s*)av_student=([a-f0-9]{64})(?:;|$)/)?.[1];
+   if(t){await ensureStudentBlocks(env);author=await env.DB.prepare("SELECT u.id,u.username,u.role FROM sessions s JOIN users u ON u.id=s.user_id LEFT JOIN student_blocks b ON b.user_id=u.id WHERE s.id_hash=? AND s.expires_at>? AND b.user_id IS NULL").bind(await sha(t),Date.now()).first()}
+  }
+  if(!author)return fail('Entre na sua conta para comentar.',401);
+  const recent=await env.DB.prepare('SELECT created_at FROM site_comments WHERE user_id=? ORDER BY created_at DESC LIMIT 1').bind(author.id).first().catch(()=>null);
+  if(recent&&Date.now()-recent.created_at<60000)return fail('Aguarde um minuto antes de comentar novamente.',429);
+  await env.DB.prepare('INSERT INTO site_comments(id,user_id,body,created_at) VALUES(?,?,?,?)').bind(random(),author.id,comment,Date.now()).run();
+  return json({ok:true},201);
+ }
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
  if(path==='/api/admin/statistics'&&method==='GET'){
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();
@@ -157,6 +178,12 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   const p=await env.DB.prepare('SELECT lesson_key AS lessonKey,completed_at AS completedAt FROM student_progress WHERE user_id=? ORDER BY completed_at DESC').bind(id).all();
   return json({student:u,progress:p.results||[]});
  }
+ if(path==='/api/admin/comment-delete'&&method==='POST'){
+  const b=await body(req),id=String(b?.id||'');
+  if(!b||b.confirm!==true||!/^[a-f0-9-]{36}$/.test(id))return fail('Confirme a exclusão do comentário.');
+  const result=await env.DB.prepare('DELETE FROM site_comments WHERE id=?').bind(id).run();
+  return json({ok:true,deleted:result.meta?.changes||0});
+ }
  if(path==='/api/admin/student-block'&&method==='POST'){
   const b=await body(req),id=String(b?.id||'');
   if(!b||b.confirm!==true||typeof b.blocked!=='boolean')return fail('Confirme a alteração de acesso.');
@@ -175,7 +202,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   if(b.username!==u.username)return fail('Nome de confirmação incorreto.');
   await env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(id).run();
   await env.DB.prepare('DELETE FROM student_progress WHERE user_id=?').bind(id).run();
-  const tables=await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('student_notes','student_suggestions','student_blocks')").all();
+  const tables=await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('student_notes','student_suggestions','student_blocks','site_comments')").all();
   for(const table of tables.results||[])await env.DB.prepare('DELETE FROM '+table.name+' WHERE user_id=?').bind(id).run();
   await env.DB.prepare("DELETE FROM users WHERE id=? AND role='student'").bind(id).run();
   return json({ok:true,username:u.username});
