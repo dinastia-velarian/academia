@@ -27,7 +27,7 @@ async function loadAdmin(){
   }
   if(active==='history'){const box=panel('Últimas 100 ações registradas');for(const x of data.events)line(box,x.actor+' · '+x.action,x.detail+' · '+date(x.createdAt));if(!data.events.length)box.append(el('p','Ainda não há atividades registradas. Novos acessos, conclusões de aulas, sugestões e ações administrativas serão exibidos aqui.'));root.append(box)}
   if(active==='reports'){
-   const box=panel('Exportar dados');box.append(el('p','Exporte alunos, solicitações, certificados e ações em CSV.'));box.append(btn('Exportar relatório CSV',exportCSV));root.append(box);
+   const stats=panel('Indicadores da Academia');const values=[['Alunos cadastrados',(data.students||[]).length],['Sugestões recebidas',data.messages.filter(x=>x.kind==='suggestion').length],['Certificados solicitados',data.certificates.length],['Certificados aprovados',data.certificates.filter(x=>x.status==='approved').length],['Avisos publicados',data.notices.length],['Atividades recentes',data.events.length]];const grid=el('div',undefined,'hub-metrics');for(const [name,value] of values){const item=el('div',undefined,'hub-metric');item.append(el('strong',String(value)),el('span',name));grid.append(item)}stats.append(grid);root.append(stats);const box=panel('Exportar dados');box.append(el('p','Baixe um arquivo CSV com alunos, sugestões, certificados e eventos registrados.'));box.append(btn('Exportar relatório CSV',exportCSV));root.append(box);
   }
   if(active==='trade'){
    const box=panel('Gestão da loja');box.append(el('p','Os preços e a disponibilidade da loja são editados em Configurações.'));box.append(btn('Abrir configurações da Trade',()=>document.querySelector('[data-tab="general"]')?.click()));root.append(box);
