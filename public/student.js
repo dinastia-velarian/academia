@@ -10,6 +10,9 @@ function safeText(el,value){el.textContent=value}
 async function refresh(){try{const me=await api('me');user=me.user;completed=new Set();if(user){const p=await api('progress');completed=new Set((p.items||[]).map(x=>x.lesson_key))}}catch(e){message('Não foi possível carregar sua conta: '+e.message)}render()}
 function visibleCourses(){const available=typeof courses!=='undefined'?courses:window.courses;return Array.isArray(available)?available.map((c,i)=>({c,i})).filter(x=>x.i!==7):[]}
 function total(){return visibleCourses().reduce((n,x)=>n+x.c.lessons.length,0)}
+const tradeDefaults={tradeEnabled:'1',tradePremium1:'18M',tradePremium6:'70M',tradeDiamonds1k:'30M',tradeDiamonds5k:'70M',tradeDiamonds15k:'160M',tradeDiamonds50k:'425M',tradeTelegram:'https://t.me/victoremc'};
+async function refreshTrade(){let settings={};try{const r=await fetch('/api/public');if(r.ok)settings=(await r.json()).settings||{}}catch{}const v=k=>settings[k]??tradeDefaults[k];const panel=$('studentTrade');panel.hidden=v('tradeEnabled')==='0';const items=[['Premium · 1 mês','tradePremium1'],['Premium · 6 meses','tradePremium6'],['1.000 diamantes','tradeDiamonds1k'],['5.000 diamantes','tradeDiamonds5k'],['15.000 diamantes','tradeDiamonds15k'],['50.000 diamantes','tradeDiamonds50k']];const root=$('studentTradeProducts');root.replaceChildren();for(const [label,key] of items){const item=document.createElement('div');item.className='student-trade-product';const name=document.createElement('span');name.textContent=label;const price=document.createElement('strong');price.textContent=v(key)||'Consulte';item.append(name,price);root.append(item)}const url=v('tradeTelegram');$('studentTradeContact').href=/^https:\/\//.test(url)?url:tradeDefaults.tradeTelegram}
+
 function render(){ $('studentAuth').hidden=!!user;$('studentDashboard').hidden=!user;$('studentLogout').hidden=!user;if(!user)return;
 safeText($('studentWelcome'),'Bem-vindo(a), '+user.username);
 const count=visibleCourses().reduce((n,{c,i})=>n+c.lessons.filter((_,j)=>completed.has('t'+i+'-l'+j)).length,0);
@@ -27,5 +30,5 @@ $('studentChangePassword').addEventListener('submit',async e=>{e.preventDefault(
 $('studentCertificateRequest').addEventListener('click',e=>{if($('studentCertificateRequest').getAttribute('aria-disabled')==='true'){e.preventDefault();message('Conclua pelo menos 80% das aulas para solicitar o certificado.')}});
 $('studentSendSuggestion').addEventListener('click',()=>{const msg=$('studentSuggestion').value.trim();if(msg.length<10){message('Escreva pelo menos 10 caracteres.');return}navigator.clipboard?.writeText(msg);window.open('https://t.me/victoremc','_blank','noopener')});
 $('studentLogout').addEventListener('click',async()=>{try{await api('logout','POST');message('Você saiu da sua conta.');await refresh()}catch(e){message(e.message)}});
-refresh();
+refresh();refreshTrade();
 })();
