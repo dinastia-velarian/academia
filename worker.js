@@ -87,6 +87,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    try{await env.DB.prepare("INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES(?,?,?,?,?,?,'student')").bind(id,name,usernameKey(name),hash,salt,iter).run()}
    catch(e){if(/UNIQUE|CONSTRAINT/i.test(String(e)))return fail('Nome de jogador já cadastrado.',409);throw e}
    const session=await makeSession(env,{id,username:name,role:'student'});
+   await recordLastLogin(env,{id,role:'student'});
    return json({user:session.user},201,{'set-cookie':studentCookie(session.t,7*86400)});
   }
   if(path==='/api/student/login'&&method==='POST'){
@@ -98,7 +99,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    if(await env.DB.prepare('SELECT user_id FROM student_blocks WHERE user_id=?').bind(u.id).first())return fail('Seu cadastro está bloqueado. Entre em contato com a administração.',403);
    const session=await makeSession(env,u);await recordLastLogin(env,u);await hubLog(env,u.id,u.username,'login','Acesso ao painel do aluno');return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
   }
-  if(path==='/api/student/me'&&method==='GET')return json({user:await student()});
+  if(path==='/api/student/me'&&method==='GET'){const me=await student();if(me)await recordLastLogin(env,{id:me.id,role:'student'});return json({user:me})}
   if(path==='/api/student/certificate-image'&&method==='GET'){const me=await student();if(!me)return fail('Acesso não autorizado.',401);await ensureHub(env);await ensureCertificateImages(env);const cert=await env.DB.prepare("SELECT status FROM academy_certificates WHERE user_id=?").bind(me.id).first();if(cert?.status!=='approved')return fail('Certificado ainda não aprovado.',403);const img=await env.DB.prepare('SELECT mime,data FROM academy_certificate_images WHERE user_id=?').bind(me.id).first();if(!img)return fail('Imagem do certificado ainda não enviada.',404);return new Response(img.data,{headers:{'content-type':img.mime,'cache-control':'private, no-store','content-disposition':'inline; filename="certificado-velarian.png"','x-content-type-options':'nosniff'}})}
   if(path==='/api/student/logout'&&method==='POST'){
    if(sessionToken)await env.DB.prepare('DELETE FROM sessions WHERE id_hash=?').bind(await sha(sessionToken)).run();
