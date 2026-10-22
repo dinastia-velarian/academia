@@ -8,7 +8,7 @@ async function adminPermissions(env,u){
 }
 function permissionFor(path,method){
  if(path==='/api/admin/administrators'||path.startsWith('/api/admin/administrators/'))return null;
- if(path.includes('certificate')||path==='/api/admin/hub-action'&&method==='POST')return 'certificates';
+ if(path.includes('certificate'))return 'certificates';
  if(path.includes('student'))return 'students';
  if(path.includes('comment'))return 'comments';
  if(path.includes('statistics')||path.includes('history')||path.includes('backup'))return 'reports';
@@ -218,6 +218,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  }
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
  const permissions=await adminPermissions(env,user);
+ if(path==='/api/admin/hub-action'&&method==='POST'){const action=await body(req.clone());const actionPermission=action?.kind==='certificate'?'certificates':action?.kind?.startsWith('notice')?'notices':action?.kind==='suggestion'?'suggestions':null;if(actionPermission&&!permissions[actionPermission])return fail('Sua conta não possui permissão para esta operação.',403)}
  const requiredPermission=permissionFor(path,method);
  if(requiredPermission&&!permissions[requiredPermission])return fail('Sua conta não possui permissão para esta operação.',403);
 
