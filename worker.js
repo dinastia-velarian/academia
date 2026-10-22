@@ -1,3 +1,22 @@
+const ADMIN_PERMISSION_KEYS=['content','students','certificates','comments','notices','suggestions','reports','settings','media'];
+const adminOwner=u=>usernameKey(u?.username)==='victor velarian';
+async function adminPermissions(env,u){
+ if(adminOwner(u))return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,true]));
+ const row=await env.DB.prepare('SELECT value FROM settings WHERE key=?').bind('admin_permissions:'+u.id).first();
+ if(!row)return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,true]));
+ try{const saved=JSON.parse(row.value);return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,saved[k]===true]))}catch{return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,false]))}
+}
+function permissionFor(path,method){
+ if(path==='/api/admin/administrators'||path.startsWith('/api/admin/administrators/'))return null;
+ if(path.includes('certificate')||path==='/api/admin/hub-action'&&method==='POST')return 'certificates';
+ if(path.includes('student'))return 'students';
+ if(path.includes('comment'))return 'comments';
+ if(path.includes('statistics')||path.includes('history')||path.includes('backup'))return 'reports';
+ if(path.includes('media'))return 'media';
+ if(path.includes('settings'))return 'settings';
+ if(path.includes('topic')||path.includes('lesson')||path.includes('catalog')||path.includes('content'))return 'content';
+ return null;
+}
 const enc=new TextEncoder();
 const json=(x,status=200,extra={})=>new Response(JSON.stringify(x),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff',...extra}});
 const fail=(msg,status=400)=>json({error:msg},status);
@@ -198,8 +217,13 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   return json({ok:true},201);
  }
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
- if(path==='/api/admin/administrators'&&method==='GET'){const rows=await env.DB.prepare("SELECT id,username FROM users WHERE role='admin' ORDER BY username").all();return json({items:rows.results||[]})}
+ const permissions=await adminPermissions(env,user);
+ const requiredPermission=permissionFor(path,method);
+ if(requiredPermission&&!permissions[requiredPermission])return fail('Sua conta não possui permissão para esta operação.',403);
+
+ if(path==='/api/admin/administrators'&&method==='GET'){if(!adminOwner(user))return fail('Acesso exclusivo do administrador principal.',403);const rows=await env.DB.prepare("SELECT id,username FROM users WHERE role='admin' ORDER BY username").all();const items=await Promise.all((rows.results||[]).map(async u=>({...u,permissions:await adminPermissions(env,u),owner:adminOwner(u)})));return json({items,permissionKeys:ADMIN_PERMISSION_KEYS})}
  if(path==='/api/admin/administrators'&&method==='POST'){if(usernameKey(user.username)!==usernameKey('Victor Velarian'))return fail('Somente o administrador principal pode gerenciar administradores.',403);const b=await body(req);const name=normalize(b?.username),password=b?.password;if(!validName(name)||typeof password!=='string'||password.length<6||password.length>128)return fail('Informe nome válido e senha de 6 a 128 caracteres.');if(await env.DB.prepare('SELECT id FROM users WHERE username_key=?').bind(usernameKey(name)).first())return fail('Nome de usuário já cadastrado.',409);const salt=token(),hash=await derive(password,salt);try{await env.DB.prepare("INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES(?,?,?,?,?,?,'admin')").bind(random(),name,usernameKey(name),hash,salt,iter).run()}catch(e){if(/UNIQUE|CONSTRAINT/i.test(String(e.message)))return fail('Nome já cadastrado.',409);throw e}await hubLog(env,user.id,user.username,'admin_created',name);return json({ok:true},201)}
+ if(path.startsWith('/api/admin/administrators/')&&method==='PUT'){if(!adminOwner(user))return fail('Acesso exclusivo do administrador principal.',403);const id=path.split('/').pop();const target=await env.DB.prepare("SELECT id,username FROM users WHERE id=? AND role='admin'").bind(id).first();if(!target)return fail('Administrador não encontrado.',404);if(adminOwner(target))return fail('Não é permitido restringir o administrador principal.',403);const b=await body(req);if(!b||typeof b.permissions!=='object'||!b.permissions||Array.isArray(b.permissions)||Object.keys(b.permissions).some(k=>!ADMIN_PERMISSION_KEYS.includes(k))||ADMIN_PERMISSION_KEYS.some(k=>typeof b.permissions[k]!=='boolean'))return fail('Permissões inválidas.',400);await env.DB.prepare('INSERT INTO settings(key,value) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value').bind('admin_permissions:'+id,JSON.stringify(b.permissions)).run();await hubLog(env,user.id,user.username,'admin_permissions_updated',target.username);return json({ok:true,permissions:b.permissions})}
  if(path.startsWith('/api/admin/administrators/')&&method==='DELETE'){if(usernameKey(user.username)!==usernameKey('Victor Velarian'))return fail('Somente o administrador principal pode gerenciar administradores.',403);const id=path.split('/').pop();if(!/^[a-f0-9-]{36}$/.test(id))return fail('Identificador inválido.');const target=await env.DB.prepare("SELECT username FROM users WHERE id=? AND role='admin'").bind(id).first();if(!target)return fail('Administrador não encontrado.',404);if(usernameKey(target.username)===usernameKey('Victor Velarian')||id===user.id)return fail('Não é permitido remover o administrador principal.',403);await env.DB.batch([env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(id),env.DB.prepare("DELETE FROM users WHERE id=? AND role='admin'").bind(id)]);await hubLog(env,user.id,user.username,'admin_removed',target.username);return json({ok:true})}
  if(path==='/api/admin/certificate-template'&&method==='GET'){await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_certificate_template (id INTEGER PRIMARY KEY CHECK(id=1), mime TEXT NOT NULL, data BLOB NOT NULL, filename TEXT NOT NULL, updated_at INTEGER NOT NULL)").run();const item=await env.DB.prepare('SELECT filename,updated_at FROM academy_certificate_template WHERE id=1').first();return json({template:item||null})}
  if(path==='/api/admin/certificate-template'&&method==='POST'){const form=await req.formData(),file=form.get('file');if(!(file instanceof File)||file.type!=='application/pdf'||file.size<1||file.size>5*1024*1024)return fail('Selecione um PDF de até 5 MB.');const bytes=await file.arrayBuffer();if(new TextDecoder().decode(bytes.slice(0,5))!=='%PDF-')return fail('O arquivo não parece ser um PDF válido.');await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_certificate_template (id INTEGER PRIMARY KEY CHECK(id=1), mime TEXT NOT NULL, data BLOB NOT NULL, filename TEXT NOT NULL, updated_at INTEGER NOT NULL)").run();await env.DB.prepare('INSERT INTO academy_certificate_template(id,mime,data,filename,updated_at) VALUES(1,?,?,?,?) ON CONFLICT(id) DO UPDATE SET mime=excluded.mime,data=excluded.data,filename=excluded.filename,updated_at=excluded.updated_at').bind('application/pdf',bytes,String(file.name).slice(0,120),Date.now()).run();return json({ok:true})}
