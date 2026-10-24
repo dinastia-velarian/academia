@@ -391,6 +391,54 @@
       "body": "FUNÇÃO\nAdministrar a carreira acadêmica dos jogadores.\n\nFERRAMENTAS OFICIAIS\n• Aprovar solicitações de ingresso na carreira acadêmica.\n• Rejeitar solicitações de ingresso.\n• Retirar jogadores da carreira acadêmica.\n\nATUAÇÃO RECOMENDADA\n• Orientar novos acadêmicos e incentivar a evolução de habilidades.\n• Promover materiais de estudo e iniciativas de capacitação.\n• Apoiar projetos educacionais abertos à comunidade.\n\nATENÇÃO\nIncentivar aulas e projetos, como a Academia Velarian, é uma iniciativa de gestão; não é uma ferramenta automática do cargo.",
       "videoUrl": "",
       "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 0,
+      "title": "Introdução aos cargos",
+      "body": "O QUE SÃO CARGOS?\nNo Diplomacia, os cargos permitem que jogadores participem da administração de países, províncias e partidos. Cada função tem ferramentas e limites próprios dentro do jogo.\n\nCOMO ESTUDAR OS CARGOS\n• Identifique as permissões exibidas na interface de cada cargo.\n• Diferencie poderes do sistema, decisões políticas e atividades de roleplay (RP).\n• Entenda quem pode nomear, remover ou autorizar determinadas ações.\n\nBOAS PRÁTICAS\n• Antes de assumir uma função, conheça as ferramentas disponíveis.\n• Registre decisões relevantes e mantenha diálogo com a equipe.\n• Evite prometer ações que o cargo não permite executar.\n\nEXEMPLO\nUm ministro pode ter ferramentas específicas, enquanto um partido pode combinar responsabilidades adicionais por acordo político. Essas responsabilidades não ampliam automaticamente suas permissões no jogo.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 1,
+      "title": "Presidente da República",
+      "body": "FUNÇÃO\nO presidente representa a liderança do governo nacional e coordena a atuação política e administrativa do país.\n\nNA PRÁTICA\n• Acompanhe as decisões de governo e os projetos nacionais.\n• Coordene a atuação dos ministérios e o diálogo com os governadores.\n• Consulte as permissões disponíveis na interface presidencial antes de realizar ações oficiais.\n\nRESPONSABILIDADES RECOMENDADAS\n• Definir prioridades para o mandato.\n• Dialogar com partidos, Parlamento e autoridades provinciais.\n• Acompanhar orçamento, relações exteriores e defesa.\n• Publicar orientações claras à população.\n\nEXEMPLO\nAntes de anunciar um programa de investimentos, verifique quais recursos estão disponíveis, quem possui a ferramenta para transferi-los e quais aprovações são necessárias.\n\nATENÇÃO\nEsta aula apresenta a atuação administrativa do cargo. As permissões exatas do presidente devem ser conferidas no jogo; não presuma que ele execute diretamente todas as ações dos ministros.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 2,
+      "title": "Governador",
+      "body": "FUNÇÃO\nO governador atua na administração de uma província e no acompanhamento de suas necessidades.\n\nNA PRÁTICA\n• Observe o Tesouro provincial e as necessidades locais.\n• Verifique as ferramentas de gestão disponíveis ao governador na interface do jogo.\n• Mantenha contato com o governo nacional e com os jogadores da província.\n\nRESPONSABILIDADES RECOMENDADAS\n• Planejar investimentos e prioridades provinciais.\n• Acompanhar custos de manutenção e disponibilidade de recursos.\n• Solicitar apoio quando o orçamento provincial não for suficiente.\n• Prestar contas das ações realizadas.\n\nEXEMPLO\nSe uma construção for planejada pelo Ministério das Obras Públicas, seu custo será retirado do Tesouro da província onde a obra ocorrerá. Por isso, é recomendável alinhar previamente a obra com o governador.\n\nATENÇÃO\nO Ministério do Interior pode nomear e remover governadores. Isso não significa que o governador possua todas as ferramentas dos ministérios.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 3,
+      "title": "Parlamentar",
+      "body": "FUNÇÃO\nO parlamentar participa da vida legislativa e das decisões políticas do país.\n\nNA PRÁTICA\n• Acompanhe propostas e votações apresentadas na interface parlamentar.\n• Leia o conteúdo e os efeitos de cada projeto antes de votar.\n• Observe os procedimentos e limites previstos pelo sistema.\n\nRESPONSABILIDADES RECOMENDADAS\n• Debater propostas com clareza e respeito.\n• Avaliar impactos políticos, econômicos e administrativos.\n• Dialogar com eleitores, partidos e governo.\n• Explicar os motivos de seus votos.\n\nEXEMPLO\nAo analisar um projeto fiscal, procure entender a alíquota proposta, os efeitos esperados e a relação com a arrecadação pública.\n\nATENÇÃO\nVotar e debater projetos não é o mesmo que executar diretamente as ferramentas de um ministério. As modalidades específicas de proposição e votação devem ser conferidas na interface do jogo.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 11,
+      "title": "Liderança partidária",
+      "body": "FUNÇÃO\nA liderança partidária organiza os membros do partido e coordena sua atuação política dentro do Diplomacia.\n\nNA PRÁTICA\n• Consulte as ferramentas disponíveis para o cargo partidário que você ocupa.\n• Organize a comunicação e as decisões internas.\n• Defina objetivos políticos e acompanhe a participação dos membros.\n\nRESPONSABILIDADES RECOMENDADAS\n• Estabelecer critérios transparentes para cargos e promoções.\n• Preparar novos integrantes para funções públicas.\n• Planejar candidaturas, alianças e projetos coletivos.\n• Administrar conflitos internos com regras claras.\n\nEXEMPLO\nUm partido pode designar uma equipe para apoiar a manutenção e os investimentos de uma província. Trata-se de um modelo de organização política; ele não altera automaticamente os poderes oficiais do governador.\n\nATENÇÃO\nAs atribuições dependem do cargo partidário e das ferramentas disponíveis. Regras internas de um partido não substituem as regras do jogo.",
+      "videoUrl": "",
+      "imageUrl": ""
+    },
+    {
+      "topic": 5,
+      "index": 12,
+      "title": "Administração pública na prática",
+      "body": "OBJETIVO\nAprender a organizar a atuação de um governo, integrando Presidência, governadores, Parlamento e ministérios.\n\nROTINA RECOMENDADA\n1. Levante os recursos disponíveis nos tesouros nacional e provinciais.\n2. Identifique despesas de manutenção e prioridades.\n3. Defina responsáveis por cada ação conforme as permissões oficiais.\n4. Registre decisões, repasses, construções e resultados.\n5. Reavalie o plano periodicamente.\n\nEXEMPLO PRÁTICO\nUma província precisa de uma obra. O governador informa a necessidade e verifica os recursos provinciais. O Ministério das Obras Públicas pode executar a construção, cujo custo sai do Tesouro da própria província. Se for necessário apoio financeiro, o Ministério da Economia pode realizar transferências do Tesouro Nacional.\n\nBOAS PRÁTICAS\n• Não confunda recursos nacionais com provinciais.\n• Preserve reservas para manutenção.\n• Mantenha comunicação entre governo, Parlamento e partidos.\n• Separe decisões administrativas, permissões do jogo e ações de RP.\n\nATENÇÃO\nEste é um modelo de organização e aprendizado, não um conjunto de obrigações automáticas impostas pelo Diplomacia.",
+      "videoUrl": "",
+      "imageUrl": ""
     }
   ]
 }
