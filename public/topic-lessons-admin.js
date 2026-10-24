@@ -21,14 +21,15 @@ courses.forEach((c,i)=>{const opt=document.createElement('option');opt.value=i;o
 function fillTopic(){const c=courses[Number(topicSelect.value)];topicTitle.value=c.title;topicDesc.value=c.desc;topicLevel.value=c.level;topicIcon.value=c.icon;topicVideo.value=topicVideos[Number(topicSelect.value)]||''}
 topicSelect.onchange=fillTopic;fillTopic();
 topicForm.onsubmit=async e=>{e.preventDefault();topicSave.disabled=true;try{const index=Number(topicSelect.value);await api('/api/admin/topic','POST',{index,title:topicTitle.value,desc:topicDesc.value,level:topicLevel.value,icon:topicIcon.value});await api('/api/admin/topic-video','POST',{topic:index,videoUrl:topicVideo.value.trim()});topicVideos[index]=topicVideo.value.trim();Object.assign(courses[index],{title:topicTitle.value,desc:topicDesc.value,level:topicLevel.value,icon:topicIcon.value});const topicOption=[...topicSelect.options].find(o=>o.value===String(index));if(topicOption)topicOption.textContent=topicTitle.value;const lessonOption=[...topic.options].find(o=>o.value===String(index));if(lessonOption)lessonOption.textContent=topicTitle.value;render();topicStatus.textContent='Tópico atualizado com sucesso.'}catch(err){topicStatus.textContent=err.message}finally{topicSave.disabled=false}};
-const reorderTopics=document.createElement('section');reorderTopics.className='admin-form-card original-lessons-admin';const reorderTitle=document.createElement('h3');reorderTitle.textContent='Reordenar tópicos';const reorderHelp=document.createElement('p');reorderHelp.textContent='Use as setas para definir a sequência dos tópicos na página principal. A ordem é salva para todos os visitantes.';const topicOrderList=document.createElement('div');topicOrderList.className='academy-order-list';const topicOrderStatus=document.createElement('p');topicOrderStatus.setAttribute('role','status');let displayOrder=[0,1,2,4,5,8];function syncTopicSelectors(){
- for(const select of [topicSelect,topic]){
+const reorderTopics=document.createElement('section');reorderTopics.className='admin-form-card original-lessons-admin';const reorderTitle=document.createElement('h3');reorderTitle.textContent='Reordenar tópicos';const reorderHelp=document.createElement('p');reorderHelp.textContent='Use as setas para definir a sequência dos tópicos na página principal. A ordem é salva para todos os visitantes.';const topicOrderList=document.createElement('div');topicOrderList.className='academy-order-list';const topicOrderStatus=document.createElement('p');topicOrderStatus.setAttribute('role','status');let displayOrder=[0,1,2,4,5,8];let lessonTopicSelect=null;
+function syncTopicSelectors(){
+ for(const select of [topicSelect,lessonTopicSelect].filter(Boolean)){
   const previous=select.value;
   select.replaceChildren();
   for(const i of displayOrder){const option=document.createElement('option');option.value=i;option.textContent=courses[i].title;select.append(option)}
   if(displayOrder.includes(Number(previous)))select.value=previous;
  }
- if(displayOrder.length){fillTopic();if(typeof fillLessons==='function')fillLessons()}
+ if(displayOrder.length){fillTopic();if(lessonTopicSelect&&typeof fillLessons==='function')fillLessons()}
 }
 function renderTopicOrder(){syncTopicSelectors();topicOrderList.replaceChildren();displayOrder.forEach((index,pos)=>{const row=document.createElement('div');row.className='academy-order-row';const label=document.createElement('strong');label.textContent=(pos+1)+'. '+courses[index].title;const controls=document.createElement('div');for(const [symbol,delta] of [['↑',-1],['↓',1]]){const button=document.createElement('button');button.type='button';button.className='secondary';button.textContent=symbol;button.title=delta<0?'Subir tópico':'Descer tópico';button.disabled=pos+delta<0||pos+delta>=displayOrder.length;button.onclick=async()=>{const next=[...displayOrder];[next[pos],next[pos+delta]]=[next[pos+delta],next[pos]];button.disabled=true;try{await api('/api/admin/topic-order','POST',{order:next});displayOrder=next;renderTopicOrder();topicOrderStatus.textContent='Ordem dos tópicos salva e publicada.'}catch(e){topicOrderStatus.textContent=e.message;renderTopicOrder()}};controls.append(button)}
  const remove=document.createElement('button');remove.type='button';remove.className='secondary';remove.textContent='×';remove.title='Remover tópico da página inicial';remove.setAttribute('aria-label','Remover '+courses[index].title);
@@ -46,7 +47,7 @@ const explanation=document.createElement('p');explanation.textContent='Edite os 
 const form=document.createElement('form');form.className='admin-form';
 function field(label,element){const wrapper=document.createElement('label');wrapper.append(document.createTextNode(label),element);form.append(wrapper);return element}
 function select(){return document.createElement('select')}
-const topic=field('Tópico existente',select()),lesson=field('Subtópico',select());
+const topic=field('Tópico existente',select()),lesson=field('Subtópico',select());lessonTopicSelect=topic;
 const title=field('Nome do subtópico (você pode alterar)',document.createElement('input'));title.required=true;
 const body=field('Texto completo da aula',document.createElement('textarea'));body.rows=12;
 const video=field('Vídeo desta aula (opcional, diferente do vídeo geral do tópico)',document.createElement('input'));video.type='url';video.placeholder='https://www.youtube.com/watch?v=...';
@@ -55,7 +56,7 @@ const pick=document.createElement('button');pick.type='button';pick.className='s
 const save=document.createElement('button');save.type='submit';save.className='primary';save.textContent='Salvar aula neste subtópico';form.append(save);
 const status=document.createElement('p');status.setAttribute('role','status');form.append(status);
 section.append(heading,explanation,form);topicSection.insertAdjacentElement('afterend',section);
-courses.forEach((c,i)=>{const option=document.createElement('option');option.value=i;option.textContent=c.title;topic.append(option)});
+displayOrder.forEach(i=>{const option=document.createElement('option');option.value=i;option.textContent=courses[i].title;topic.append(option)});
 let orders={};
 const manage=document.createElement('div');manage.className='admin-form-card';
 const manageHeading=document.createElement('h4');manageHeading.textContent='Gerenciar subtópicos';
