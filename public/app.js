@@ -96,7 +96,44 @@ $('newContent').addEventListener('click',clearContent);
 function listContent(){const root=$('adminContentList');root.replaceChildren();for(const item of adminData.content.filter(x=>x.kind===currentKind)){const row=make('div','admin-list-item');row.append(make('strong','',item.title),make('small','',item.status==='published'?'Publicado':'Rascunho'));const edit=make('button','secondary','Editar');edit.addEventListener('click',()=>{for(const [k,v]of Object.entries({id:item.id,kind:item.kind,title:item.title,summary:item.summary,body:item.body,videoUrl:item.video_url,imageUrl:item.image_url,status:item.status})){const input=$('contentForm').elements.namedItem(k);if(input)input.value=v||''}text($('adminEditingTitle'),'Editando: '+item.title);text($('adminMessage'),'Você está editando um conteúdo existente. Salve para atualizar esta publicação.');window.location.hash='#admin';$('contentForm').scrollIntoView({behavior:'smooth',block:'start'})});const del=make('button','secondary','Excluir');del.addEventListener('click',async()=>{if(!confirm('Excluir definitivamente este conteúdo?'))return;try{await api('/api/admin/content/'+item.id,'DELETE');await refreshAdmin();await refreshPublic()}catch(e){text($('adminMessage'),e.message)}});row.append(edit,del);root.append(row)}}
 $('contentForm').addEventListener('submit',async e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.currentTarget));data.kind=currentKind;try{await api('/api/admin/content','POST',data);text($('adminMessage'),'Conteúdo salvo. Rascunhos não aparecem ao público.');clearContent();await refreshAdmin();await refreshPublic()}catch(err){text($('adminMessage'),err.message)}});
 function listMedia(){const root=$('mediaList');root.replaceChildren();if(!adminData.media.length){root.append(make('p','admin-empty','Sua biblioteca está vazia. Envie sua primeira imagem acima.'));return}for(const m of adminData.media){const row=make('div','admin-image-tile');const img=make('img','media-thumb');img.src='/media/'+m.id;img.alt='Imagem enviada';const btn=make('button','secondary','Copiar endereço');btn.type='button';btn.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('/media/'+m.id);text($('adminMessage'),'Endereço da imagem copiado.')}catch(e){text($('adminMessage'),'Não foi possível copiar automaticamente.')}});row.append(img,btn);root.append(row)}}
-$('mediaForm').addEventListener('submit',async e=>{e.preventDefault();try{const r=await api('/api/admin/media','POST',new FormData(e.currentTarget));text($('adminMessage'),'Imagem enviada: '+r.url);e.currentTarget.reset();await refreshAdmin()}catch(err){text($('adminMessage'),err.message)}});
+async function optimizeMediaImage(file){
+ const limit=2*1024*1024;
+ if(file.size<=limit)return file;
+ if(!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type))throw Error('Formato de imagem não permitido.');
+ const image=await createImageBitmap(file);
+ try{
+  const maxSide=2400;
+  const factor=Math.min(1,maxSide/Math.max(image.width,image.height));
+  const canvas=document.createElement('canvas');
+  canvas.width=Math.max(1,Math.round(image.width*factor));
+  canvas.height=Math.max(1,Math.round(image.height*factor));
+  const ctx=canvas.getContext('2d');
+  if(!ctx)throw Error('Não foi possível preparar a imagem.');
+  ctx.drawImage(image,0,0,canvas.width,canvas.height);
+  for(const quality of [0.86,0.76,0.64,0.52,0.40,0.28]){
+   const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',quality));
+   if(blob&&blob.size<=limit)return new File([blob],file.name.replace(/\.[^.]+$/,'')+'.webp',{type:'image/webp'});
+  }
+  throw Error('Não foi possível reduzir a imagem para 2 MB. Tente uma imagem com resolução menor.');
+ }finally{image.close()}
+}
+$('mediaForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const form=e.currentTarget;
+ const submit=form.querySelector('[type="submit"]');
+ try{
+  const data=new FormData(form);
+  const original=data.get('image');
+  if(!(original instanceof File)||!original.size)throw Error('Selecione uma imagem.');
+  if(submit)submit.disabled=true;
+  if(original.size>2*1024*1024)text($('adminMessage'),'Otimizando imagem antes do envio...');
+  const optimized=await optimizeMediaImage(original);
+  data.set('image',optimized);
+  const r=await api('/api/admin/media','POST',data);
+  text($('adminMessage'),'Imagem enviada: '+r.url+(optimized!==original?' · Reduzida de '+(original.size/1048576).toFixed(1)+' MB para '+(optimized.size/1048576).toFixed(1)+' MB.':''));
+  form.reset();await refreshAdmin();
+ }catch(err){text($('adminMessage'),err.message)}finally{if(submit)submit.disabled=false}
+});
 let adminSessionVerified=false;
 function syncPrivateArea(){const allowed=location.hash==='#login'||location.hash==='#admin';$('login').hidden=!allowed;const showAdmin=location.hash==='#admin'&&adminSessionVerified;$('admin').hidden=!showAdmin;document.body.classList.toggle('admin-mode',showAdmin);}
 window.addEventListener('hashchange',syncPrivateArea);
