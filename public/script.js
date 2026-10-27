@@ -28,11 +28,7 @@ search.addEventListener('input',render);document.getElementById('closeDialog').a
 // Informações públicas editáveis, sem login fictício ou cobrança automática.
 (function(){
  const c=window.ACADEMIA_CONFIG||{};
- const account=document.getElementById('donationAccount');
- const link=document.getElementById('donationLink');
  const fee=document.getElementById('certificateFee');
  if(fee) fee.textContent=c.certificateFee ? c.certificateFee+' (moeda do jogo)' : 'A definir pelo administrador';
- if(account && link && c.donationAccountUrl){
-   try {const u=new URL(c.donationAccountUrl);if(['https:','http:'].includes(u.protocol)){account.textContent=u.hostname;link.href=u.href;link.hidden=false;}} catch(e){}
- }
+
 })();
