@@ -8,6 +8,8 @@ async function adminPermissions(env,u){
 }
 function permissionFor(path,method){
  if(path==='/api/admin/administrators'||path.startsWith('/api/admin/administrators/'))return null;
+ if(path==='/api/admin/hub')return 'reports';
+ if(path==='/api/admin/hub-action')return null;
  if(path.includes('certificate'))return 'certificates';
  if(path.includes('student'))return 'students';
  if(path.includes('comment'))return 'comments';
@@ -220,7 +222,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  if(path==='/api/sponsors'&&method==='GET'){const rows=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'sponsor:%'").all();const now=Date.now();const items=(rows.results||[]).flatMap(x=>{try{const a=JSON.parse(x.value);return a.active!==false&&(!a.startAt||Date.parse(a.startAt)<=now)&&(!a.endAt||Date.parse(a.endAt)>=now)?[a]:[]}catch{return []}}).sort((a,b)=>(a.position??1)-(b.position??1));return json({items})}
  const user=await current(req,env);if(!user||user.role!=='admin')return fail('Acesso restrito ao administrador.',403);
  const permissions=await adminPermissions(env,user);
- if(path==='/api/admin/hub-action'&&method==='POST'){const action=await body(req.clone());const actionPermission=action?.kind==='certificate'?'certificates':action?.kind?.startsWith('notice')?'notices':action?.kind==='suggestion'?'suggestions':null;if(actionPermission&&!permissions[actionPermission])return fail('Sua conta não possui permissão para esta operação.',403)}
+ if(path==='/api/admin/hub-action'&&method==='POST'){const action=await body(req.clone());const actionPermission=action?.kind==='certificate'?'certificates':action?.kind==='notice'||action?.kind==='notice-toggle'?'notices':action?.kind==='suggestion'?'suggestions':null;if(!actionPermission)return fail('Operação administrativa inválida.',400);if(actionPermission&&!permissions[actionPermission])return fail('Sua conta não possui permissão para esta operação.',403)}
  const requiredPermission=permissionFor(path,method);
  if(requiredPermission&&!permissions[requiredPermission])return fail('Sua conta não possui permissão para esta operação.',403);
 
