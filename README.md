@@ -26,6 +26,7 @@ Requer Node.js 24, com `node:sqlite`. Sem dependências externas e sem conexão 
 ```bash
 node tests/audit.mjs
 node tests/student-ui.mjs
+node tests/student-hub.mjs
 ```
 
 Os testes usam SQLite em memória, dados fictícios e contas administrativas criadas apenas nesse banco temporário. Resultados e PDF de teste são gravados no diretório temporário do sistema; `AUDIT_OUTPUT_DIR` permite escolher outro destino.
