@@ -46,6 +46,25 @@ async function ensureHub(env){await env.DB.batch([
  env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_certificates (id TEXT PRIMARY KEY,user_id TEXT NOT NULL UNIQUE,code TEXT NOT NULL UNIQUE,status TEXT NOT NULL DEFAULT 'pending',created_at INTEGER NOT NULL,updated_at INTEGER NOT NULL)"),
  env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_events (id TEXT PRIMARY KEY,user_id TEXT,actor TEXT NOT NULL,action TEXT NOT NULL,detail TEXT NOT NULL,created_at INTEGER NOT NULL)")
  ])}
+async function certificateEligibility(env,userId){
+ const asset=await env.ASSETS.fetch(new Request('https://academy.internal/approved-lessons.json'));
+ if(!asset.ok)throw Error('Catálogo de aulas indisponível para certificação.');
+ const approved=await asset.json();
+ const lessonMap=new Map((approved.items||[]).filter(x=>[0,1,2,4,5,8].includes(x.topic)).map(x=>[x.topic+':'+x.index,x]));
+ const rows=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'lesson_v4:%' OR key LIKE 'lesson_v5:%' OR key LIKE 'lesson_v6:%' OR key LIKE 'lesson_v8:%' OR key LIKE 'lesson_v14:%'").all();
+ for(const row of rows.results||[]){try{const x=JSON.parse(row.value);if([0,1,2,4,5,8].includes(x.topic))lessonMap.set(x.topic+':'+x.index,x)}catch{}}
+ const orders=await env.DB.prepare("SELECT key,value FROM settings WHERE key LIKE 'lesson_order_v2:%'").all();
+ const defaultIndexes={0:[0,1,2,3],1:[0,1,2,3,4,5,6],2:[0,1,2,3,4,5],4:[0,1,2,3,4],5:Array.from({length:13},(_,i)=>i),8:Array.from({length:10},(_,i)=>i)};
+ const visible=new Set();
+ for(const topic of [0,1,2,4,5,8]){
+  const row=(orders.results||[]).find(r=>r.key==='lesson_order_v2:'+topic);
+  let order=defaultIndexes[topic];try{const parsed=JSON.parse(row?.value);if(Array.isArray(parsed))order=parsed}catch{}
+  for(const index of order)if(Number.isInteger(index)&&lessonMap.has(topic+':'+index))visible.add('t'+topic+'-l'+index);
+ }
+ const progress=await env.DB.prepare('SELECT lesson_key FROM student_progress WHERE user_id=?').bind(userId).all();
+ const completed=(progress.results||[]).filter(x=>visible.has(x.lesson_key)).length;
+ return {total:visible.size,completed,required:Math.ceil(visible.size*0.8),eligible:visible.size>0&&completed>=Math.ceil(visible.size*0.8)};
+}
 async function ensureCertificateImages(env){await env.DB.prepare('CREATE TABLE IF NOT EXISTS academy_certificate_images (user_id TEXT PRIMARY KEY, mime TEXT NOT NULL, data BLOB NOT NULL, updated_at INTEGER NOT NULL)').run()}
 async function hubLog(env,userId,actor,action,detail){await ensureHub(env);await env.DB.prepare('INSERT INTO academy_events(id,user_id,actor,action,detail,created_at) VALUES(?,?,?,?,?,?)').bind(random(),userId||null,actor,action,String(detail).slice(0,500),Date.now()).run()}
 async function recordLastLogin(env,u){if(u.role!=='student')return;await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();await env.DB.prepare("INSERT INTO student_last_login(user_id,logged_at) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET logged_at=excluded.logged_at").bind(u.id,Date.now()).run()}
@@ -128,6 +147,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    return json({ok:true},200,{'set-cookie':studentCookie('',0)});
   }
   const u=await student();if(!u)return fail('Entre na sua conta para salvar o progresso.',401);
+  if(path==='/api/student/certificate-eligibility'&&method==='GET'){await env.DB.prepare('CREATE TABLE IF NOT EXISTS student_progress (user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, lesson_key TEXT NOT NULL, completed_at INTEGER NOT NULL, PRIMARY KEY(user_id,lesson_key))').run();return json(await certificateEligibility(env,u.id))}
   if(path==='/api/student/hub'&&method==='GET'){await ensureHub(env);const messages=await env.DB.prepare('SELECT id,kind,body,status,reply,created_at AS createdAt FROM academy_messages WHERE user_id=? ORDER BY created_at DESC LIMIT 30').bind(u.id).all();const cert=await env.DB.prepare('SELECT code,status,created_at AS createdAt,updated_at AS updatedAt FROM academy_certificates WHERE user_id=?').bind(u.id).first();await ensureCertificateImages(env);const img=await env.DB.prepare('SELECT user_id FROM academy_certificate_images WHERE user_id=?').bind(u.id).first();return json({messages:messages.results||[],certificate:cert?{...cert,hasImage:!!img}:null})}
   if(path==='/api/student/hub'&&method==='POST'){
    const b=await body(req),kind=String(b?.kind||''),bodyText=String(b?.body||'').trim();
@@ -137,8 +157,8 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    if(kind==='certificate'){
     const existing=await env.DB.prepare('SELECT id,status FROM academy_certificates WHERE user_id=?').bind(u.id).first();
     if(existing)return fail('Já existe uma solicitação de certificado: '+existing.status,409);
-    const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM student_progress WHERE user_id=?').bind(u.id).first();
-    if(Number(count?.total||0)<36)return fail('Conclua pelo menos 80% das 45 aulas para solicitar o certificado.');
+    const eligibility=await certificateEligibility(env,u.id);
+    if(!eligibility.eligible)return fail('Conclua pelo menos '+eligibility.required+' das '+eligibility.total+' aulas disponíveis para solicitar o certificado.');
     await env.DB.prepare('INSERT INTO academy_certificates(id,user_id,code,status,created_at,updated_at) VALUES(?,?,?,?,?,?)').bind(random(),u.id,'AV-'+token().slice(0,12).toUpperCase(),'pending',Date.now(),Date.now()).run();
    }else{
     const recent=await env.DB.prepare("SELECT created_at FROM academy_messages WHERE user_id=? AND kind='suggestion' ORDER BY created_at DESC LIMIT 1").bind(u.id).first();
