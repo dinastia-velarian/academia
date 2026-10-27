@@ -80,31 +80,44 @@ function generatedCertificatePdf(username,code,issuedAt){
  const displayName=clean(username).slice(0,48);
  const nameUnits=[...displayName].reduce((sum,c)=>sum+HELVETICA_WIDTHS[c.charCodeAt(0)],0)/1000;
  const nameSize=Math.min(34,712/Math.max(1,nameUnits));
+ const serif=(value,x,y,size)=>'BT /F2 '+size+' Tf 1 0 0 1 '+x+' '+y+' Tm ('+esc(value)+') Tj ET';
+ const centered=(value,y,size,font='F1')=>{const units=[...clean(value)].reduce((sum,c)=>sum+(HELVETICA_WIDTHS[c.charCodeAt(0)]||556),0)/1000;return 'BT /'+font+' '+size+' Tf 1 0 0 1 '+Math.max(45,(842-units*size)/2)+' '+y+' Tm ('+esc(value)+') Tj ET'};
+ const rays=[];for(let k=0;k<24;k++){const a=k*Math.PI/12;const x=421+Math.cos(a)*48,y=451+Math.sin(a)*48,xx=421+Math.cos(a)*58,yy=451+Math.sin(a)*58;rays.push(x.toFixed(2)+' '+y.toFixed(2)+' m '+xx.toFixed(2)+' '+yy.toFixed(2)+' l S')}
  const commands=[
- '0.07 0.06 0.09 rg 0 0 842 595 re f',
- '0.12 0.10 0.13 rg 23 23 796 549 re f',
- '0.78 0.63 0.39 RG 2 w 28 28 786 539 re S',
- '0.42 0.34 0.23 RG 0.7 w 40 40 762 515 re S',
- '0.9 0.75 0.48 rg',line('ACADEMIA VELARIAN',290,480,22),
- '0.96 0.88 0.73 rg',line('CERTIFICADO',285,393,39),
- '0.9 0.83 0.72 rg',line('Certificamos a conclusão dos requisitos acadêmicos por',183,333,16),
- '0.93 0.76 0.51 rg',line(displayName,(842-nameUnits*nameSize)/2,258,nameSize),
- '0.9 0.83 0.72 rg',line('com aprovação da administração da Academia Velarian.',185,208,16),
- '0.66 0.53 0.33 RG 1 w 170 173 m 672 173 l S',
- line('Registro: '+code,260,138,15),
- line('Data de emissão: '+date,293,108,15),
- line('Diplomacia - Formação e desenvolvimento de jogadores',222,64,12)
+ '0.055 0.051 0.068 rg 0 0 842 595 re f',
+ '0.095 0.084 0.096 rg 18 18 806 559 re f',
+ '0.73 0.56 0.31 RG 2.5 w 24 24 794 547 re S',
+ '0.42 0.32 0.19 RG 0.8 w 34 34 774 527 re S',
+ '0.27 0.21 0.15 RG 0.5 w 45 45 752 505 re S',
+ '0.75 0.59 0.34 RG 1 w 50 530 m 126 530 l S 716 530 m 792 530 l S',
+ '0.75 0.59 0.34 RG 1 w 50 65 m 126 65 l S 716 65 m 792 65 l S',
+ '0.58 0.43 0.25 RG 0.8 w 465 451 m 465 475.3 445.3 495 421 495 c 396.7 495 377 475.3 377 451 c 377 426.7 396.7 407 421 407 c 445.3 407 465 426.7 465 451 c S',
+ '0.82 0.65 0.36 RG 1.2 w',...rays,
+ '0.72 0.56 0.30 rg',centered('V',439,39,'F2'),
+ '0.86 0.71 0.46 rg',centered('ACADEMIA VELARIAN',377,21,'F2'),
+ '0.54 0.44 0.31 rg',centered('VALOR NON MORITUR',353,10),
+ '0.92 0.85 0.73 rg',centered('CERTIFICADO DE CONCLUSÃO',303,30,'F2'),
+ '0.72 0.56 0.33 RG 1 w 240 284 m 602 284 l S',
+ '0.86 0.81 0.74 rg',centered('A Academia Velarian certifica que',255,15),
+ '0.95 0.79 0.50 rg',line(displayName,(842-nameUnits*nameSize)/2,202,nameSize),
+ '0.86 0.81 0.74 rg',centered('cumpriu os requisitos de formação e conclusão acadêmica,',166,14),
+ centered('com aprovação da administração da Academia.',145,14),
+ '0.67 0.52 0.31 RG 0.8 w 146 119 m 696 119 l S',
+ '0.82 0.71 0.53 rg',line('REGISTRO',149,99,10),line('EMISSÃO',536,99,10),
+ '0.94 0.86 0.73 rg',line(code,149,80,13),line(date,536,80,13),
+ '0.63 0.53 0.39 rg',centered('DIPLOMACIA  •  CONHECIMENTO, ESTRATÉGIA E LEGADO',49,10)
  ].join('\n')+'\n';
  const bytes=[];const append=t=>{for(let i=0;i<t.length;i++)bytes.push(t.charCodeAt(i)&255)};
  const offsets=[0];append('%PDF-1.4\n');
  const obj=(n,content)=>{offsets[n]=bytes.length;append(n+' 0 obj\n'+content+'\nendobj\n')};
  obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
  obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
- obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>');
+ obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /Font << /F1 4 0 R /F2 6 0 R >> >> /Contents 5 0 R >>');
  obj(4,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
  obj(5,'<< /Length '+commands.length+' >>\nstream\n'+commands+'endstream');
- const xref=bytes.length;append('xref\n0 6\n0000000000 65535 f \n');for(let i=1;i<=5;i++)append(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
- append('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF');
+ obj(6,'<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman /Encoding /WinAnsiEncoding >>');
+ const xref=bytes.length;append('xref\n0 7\n0000000000 65535 f \n');for(let i=1;i<=6;i++)append(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
+ append('trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF');
  return new Uint8Array(bytes);
 }
 
