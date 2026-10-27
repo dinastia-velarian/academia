@@ -70,6 +70,40 @@ function generatedCertificateSvg(username,code,issuedAt){
  const name=xmlEscape(username),registration=xmlEscape(code),date=xmlEscape(new Date(issuedAt).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'}));
  return `<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="990" viewBox="0 0 1400 990" role="img" aria-label="Certificado Academia Velarian"><rect width="1400" height="990" fill="#111015"/><rect x="35" y="35" width="1330" height="920" rx="10" fill="#19171b" stroke="#c7a565" stroke-width="5"/><rect x="56" y="56" width="1288" height="878" fill="none" stroke="#705b39" stroke-width="2"/><text x="700" y="190" fill="#d6b77a" text-anchor="middle" font-family="Georgia,serif" font-size="37" letter-spacing="9">ACADEMIA VELARIAN</text><text x="700" y="315" fill="#f6e9cd" text-anchor="middle" font-family="Georgia,serif" font-size="82">CERTIFICADO</text><text x="700" y="405" fill="#d8cbb4" text-anchor="middle" font-family="Georgia,serif" font-size="27">Certificamos a conclusão dos requisitos acadêmicos por</text><text x="700" y="535" fill="#e8c68b" text-anchor="middle" font-family="Georgia,serif" font-size="49" textLength="1080" lengthAdjust="spacingAndGlyphs">${name}</text><text x="700" y="618" fill="#d8cbb4" text-anchor="middle" font-family="Georgia,serif" font-size="27">com aprovação da administração da Academia Velarian.</text><path d="M330 690 H1070" stroke="#a98953" stroke-width="2"/><text x="700" y="765" fill="#e5d5b7" text-anchor="middle" font-family="Georgia,serif" font-size="25">Registro: ${registration}</text><text x="700" y="817" fill="#e5d5b7" text-anchor="middle" font-family="Georgia,serif" font-size="25">Data de emissão: ${date}</text><text x="700" y="892" fill="#b59a70" text-anchor="middle" font-family="Georgia,serif" font-size="19">Diplomacia • Formação e desenvolvimento de jogadores</text></svg>`;
 }
+
+function generatedCertificatePdf(username,code,issuedAt){
+ const clean=v=>String(v).normalize('NFC').replace(/[^\u0020-\u007e\u00a0-\u00ff]/g,'?');
+ const esc=v=>clean(v).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+ const date=new Date(issuedAt).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'});
+ const line=(value,x,y,size)=>'BT /F1 '+size+' Tf 1 0 0 1 '+x+' '+y+' Tm ('+esc(value)+') Tj ET';
+ const commands=[
+ '0.07 0.06 0.09 rg 0 0 842 595 re f',
+ '0.12 0.10 0.13 rg 23 23 796 549 re f',
+ '0.78 0.63 0.39 RG 2 w 28 28 786 539 re S',
+ '0.42 0.34 0.23 RG 0.7 w 40 40 762 515 re S',
+ '0.9 0.75 0.48 rg',line('ACADEMIA VELARIAN',290,480,22),
+ '0.96 0.88 0.73 rg',line('CERTIFICADO',285,393,39),
+ '0.9 0.83 0.72 rg',line('Certificamos a conclusão dos requisitos acadêmicos por',183,333,16),
+ '0.93 0.76 0.51 rg',line(clean(username).slice(0,48),Math.max(65,421-Math.min(48,clean(username).length)*10),258,Math.min(34,Math.max(18,760/Math.max(1,clean(username).length)*1.7))),
+ '0.9 0.83 0.72 rg',line('com aprovação da administração da Academia Velarian.',185,208,16),
+ '0.66 0.53 0.33 RG 1 w 170 173 m 672 173 l S',
+ line('Registro: '+code,260,138,15),
+ line('Data de emissão: '+date,293,108,15),
+ line('Diplomacia - Formação e desenvolvimento de jogadores',222,64,12)
+ ].join('\n')+'\n';
+ const bytes=[];const append=t=>{for(let i=0;i<t.length;i++)bytes.push(t.charCodeAt(i)&255)};
+ const offsets=[0];append('%PDF-1.4\n');
+ const obj=(n,content)=>{offsets[n]=bytes.length;append(n+' 0 obj\n'+content+'\nendobj\n')};
+ obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+ obj(2,'<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+ obj(3,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>');
+ obj(4,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+ obj(5,'<< /Length '+commands.length+' >>\nstream\n'+commands+'endstream');
+ const xref=bytes.length;append('xref\n0 6\n0000000000 65535 f \n');for(let i=1;i<=5;i++)append(String(offsets[i]).padStart(10,'0')+' 00000 n \n');
+ append('trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF');
+ return new Uint8Array(bytes);
+}
+
 async function ensureCertificateImages(env){await env.DB.prepare('CREATE TABLE IF NOT EXISTS academy_certificate_images (user_id TEXT PRIMARY KEY, mime TEXT NOT NULL, data BLOB NOT NULL, updated_at INTEGER NOT NULL)').run()}
 async function hubLog(env,userId,actor,action,detail){await ensureHub(env);await env.DB.prepare('INSERT INTO academy_events(id,user_id,actor,action,detail,created_at) VALUES(?,?,?,?,?,?)').bind(random(),userId||null,actor,action,String(detail).slice(0,500),Date.now()).run()}
 async function recordLastLogin(env,u){if(u.role!=='student')return;await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();await env.DB.prepare("INSERT INTO student_last_login(user_id,logged_at) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET logged_at=excluded.logged_at").bind(u.id,Date.now()).run()}
@@ -146,6 +180,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    const session=await makeSession(env,u);await recordLastLogin(env,u);await hubLog(env,u.id,u.username,'login','Acesso ao painel do aluno');return json({user:session.user},200,{'set-cookie':studentCookie(session.t,7*86400)});
   }
   if(path==='/api/student/me'&&method==='GET'){const me=await student();if(me)await recordLastLogin(env,{id:me.id,role:'student'});return json({user:me})}
+  if(path==='/api/student/certificate-pdf'&&method==='GET'){const me=await student();if(!me)return fail('Acesso não autorizado.',401);await ensureHub(env);const cert=await env.DB.prepare("SELECT code,status,updated_at FROM academy_certificates WHERE user_id=?").bind(me.id).first();if(cert?.status!=='approved')return fail('Certificado ainda não aprovado.',403);return new Response(generatedCertificatePdf(me.username,cert.code,cert.updated_at),{headers:{'content-type':'application/pdf','cache-control':'private, no-store','content-disposition':'attachment; filename="certificado-academia-velarian.pdf"','x-content-type-options':'nosniff'}})}
   if(path==='/api/student/certificate-image'&&method==='GET'){const me=await student();if(!me)return fail('Acesso não autorizado.',401);await ensureHub(env);await ensureCertificateImages(env);const cert=await env.DB.prepare("SELECT status,code,updated_at FROM academy_certificates WHERE user_id=?").bind(me.id).first();if(cert?.status!=='approved')return fail('Certificado ainda não aprovado.',403);const img=await env.DB.prepare('SELECT mime,data FROM academy_certificate_images WHERE user_id=?').bind(me.id).first();if(!img){const svg=generatedCertificateSvg(me.username,cert.code,cert.updated_at);return new Response(svg,{headers:{'content-type':'image/svg+xml; charset=utf-8','cache-control':'private, no-store','content-disposition':'inline; filename="certificado-velarian.svg"','x-content-type-options':'nosniff','content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; sandbox"}})}return new Response(img.data,{headers:{'content-type':img.mime,'cache-control':'private, no-store','content-disposition':'inline; filename="certificado-velarian.png"','x-content-type-options':'nosniff'}})}
   if(path==='/api/student/logout'&&method==='POST'){
    if(sessionToken)await env.DB.prepare('DELETE FROM sessions WHERE id_hash=?').bind(await sha(sessionToken)).run();
