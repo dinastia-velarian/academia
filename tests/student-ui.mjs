@@ -32,7 +32,7 @@ console.log('PASS UI transitions 60% -> 80% -> 60% without reload');
 const publicSource=readFileSync(new URL('../public/script.js',import.meta.url),'utf8');
 const renderSource=publicSource.slice(publicSource.indexOf('function render()'),publicSource.indexOf('function topicYoutubeId('));
 const cards={innerHTML:'',querySelectorAll:()=>[]};
-const publicContext={document:{querySelectorAll:()=>[]},courses:[{title:'<img src=x onerror=alert(1)>',desc:'<script>alert(1)</script>',icon:'" onclick="alert(1)',lessons:['A']}],publicTopicOrder:[0],search:{value:''},cards,publicLessonOrders:{}};
+const publicContext={document:{querySelectorAll:()=>[]},courses:[{title:'<img src=x onerror=alert(1)>',desc:'<script>alert(1)</script>',icon:'" onclick="alert(1)',lessons:['A']}],curriculumReady:true,publicTopicOrder:[0],search:{value:''},cards,publicLessonOrders:{}};
 vm.runInNewContext(publicSource.split('\n')[0]+'\n'+renderSource+'\nrender()',publicContext);
 assert.ok(!cards.innerHTML.includes('<img'));
 assert.ok(!cards.innerHTML.includes('<script>'));
