@@ -71,11 +71,15 @@ function generatedCertificateSvg(username,code,issuedAt){
  return `<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="990" viewBox="0 0 1400 990" role="img" aria-label="Certificado Academia Velarian"><rect width="1400" height="990" fill="#111015"/><rect x="35" y="35" width="1330" height="920" rx="10" fill="#19171b" stroke="#c7a565" stroke-width="5"/><rect x="56" y="56" width="1288" height="878" fill="none" stroke="#705b39" stroke-width="2"/><text x="700" y="190" fill="#d6b77a" text-anchor="middle" font-family="Georgia,serif" font-size="37" letter-spacing="9">ACADEMIA VELARIAN</text><text x="700" y="315" fill="#f6e9cd" text-anchor="middle" font-family="Georgia,serif" font-size="82">CERTIFICADO</text><text x="700" y="405" fill="#d8cbb4" text-anchor="middle" font-family="Georgia,serif" font-size="27">Certificamos a conclusão dos requisitos acadêmicos por</text><text x="700" y="535" fill="#e8c68b" text-anchor="middle" font-family="Georgia,serif" font-size="49" textLength="1080" lengthAdjust="spacingAndGlyphs">${name}</text><text x="700" y="618" fill="#d8cbb4" text-anchor="middle" font-family="Georgia,serif" font-size="27">com aprovação da administração da Academia Velarian.</text><path d="M330 690 H1070" stroke="#a98953" stroke-width="2"/><text x="700" y="765" fill="#e5d5b7" text-anchor="middle" font-family="Georgia,serif" font-size="25">Registro: ${registration}</text><text x="700" y="817" fill="#e5d5b7" text-anchor="middle" font-family="Georgia,serif" font-size="25">Data de emissão: ${date}</text><text x="700" y="892" fill="#b59a70" text-anchor="middle" font-family="Georgia,serif" font-size="19">Diplomacia • Formação e desenvolvimento de jogadores</text></svg>`;
 }
 
+const HELVETICA_WIDTHS=[761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,761,278,333,556,556,556,556,260,556,333,737,370,556,584,333,737,333,400,584,333,333,333,556,537,278,333,333,365,556,834,834,834,611,667,667,667,667,667,667,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,500,556,556,556,556,278,278,278,278,556,556,556,556,556,556,556,584,611,556,556,556,556,500,556,500];
 function generatedCertificatePdf(username,code,issuedAt){
  const clean=v=>String(v).normalize('NFC').replace(/[^\u0020-\u007e\u00a0-\u00ff]/g,'?');
  const esc=v=>clean(v).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
  const date=new Date(issuedAt).toLocaleDateString('pt-BR',{timeZone:'America/Sao_Paulo'});
  const line=(value,x,y,size)=>'BT /F1 '+size+' Tf 1 0 0 1 '+x+' '+y+' Tm ('+esc(value)+') Tj ET';
+ const displayName=clean(username).slice(0,48);
+ const nameUnits=[...displayName].reduce((sum,c)=>sum+HELVETICA_WIDTHS[c.charCodeAt(0)],0)/1000;
+ const nameSize=Math.min(34,712/Math.max(1,nameUnits));
  const commands=[
  '0.07 0.06 0.09 rg 0 0 842 595 re f',
  '0.12 0.10 0.13 rg 23 23 796 549 re f',
@@ -84,7 +88,7 @@ function generatedCertificatePdf(username,code,issuedAt){
  '0.9 0.75 0.48 rg',line('ACADEMIA VELARIAN',290,480,22),
  '0.96 0.88 0.73 rg',line('CERTIFICADO',285,393,39),
  '0.9 0.83 0.72 rg',line('Certificamos a conclusão dos requisitos acadêmicos por',183,333,16),
- '0.93 0.76 0.51 rg',line(clean(username).slice(0,48),Math.max(65,421-Math.min(48,clean(username).length)*10),258,Math.min(34,Math.max(18,760/Math.max(1,clean(username).length)*1.7))),
+ '0.93 0.76 0.51 rg',line(displayName,(842-nameUnits*nameSize)/2,258,nameSize),
  '0.9 0.83 0.72 rg',line('com aprovação da administração da Academia Velarian.',185,208,16),
  '0.66 0.53 0.33 RG 1 w 170 173 m 672 173 l S',
  line('Registro: '+code,260,138,15),
