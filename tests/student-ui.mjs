@@ -13,6 +13,7 @@ const context={document:{getElementById:element,createElement:()=>new Element(),
  let data={};if(url.endsWith('/me'))data={user:{id:'A',username:'QA UI'}};
  else if(url.endsWith('/progress')){if(options.method==='POST'){const p=JSON.parse(options.body);if(p.completed)done.add(p.lessonKey);else done.delete(p.lessonKey)}data={items:[...done].map(lesson_key=>({lesson_key}))}}
  else if(url.endsWith('/certificate-eligibility'))data={total:5,required:4,completed:done.size,eligible:done.size>=4};
+ else if(url==='/api/curriculum')data={topicCount:1,total:5,topics:[{topic:0,lessons:courses[0].lessons.map((title,index)=>({index,title}))}]};
  else if(url==='/approved-lessons.json')data=approved;else if(url==='/api/lessons')data=approved;
  else if(url==='/api/lesson-order')data={items:[{topic:0,order:[0,1,2,3,4]}]};
  return {ok:true,json:async()=>data};
@@ -31,7 +32,7 @@ console.log('PASS UI transitions 60% -> 80% -> 60% without reload');
 const publicSource=readFileSync(new URL('../public/script.js',import.meta.url),'utf8');
 const renderSource=publicSource.slice(publicSource.indexOf('function render()'),publicSource.indexOf('function topicYoutubeId('));
 const cards={innerHTML:'',querySelectorAll:()=>[]};
-const publicContext={courses:[{title:'<img src=x onerror=alert(1)>',desc:'<script>alert(1)</script>',icon:'" onclick="alert(1)',lessons:['A']}],publicTopicOrder:[0],search:{value:''},cards,publicLessonOrders:{}};
+const publicContext={document:{querySelectorAll:()=>[]},courses:[{title:'<img src=x onerror=alert(1)>',desc:'<script>alert(1)</script>',icon:'" onclick="alert(1)',lessons:['A']}],publicTopicOrder:[0],search:{value:''},cards,publicLessonOrders:{}};
 vm.runInNewContext(publicSource.split('\n')[0]+'\n'+renderSource+'\nrender()',publicContext);
 assert.ok(!cards.innerHTML.includes('<img'));
 assert.ok(!cards.innerHTML.includes('<script>'));

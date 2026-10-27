@@ -9,6 +9,7 @@
       "/admin",
       "/admin/",
       "/admin.html",
+      "/admin-panel.asset",
       "/api/*",
       "/media/*"
     ]
