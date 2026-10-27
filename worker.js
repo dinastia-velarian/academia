@@ -277,6 +277,8 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    await env.DB.prepare("UPDATE academy_messages SET status=?,reply=?,updated_at=? WHERE id=? AND kind='suggestion'").bind(b.status,String(b.reply||'').slice(0,1500),Date.now(),id).run();
   }else if(kind==='certificate'){
    if(!['approved','rejected','pending'].includes(b?.status))return fail('Status inválido.');
+   const target=await env.DB.prepare('SELECT user_id FROM academy_certificates WHERE id=?').bind(id).first();if(!target)return fail('Solicitação não encontrada.',404);
+   if(b.status==='approved'){const eligibility=await certificateEligibility(env,target.user_id);if(!eligibility.eligible)return fail('Aluno não atende ao requisito de 80% das aulas disponíveis.',409)}
    await env.DB.prepare('UPDATE academy_certificates SET status=?,updated_at=? WHERE id=?').bind(b.status,Date.now(),id).run();
   }else return fail('Ação inválida.');
   await hubLog(env,null,user.username,'admin_'+kind,id||String(b.title||''));return json({ok:true});
