@@ -1,0 +1,17 @@
+(()=>{'use strict';
+const el=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n};
+const board=document.getElementById('sponsorCards');
+async function loadPublic(){if(!board)return;try{const r=await fetch('/api/sponsors');if(!r.ok)throw Error();const data=await r.json();board.replaceChildren();if(!data.items?.length){board.append(el('p','sponsor-empty','Este espaço está disponível para futuros parceiros da Academia Velarian.'));return}for(const a of data.items){const card=el('a','sponsor-card'+(a.position===0?' sponsor-main':''));card.href=a.url;card.target='_blank';card.rel='noopener noreferrer sponsored';if(a.image){const img=el('img');img.src=a.image;img.alt='Imagem do patrocinador '+a.title;img.loading='lazy';card.append(img)}const body=el('div');body.append(el('small','sponsor-tag',a.position===0?'PATROCINADOR PRINCIPAL':'DIVULGAÇÃO'),el('h3','',a.title));if(a.description)body.append(el('p','',a.description));card.append(body);board.append(card)}}catch{board.replaceChildren(el('p','sponsor-empty','Divulgações temporariamente indisponíveis.'))}}
+loadPublic();
+const panel=document.getElementById('sponsorAdmin');if(!panel)return;
+const form=panel.querySelector('form'),list=panel.querySelector('[data-sponsor-list]'),status=panel.querySelector('[data-sponsor-status]');
+let records=[];
+async function api(method='GET',payload){const r=await fetch('/api/admin/sponsors',{method,credentials:'same-origin',headers:payload?{'content-type':'application/json'}:{},body:payload?JSON.stringify(payload):undefined});const d=await r.json();if(!r.ok)throw Error(d.error||'Não foi possível concluir a operação.');return d}
+function reset(){form.reset();form.elements.id.value='';form.elements.active.checked=true;form.elements.position.value='comum'}
+function edit(a){for(const k of ['id','title','description','url','image','startAt'])form.elements[k].value=a[k]||'';form.elements.endAt.value=(a.endAt||'').slice(0,10);form.elements.position.value=a.position===0?'principal':'comum';form.elements.active.checked=a.active!==false;form.scrollIntoView({behavior:'smooth',block:'start'})}
+function draw(){list.replaceChildren();if(!records.length)list.append(el('p','','Nenhuma divulgação cadastrada.'));for(const a of records){const item=el('div','sponsor-admin-item');const label=el('div');label.append(el('strong','',a.title),el('small','',((a.position===0)?'Principal':'Comum')+' · '+(a.active?'Ativo':'Pausado')));const actions=el('div');const editButton=el('button','secondary','Editar');editButton.type='button';editButton.onclick=()=>edit(a);const del=el('button','secondary','Excluir');del.type='button';del.onclick=async()=>{if(!confirm('Excluir definitivamente a divulgação de '+a.title+'?'))return;try{await api('DELETE',{id:a.id});status.textContent='Divulgação excluída.';await refresh();loadPublic()}catch(e){status.textContent=e.message}};actions.append(editButton,del);item.append(label,actions);list.append(item)}}
+async function refresh(){try{records=(await api()).items||[];draw()}catch(e){status.textContent=e.message}}
+form.onsubmit=async e=>{e.preventDefault();const b=Object.fromEntries(new FormData(form).entries());b.active=form.elements.active.checked;try{await api('POST',b);status.textContent='Divulgação salva com sucesso.';reset();await refresh();loadPublic()}catch(err){status.textContent=err.message}};
+panel.querySelector('[data-sponsor-clear]').onclick=reset;
+refresh();
+})();
