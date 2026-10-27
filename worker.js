@@ -196,10 +196,11 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
    await ensureHub(env);
    if(kind==='certificate'){
     const existing=await env.DB.prepare('SELECT id,status FROM academy_certificates WHERE user_id=?').bind(u.id).first();
-    if(existing)return fail('Já existe uma solicitação de certificado: '+existing.status,409);
+    if(existing&&existing.status!=='rejected')return fail('Já existe uma solicitação de certificado: '+existing.status,409);
     const eligibility=await certificateEligibility(env,u.id);
     if(!eligibility.eligible)return fail('Conclua pelo menos '+eligibility.required+' das '+eligibility.total+' aulas disponíveis para solicitar o certificado.');
-    await env.DB.prepare('INSERT INTO academy_certificates(id,user_id,code,status,created_at,updated_at) VALUES(?,?,?,?,?,?)').bind(random(),u.id,'AV-'+token().slice(0,12).toUpperCase(),'pending',Date.now(),Date.now()).run();
+    const result=await env.DB.prepare("INSERT INTO academy_certificates(id,user_id,code,status,created_at,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET status='pending',updated_at=excluded.updated_at WHERE academy_certificates.status='rejected'").bind(random(),u.id,'AV-'+token().slice(0,12).toUpperCase(),'pending',Date.now(),Date.now()).run();
+    if(!result.meta?.changes)return fail('Já existe uma solicitação de certificado em análise ou aprovada.',409);
    }else{
     const recent=await env.DB.prepare("SELECT created_at FROM academy_messages WHERE user_id=? AND kind='suggestion' ORDER BY created_at DESC LIMIT 1").bind(u.id).first();
     if(recent&&Date.now()-Number(recent.created_at)<60000)return fail('Aguarde um minuto antes de enviar outra sugestão.',429);
@@ -233,7 +234,7 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   if(path==='/api/student/progress'&&method==='POST'){
    const b=await body(req),key=b?.lessonKey;
    if(typeof key!=='string'||!/^t[0-8]-l(?:0|[1-9]\d?|1\d\d)$/.test(key)||typeof b.completed!=='boolean')return fail('Aula inválida.');
-   if(b.completed)await env.DB.prepare('INSERT INTO student_progress(user_id,lesson_key,completed_at) VALUES(?,?,?) ON CONFLICT(user_id,lesson_key) DO UPDATE SET completed_at=excluded.completed_at').bind(u.id,key,Date.now()).run();
+   if(b.completed)await env.DB.prepare('INSERT INTO student_progress(user_id,lesson_key,completed_at) VALUES(?,?,?) ON CONFLICT(user_id,lesson_key) DO NOTHING').bind(u.id,key,Date.now()).run();
    else await env.DB.prepare('DELETE FROM student_progress WHERE user_id=? AND lesson_key=?').bind(u.id,key).run();
    await hubLog(env,u.id,u.username,b.completed?'lesson_completed':'lesson_unmarked',key);
    return json({ok:true});

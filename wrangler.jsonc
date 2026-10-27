@@ -6,6 +6,9 @@
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": [
+      "/admin",
+      "/admin/",
+      "/admin.html",
       "/api/*",
       "/media/*"
     ]
