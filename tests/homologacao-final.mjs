@@ -24,5 +24,5 @@ for(const path of ['/admin','/admin/']){const r=await mod.default.fetch(req(path
 const before=assetCalls;assert.equal((await mod.default.fetch(req('/admin-panel.asset'),env)).status,404);assert.equal(assetCalls,before);pass('Admin login routes do not redirect and raw asset is blocked');
 mkdirSync('/tmp/academia-imperial',{recursive:true});
 const bytes=mod.generatedCertificatePdf('QA Homologação Imperial','AV-QA-TESTE',Date.now());writeFileSync('/tmp/academia-imperial/imperial.pdf',bytes);assert.match(Buffer.from(bytes).toString('latin1'),/CERTIFICADO DE CONCLUSÃO/);assert.match(Buffer.from(bytes).toString('latin1'),/AV-QA-TESTE/);pass('Imperial PDF generated with student name and registration');
-for(const file of ['script.js','student.js','academy-statistics.js','app.js'])assert.ok(readFileSync(new URL('../public/'+file,import.meta.url),'utf8').includes('/api/curriculum'));pass('Homepage, student and admin consumers use canonical API');
+for(const file of ['script.js','student.js','academy-statistics.js','app.js'])assert.ok(readFileSync(new URL('../public/'+file,import.meta.url),'utf8').includes('/api/curriculum'));assert.match(readFileSync(new URL('../public/app.js',import.meta.url),'utf8'),/adminTopicCount'\),catalog.topicCount/);pass('Homepage, student, admin overview and reports use canonical API');
 console.log(count+' targeted checks passed');

@@ -130,7 +130,7 @@ async function ensureStudentBlocks(env){await env.DB.prepare("CREATE TABLE IF NO
 async function rateLimit(env,key){const now=Date.now(),start=now-60*1000;const r=await env.DB.prepare('SELECT count,window_start FROM login_attempts WHERE key=?').bind(key).first();if(r&&r.window_start>start&&r.count>=30)return true;await env.DB.prepare('INSERT INTO login_attempts(key,count,window_start) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN window_start<? THEN 1 ELSE count+1 END,window_start=CASE WHEN window_start<? THEN ? ELSE window_start END').bind(key,now,start,start,now).run();return false}
 async function api(req,env,url){const path=url.pathname,method=req.method;
  if(method!=='GET'&&!originOK(req))return fail('Origem não autorizada.',403);
- if(path==='/api/release'&&method==='GET')return json({release:'homologacao-20261027-catalog-v1',baseRevision:'bbb5d65cbf8c65b5aece562d2b471b9563e0bd80',certificate:'imperial-pdf'});
+ if(path==='/api/release'&&method==='GET')return json({release:'homologacao-20261027-catalog-v2',baseRevision:'bbb5d65cbf8c65b5aece562d2b471b9563e0bd80',certificate:'imperial-pdf'});
  if(path==='/api/curriculum'&&method==='GET')return json(await publishedCurriculum(env,req));
  if(path==='/api/visit'&&method==='POST'){const b=await body(req),id=String(b?.session||'');if(!/^[a-f0-9-]{36}$/.test(id))return fail('Sessão inválida.');await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_site_visits (session_id TEXT PRIMARY KEY,created_at INTEGER NOT NULL)").run();await env.DB.prepare('INSERT OR IGNORE INTO academy_site_visits(session_id,created_at) VALUES(?,?)').bind(id,Date.now()).run();return json({ok:true})}
  if(path==='/api/bootstrap'&&method==='POST'){
