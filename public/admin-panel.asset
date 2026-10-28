@@ -3,7 +3,7 @@
     <div class="admin-brand"><img class="admin-brand-seal" src="assets/brasao-academia-original.webp" alt="Brasão da Academia"><div><strong>ACADEMIA VELARIAN</strong><small>PAINEL DE CONTROLE</small></div></div>
     <div class="admin-side-label">ESPAÇO DE TRABALHO</div>
     <div class="admin-tabs" role="navigation" aria-label="Áreas do painel">
-      <button type="button" data-tab="overview" class="active">⌂ <span>Visão geral</span></button>
+      <a href="/ferramentas#calculadoras" class="admin-calculators-entry">◇ <span>Calculadoras · Em desenvolvimento</span></a><button type="button" data-tab="overview" class="active">⌂ <span>Visão geral</span></button>
       <button type="button" data-tab="pages">✎ <span>Editar páginas</span></button>
       
       <button type="button" data-tab="topics">◈ <span>Tópicos</span></button>
