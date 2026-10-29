@@ -2813,7 +2813,7 @@
     },
     {
       "tool": "xp",
-      "name": "exact floor transition96",
+      "name": "DipTools floating-point floor transition96",
       "pass": true
     },
     {
@@ -3696,5 +3696,13 @@
       "name": "pure calculation and interleaved isolation",
       "pass": true
     }
-  ]
+  ],
+  "revalidation": {
+    "date": "2026-10-29",
+    "reference": "DipTools",
+    "branch": "audit/calculadoras-20261028",
+    "scope": "358 cases executed in JavaScript evaluation of current GitHub engine; original Node test runner not executed",
+    "passed": 358,
+    "failed": 0
+  }
 }
