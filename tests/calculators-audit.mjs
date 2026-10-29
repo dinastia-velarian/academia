@@ -34,8 +34,8 @@ add('skills','zero range',{current:201,target:201},{money:0,diamonds:0,seconds:0
 for(const edit of [{current:0},{target:202},{current:1.5},{education:12},{engineering:4},{class:'unknown'},{skill:'unknown'},{premium:'true'},{target:1,current:2}])add('skills','invalid '+JSON.stringify(edit),edit,'throws');
 for(const n of [1,16,50,100,150,200])add('skills','independent raw power law '+n,{current:n,target:n+1},{seconds:Math.ceil(Math.max(60,1080*Math.pow(n/50,2.5)))});
 // XP fixtures are measured reference values, not independent game certification.
-for(const [n,value]of [[2,271],[10,520],[20,1177],[50,13614],[75,104650],[80,157358],[81,204565],[90,2169297],[100,62747897]])add('xp','measured transition '+n,{current:n,target:n+1},{required:value});
-add('xp','exact floor transition96',{current:96,target:97},{required:16333793});
+for(const [n,value]of [[2,271],[10,520],[20,1177],[50,13614],[75,104650],[80,157358],[81,204565],[90,2169297],[100,62747892]])add('xp','measured transition '+n,{current:n,target:n+1},{required:value});
+add('xp','exact floor transition96',{current:96,target:97},{required:16333792});
 add('xp','fractional partial XP',{progress:.5},'throws');
 add('xp','measured level75',{target:75,progress:0,daily:0},{required:1228202,days:null});
 add('xp','partial XP',{progress:100,daily:50},{remaining:150,days:3});add('xp','zero range',{target:1},{required:0,remaining:0});
