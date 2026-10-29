@@ -1,0 +1,3700 @@
+{
+  "base": "056fa64b39c1e34bd8326e122ca8792f6992dcbb",
+  "summary": {
+    "skills": {
+      "tests": 43,
+      "beforeFailed": 8,
+      "passed": 43,
+      "failed": 0
+    },
+    "xp": {
+      "tests": 35,
+      "beforeFailed": 6,
+      "passed": 35,
+      "failed": 0
+    },
+    "account": {
+      "tests": 22,
+      "beforeFailed": 5,
+      "passed": 22,
+      "failed": 0
+    },
+    "factory": {
+      "tests": 26,
+      "beforeFailed": 2,
+      "passed": 26,
+      "failed": 0
+    },
+    "bonus": {
+      "tests": 23,
+      "beforeFailed": 4,
+      "passed": 23,
+      "failed": 0
+    },
+    "work": {
+      "tests": 67,
+      "beforeFailed": 5,
+      "passed": 67,
+      "failed": 0
+    },
+    "construction": {
+      "tests": 23,
+      "beforeFailed": 3,
+      "passed": 23,
+      "failed": 0
+    },
+    "army": {
+      "tests": 27,
+      "beforeFailed": 3,
+      "passed": 27,
+      "failed": 0
+    },
+    "tax": {
+      "tests": 32,
+      "beforeFailed": 3,
+      "passed": 32,
+      "failed": 0
+    },
+    "profit": {
+      "tests": 31,
+      "beforeFailed": 3,
+      "passed": 31,
+      "failed": 0
+    },
+    "resources": {
+      "tests": 29,
+      "beforeFailed": 3,
+      "passed": 29,
+      "failed": 0
+    }
+  },
+  "before": [
+    {
+      "tool": "skills",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 7",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 7",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 7",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 7",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 7",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 6",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 7",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 8",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions academico/0/0/true",
+      "pass": false,
+      "error": "seconds: 3361 ≠ 3575"
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions academico/11/20/false",
+      "pass": false,
+      "error": "seconds: 2444 ≠ 2628"
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions academico/11/20/true",
+      "pass": false,
+      "error": "seconds: 306 ≠ 1280"
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions burocrata/11/20/true",
+      "pass": false,
+      "error": "seconds: 917 ≠ 1558"
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions burocrata/5/10/false",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions burocrata/11/20/false",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 10",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 11",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 50",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 51",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 100",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 200",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "rounded-source timing corrected at150",
+      "pass": false,
+      "error": "seconds: 15153 ≠ 15152"
+    },
+    {
+      "tool": "skills",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"current\":0}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"target\":202}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"current\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"education\":12}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"engineering\":4}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"class\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"skill\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"premium\":\"true\"}",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"target\":1,\"current\":2}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 1",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 16",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 50",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 100",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 150",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 200",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 2",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 10",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 20",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 50",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 75",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 80",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 81",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 90",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 100",
+      "pass": false,
+      "error": "required: 62747892 ≠ 62747897"
+    },
+    {
+      "tool": "xp",
+      "name": "exact floor transition96",
+      "pass": false,
+      "error": "required: 16333792 ≠ 16333793"
+    },
+    {
+      "tool": "xp",
+      "name": "fractional partial XP",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "xp",
+      "name": "measured level75",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "partial XP",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"progress\":250}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"progress\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"daily\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"current\":1.1}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"target\":151}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"target\":1,\"current\":2}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "maximum supported level",
+      "pass": false,
+      "error": "required: 3176441961605643 ≠ 3176442211396025"
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 2",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 10",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 51",
+      "pass": false,
+      "error": "seconds: 66528 ≠ 66472"
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 100",
+      "pass": false,
+      "error": "seconds: 688784 ≠ 688628"
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 201",
+      "pass": false,
+      "error": "seconds: 7971604 ≠ 7971272"
+    },
+    {
+      "tool": "account",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid quote",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid endpoint",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "reference 10→11",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference couro",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference ouro",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference petroleo",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference nte",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"current\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"target\":151}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"type\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"current\":3,\"target\":2}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "exhaustive exact rational oracle:22350 intervals",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "supported upper bound",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "fixed wages",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "inactive fields ignored fixed",
+      "pass": false,
+      "error": "XP por bônus: preencha o campo."
+    },
+    {
+      "tool": "bonus",
+      "name": "inactive salary ignored",
+      "pass": false,
+      "error": "Salário por trabalho: preencha o campo."
+    },
+    {
+      "tool": "bonus",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"workers\":0}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"workers\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"bonusXp\":0}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"mode\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"salary\":-1,\"mode\":\"fixed\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "24h reference",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "energy mode",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "production valuation",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "bonus tax",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "inactive bonus divisor",
+      "pass": false,
+      "error": "EP por bônus: preencha o campo."
+    },
+    {
+      "tool": "work",
+      "name": "zero jobs",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"mode\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"payMode\":\"unknown\"}",
+      "pass": false,
+      "error": "Missing expected exception."
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"type\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"health\":8}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"tax\":101}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"bonusXp\":0,\"bonusMoney\":1}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "maximum supported hours",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "existing property no upgrade",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "all buildings one level",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "zero targets",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "upper level and days",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"days\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"days\":3651}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"escolaCurrent\":3}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"baseTarget\":1001}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"hospitalTarget\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit infantry",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit tank",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit ship",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit plane",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit missile",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "market valuation",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "zero quantities",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "quantity upper bound",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"supply\":201}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"supply\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"infantry\":0.1}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"goldPrice\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"infantry\":1000000000,\"goldPrice\":1000000000000}",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 0/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 0/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 0/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 17/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 17/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 17/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000000000/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000000000/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000000000/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid {\"federal\":101}",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid {\"province\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid {\"federal\":99,\"province\":2}",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 0/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 0/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 0/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 100/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 100/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 100/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1000000/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1000000/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1000000/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "legitimate loss",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "no denominator",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid {\"rate\":101}",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid {\"price\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid {\"units\":1000000000000,\"price\":1000000000000}",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 0/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 0/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 0/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000000000000/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000000000000/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000000000000/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid {\"unitPrice\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid {\"stock\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid {\"required\":1000000000000,\"stock\":0,\"unitPrice\":1000000000000}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    }
+  ],
+  "after": [
+    {
+      "tool": "skills",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "ordinary fixture",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 1",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 2",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 3",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 4",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 5",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 6",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 7",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 8",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 9",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 10",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid primary input 11",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions academico/0/0/true",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions academico/11/20/false",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions academico/11/20/true",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions burocrata/11/20/true",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions burocrata/5/10/false",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "measured reductions burocrata/11/20/false",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 10",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 11",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 50",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 51",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 100",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "tariff boundary 200",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "rounded-source timing corrected at150",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"current\":0}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"target\":202}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"current\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"education\":12}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"engineering\":4}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"class\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"skill\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"premium\":\"true\"}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "invalid {\"target\":1,\"current\":2}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 1",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 16",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 50",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 100",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 150",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "independent raw power law 200",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 2",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 10",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 20",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 50",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 75",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 80",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 81",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 90",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured transition 100",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "exact floor transition96",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "fractional partial XP",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "measured level75",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "partial XP",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"progress\":250}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"progress\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"daily\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"current\":1.1}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"target\":151}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "invalid {\"target\":1,\"current\":2}",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "maximum supported level",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 2",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 10",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 51",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 100",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "aggregate tariff 201",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid quote",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "invalid endpoint",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "reference 10→11",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference couro",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference ouro",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference petroleo",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "resource reference nte",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"current\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"target\":151}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"type\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "invalid {\"current\":3,\"target\":2}",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "exhaustive exact rational oracle:22350 intervals",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "supported upper bound",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "fixed wages",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "inactive fields ignored fixed",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "inactive salary ignored",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "zero range",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"workers\":0}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"workers\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"bonusXp\":0}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"mode\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "invalid {\"salary\":-1,\"mode\":\"fixed\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=3 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=4 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=5 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=6 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=0",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=1",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=17",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=18",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=53",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=106",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=300",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "budget and maximal jobs h=7 b=1000",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "24h reference",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "energy mode",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "production valuation",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "bonus tax",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "inactive bonus divisor",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "zero jobs",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"mode\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"payMode\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"type\":\"unknown\"}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"health\":8}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"tax\":101}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "invalid {\"bonusXp\":0,\"bonusMoney\":1}",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "maximum supported hours",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "existing property no upgrade",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "all buildings one level",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "zero targets",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "upper level and days",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"days\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"days\":3651}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"escolaCurrent\":3}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"baseTarget\":1001}",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "invalid {\"hospitalTarget\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit infantry",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit tank",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit ship",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit plane",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "unit missile",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "market valuation",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "zero quantities",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "quantity upper bound",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"supply\":201}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"supply\":1.5}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"infantry\":0.1}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"goldPrice\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "invalid {\"infantry\":1000000000,\"goldPrice\":1000000000000}",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 0/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 0/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 0/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 17/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 17/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 17/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000000000/0,0",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000000000/5,8",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "conservation 1000000000000/50,50",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid {\"federal\":101}",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid {\"province\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "invalid {\"federal\":99,\"province\":2}",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 0/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 0/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 0/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 100/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 100/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 100/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1000000/0",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1000000/10",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "independent ledger 1000000/100",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "legitimate loss",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "no denominator",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid {\"rate\":101}",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid {\"price\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "invalid {\"units\":1000000000000,\"price\":1000000000000}",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 0/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 0/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 0/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000000000000/0",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000000000000/250",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "independent shortage 1000000000000/1000000000000",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid {\"unitPrice\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid {\"stock\":-1}",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "invalid {\"required\":1000000000000,\"stock\":0,\"unitPrice\":1000000000000}",
+      "pass": true
+    },
+    {
+      "tool": "skills",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "xp",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "account",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "factory",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "bonus",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "work",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "construction",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "army",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "tax",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "profit",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    },
+    {
+      "tool": "resources",
+      "name": "pure calculation and interleaved isolation",
+      "pass": true
+    }
+  ]
+}
