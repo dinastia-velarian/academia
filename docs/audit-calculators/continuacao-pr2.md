@@ -170,3 +170,8 @@ Oculte nomes/identificadores se desejar. **Não envie senhas, tokens ou cookies.
 ## Decisão de referência — 29/10/2026
 
 Por autorização do responsável, DipTools passa a ser a referência de paridade para calculadoras equivalentes. A curva de XP foi ajustada na branch para reproduzir o arredondamento de ponto flutuante observado no DipTools: 100→101 = 62.747.892 XP e 96→97 = 16.333.792 XP. Os testes de regressão correspondentes foram atualizados. As seções anteriores registram o histórico da auditoria antes desta decisão e não descrevem mais a implementação atual de XP. Paridade integral de todos os cenários e execução da bateria completa após esta mudança ainda não foram comprovadas; manter PR em rascunho e acesso somente administrativo.
+
+
+## Revisão final da matriz matemática — 29/10/2026
+
+Atualizados o motor XP (comentário), a descrição da interface, a expectativa de XP total até nível 150 e os resultados armazenados. A matriz de 358 casos de `tests/calculators-audit.mjs` foi executada por avaliação JavaScript do motor atual obtido do GitHub: **358 aprovados, zero falhas**. `results.json` foi regenerado para a coluna `after`, preservando `before` como histórico da versão anterior. Esta execução não utilizou o runner Node original nem reproduziu as 40 verificações de integração e as 9 regressões anteriores; elas continuam pendentes de reexecução no ambiente de CI. A paridade observada do DipTools em 100→101 é 62.747.892 XP. O PR permanece sem merge e sem publicação.
