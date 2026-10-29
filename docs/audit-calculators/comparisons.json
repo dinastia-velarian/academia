@@ -1,0 +1,179 @@
+[
+  {
+    "tool": "skills",
+    "name": "Acadêmico + Premium 100→101",
+    "ref": 3575,
+    "key": "seconds",
+    "data": {
+      "skill": "quartel",
+      "class": "academico",
+      "current": 100,
+      "target": 101,
+      "education": 0,
+      "engineering": 0,
+      "premium": true
+    },
+    "before": 3361,
+    "after": 3575
+  },
+  {
+    "tool": "skills",
+    "name": "Acadêmico + educação11 + engenharia20",
+    "ref": 2628,
+    "key": "seconds",
+    "data": {
+      "skill": "quartel",
+      "class": "academico",
+      "current": 100,
+      "target": 101,
+      "education": 11,
+      "engineering": 20,
+      "premium": false
+    },
+    "before": 2444,
+    "after": 2628
+  },
+  {
+    "tool": "skills",
+    "name": "Todos os redutores anteriores + Premium",
+    "ref": 1280,
+    "key": "seconds",
+    "data": {
+      "skill": "quartel",
+      "class": "academico",
+      "current": 100,
+      "target": 101,
+      "education": 11,
+      "engineering": 20,
+      "premium": true
+    },
+    "before": 306,
+    "after": 1280
+  },
+  {
+    "tool": "factory",
+    "name": "Diamantes 10→11 XP",
+    "ref": 844,
+    "key": "xp",
+    "data": {
+      "type": "diamantes",
+      "current": 10,
+      "target": 11
+    },
+    "before": 844,
+    "after": 844
+  },
+  {
+    "tool": "bonus",
+    "name": "500XP por bônus proporcional",
+    "ref": 2500000,
+    "key": "payroll",
+    "data": {
+      "type": "diamantes",
+      "current": 1,
+      "target": 2,
+      "workers": 10,
+      "mode": "bonus",
+      "salary": 500000,
+      "bonusXp": 1000,
+      "bonusMoney": 5000000
+    },
+    "before": 2500000,
+    "after": 2500000
+  },
+  {
+    "tool": "work",
+    "name": "1h / saúde7 / diamantes gastos",
+    "ref": 106,
+    "key": "spent",
+    "data": {
+      "health": 7,
+      "wage": 50000,
+      "bonusXp": 100,
+      "bonusMoney": 0,
+      "tax": 0,
+      "amount": 1,
+      "mode": "hours",
+      "type": "diamantes",
+      "payMode": "salary"
+    },
+    "before": 106,
+    "after": 106
+  },
+  {
+    "tool": "construction",
+    "name": "Escola0→2 / manutenção diária",
+    "ref": 6000,
+    "key": "daily_money",
+    "data": {
+      "days": 7,
+      "escolaCurrent": 0,
+      "escolaTarget": 2,
+      "baseCurrent": 0,
+      "baseTarget": 0,
+      "estradaCurrent": 0,
+      "estradaTarget": 0,
+      "hospitalCurrent": 0,
+      "hospitalTarget": 0
+    },
+    "before": 6000,
+    "after": 6000
+  },
+  {
+    "tool": "army",
+    "name": "10 infantarias / suprimentos100 / moedas",
+    "ref": 47500,
+    "key": "money",
+    "data": {
+      "supply": 100,
+      "infantry": 10,
+      "tank": 0,
+      "ship": 0,
+      "plane": 0,
+      "missile": 0,
+      "leatherPrice": 0,
+      "goldPrice": 0,
+      "ntePrice": 0,
+      "oilPrice": 0
+    },
+    "before": 47500,
+    "after": 47500
+  },
+  {
+    "tool": "xp",
+    "name": "100→101 XP / correção racional",
+    "ref": 62747892,
+    "key": "required",
+    "data": {
+      "current": 100,
+      "target": 101,
+      "progress": 0,
+      "daily": 0
+    },
+    "before": 62747892,
+    "after": 62747897
+  },
+  {
+    "tool": "account",
+    "name": "Ciência51→52 / demais1→2 / moedas",
+    "ref": 13500,
+    "key": "money",
+    "data": {
+      "class": "burocrata",
+      "education": 0,
+      "engineering": 0,
+      "premium": false,
+      "diamondPrice": 0,
+      "quartelCurrent": 1,
+      "quartelTarget": 2,
+      "militarCurrent": 1,
+      "militarTarget": 2,
+      "cienciaCurrent": 51,
+      "cienciaTarget": 52,
+      "suprimentosCurrent": 1,
+      "suprimentosTarget": 2
+    },
+    "before": 13500,
+    "after": 13500
+  }
+]
