@@ -165,3 +165,8 @@ Não foram repetidas as358 verificações novas da auditoria, as40 anteriores ne
 3. Depois: telas de fábrica, trabalho, tropas e construções descritas nos itens4–8. Para bonificações, basta também esclarecer a regra do acordo e a unidade remunerada.
 
 Oculte nomes/identificadores se desejar. **Não envie senhas, tokens ou cookies. Não é necessário gastar moeda ou executar as ações previstas nas telas.**
+
+
+## Decisão de referência — 29/10/2026
+
+Por autorização do responsável, DipTools passa a ser a referência de paridade para calculadoras equivalentes. A curva de XP foi ajustada na branch para reproduzir o arredondamento de ponto flutuante observado no DipTools: 100→101 = 62.747.892 XP e 96→97 = 16.333.792 XP. Os testes de regressão correspondentes foram atualizados. As seções anteriores registram o histórico da auditoria antes desta decisão e não descrevem mais a implementação atual de XP. Paridade integral de todos os cenários e execução da bateria completa após esta mudança ainda não foram comprovadas; manter PR em rascunho e acesso somente administrativo.
