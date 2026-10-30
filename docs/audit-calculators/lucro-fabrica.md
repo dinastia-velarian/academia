@@ -37,7 +37,7 @@ H = horas; J = trabalhos equivalentes; R = regeneração por ciclo de 6 minutos.
 
 - `node tests/factory-profit.mjs`: 55 casos aprovados; nenhum reprovado. Inclui sete cenários observados, zero, ausência de cotação, campos inativos, 25 combinações saúde/tipo com ida e volta entre horas/orçamento, inválidos e precisão extrema.
 - `node --check` nos dois scripts e `git diff --check`: aprovados.
-- Comparação estrutural das funções exportadas anteriores: todas idênticas à base. Worker, configuração Workers e student-hub sem diferença. Os 407 testes históricos não foram repetidos nesta execução.
+- Comparação estrutural das funções exportadas anteriores: todas idênticas à base. Worker, configuração Workers e student-hub sem diferença. Os 407 testes históricos não foram repetidos localmente. O CI existente executou automaticamente 39 checks de integração e 358 casos matemáticos, todos aprovados. Identificou uma expectativa antiga da versão dos assets no preflight: atualizada para v4-profit; os 11 checks de preflight passaram localmente após a correção.
 - Navegador na prévia: padrão24h; diamantes1h; produção1h com cotação/bônus; campo vazio; reset e atalho1h aprovados. Sem erro de aplicação observado. Emulação de dispositivo móvel não disponível nesta sessão; CSS responsivo existente preservado.
 - O novo cálculo é local, puro e sem rede, persistência, HTML dinâmico inseguro ou acesso a dados reais. Interface usa textContent. Nenhuma migração, alteração de autenticação, D1 ou R2.
 - A suíte nova foi adicionada ao workflow existente de CI; o resultado remoto deve ser verificado no PR.
