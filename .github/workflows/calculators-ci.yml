@@ -1,0 +1,48 @@
+name: Homologação das Calculadoras Velarian
+
+on:
+  pull_request:
+    paths:
+      - 'public/calculator-engine.js'
+      - 'public/calculators.js'
+      - 'public/ferramentas.asset'
+      - 'public/ferramentas.css'
+      - 'public/student-hub.js'
+      - 'worker.js'
+      - 'wrangler.jsonc'
+      - 'tests/calculators*.mjs'
+      - '.github/workflows/calculators-ci.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  calculators:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout with full history for baseline comparisons
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Node version and SQLite support
+        run: node --version && node -e "const {DatabaseSync}=require('node:sqlite'); if(!DatabaseSync) process.exit(1)"
+      - name: Original calculator integration suite
+        run: node tests/calculators.mjs
+      - name: Audit matrix (358 named cases)
+        run: node tests/calculators-audit.mjs
+      - name: PR preflight and admin isolation
+        run: node tests/calculators-preflight.mjs
+      - name: Preserve committed audit result consistency
+        run: |
+          git diff --exit-code -- docs/audit-calculators/results.json || {
+            echo "Audit results differ from committed report. Review before merging."
+            exit 1
+          }
