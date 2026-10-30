@@ -20,7 +20,25 @@ function army(d){const supply=num(d.supply,'Suprimentos',0,999,true),discount=su
 function work(d){if(d.payMode!==undefined&&!['salary','production'].includes(d.payMode))throw Error('Selecione uma remuneração válida.');const hp=num(d.health,'Regeneração a cada 6 min',3,7,true),wage=d.payMode==='production'?num(d.unitsPerJob,'Produção por trabalho')*num(d.unitPrice,'Cotação do produto'):num(d.wage,'Salário por trabalho'),bonusMoney=num(d.bonusMoney,'Valor do bônus'),bonusXp=bonusMoney?num(d.bonusXp,'EP por bônus',1):1,tax=pct(d.tax,'Imposto'),value=num(d.amount,'Quantidade do planejamento',0,1e7);if(!['hours','ep','diamonds'].includes(d.mode))throw Error('Selecione uma base de planejamento válida.');if(!['diamantes','outros'].includes(d.type))throw Error('Selecione um tipo de fábrica válido.');const rate=(100-hp*10/6)/5;let jobs=d.mode==='hours'?Math.floor(value*6):d.mode==='ep'?Math.floor(value/100):Math.floor(value/rate);if(d.mode==='diamonds')while(jobs>0&&Math.ceil((jobs*100-Math.floor(jobs*5/3)*hp)/5)>value)jobs--;const hours=jobs/6,ep=jobs*100,regen=Math.floor(jobs*5/3)*hp,spent=Math.ceil(Math.max(0,ep-regen)/5),earned=d.type==='diamantes'?jobs*20:0,base=jobs*wage,bonusPay=ep/bonusXp*bonusMoney;return checked({jobs,hours,ep,regen,spent,earned,netDiamonds:earned-spent,salary:base,bonusPay,tax:(base+bonusPay)*tax/100,netMoney:(base+bonusPay)*(1-tax/100)})}
 function account(d){let money=0,diamonds=0,seconds=0;for(const skill of ['quartel','militar','ciencia','suprimentos']){const r=skills({...d,skill,current:d[skill+'Current'],target:d[skill+'Target']});money+=r.money;diamonds+=r.diamonds;seconds+=r.seconds}const price=num(d.diamondPrice,'Preço de um diamante');return checked({money,diamonds,seconds,diamondsValue:diamonds*price})}
 function tax(d){const gross=num(d.gross,'Valor bruto'),f=pct(d.federal,'União'),p=pct(d.province,'Província');if(f+p>100)throw Error('A soma dos impostos não pode ultrapassar 100%.');return checked({federal:gross*f/100,province:gross*p/100,total:gross*(f+p)/100,net:gross*(1-(f+p)/100)})}
+// Continuous planning model; fractional work is an estimate, never an executable job.
+function factoryEarnings(d){
+ const hp=num(d.health,'Regeneração',3,7,true),amount=num(d.amount,'Quantidade',0,1e7);
+ if(!['hours','ep','diamonds'].includes(d.mode))throw Error('Selecione uma base de planejamento válida.');
+ if(!['diamantes','ouro','petroleo','nte','couro'].includes(d.type))throw Error('Selecione um tipo de fábrica válido.');
+ if(!['salary','production'].includes(d.payMode))throw Error('Selecione uma remuneração válida.');
+ for(const key of ['hasBonus','hasMarket','hasConversion'])if(typeof d[key]!=='boolean')throw Error('Selecione uma opção válida.');
+ const production=d.type!=='diamantes'&&d.payMode==='production';
+ const jobs=d.mode==='hours'?amount*6:d.mode==='ep'?amount/100:amount/((100-hp*10/6)/5),hours=jobs/6,ep=jobs*100,regen=hours*10*hp,spent=Math.max(0,(ep-regen)/5),earned=d.type==='diamantes'?jobs*20:0;
+ const produced=production?jobs*num(d.unitsPerJob,'Produção por trabalho'):0;
+ const salary=production?0:jobs*num(d.wage,'Salário por trabalho');
+ const marketValue=production&&d.hasMarket?produced*num(d.unitPrice,'Preço unitário'):0;
+ const bonusPay=d.hasBonus?ep/num(d.bonusXp,'EP por bônus',1)*num(d.bonusMoney,'Valor do bônus'):0;
+ const netMoney=salary+marketValue+bonusPay;
+ const r={jobs,hours,ep,regen,savedDiamonds:regen/5,spent,earned,netDiamonds:earned-spent,produced,salary,marketValue,bonusPay,moneyPerJob:jobs?netMoney/jobs:0,netMoney};
+ if(d.hasConversion)r.convertedValue=production&&!d.hasMarket?null:netMoney/1e6*num(d.conversionRate,'Cotação por milhão');
+ return checked(r)
+}
 function profit(d){const revenue=num(d.units,'Unidades')*num(d.price,'Preço unitário'),inputs=num(d.units,'Unidades')*num(d.materials,'Insumos'),wages=num(d.wages,'Salários'),other=num(d.other,'Outros custos'),tax=revenue*pct(d.rate,'Imposto')/100,cost=inputs+wages+other+tax;return checked({revenue,cost,tax,profit:revenue-cost,margin:revenue?(revenue-cost)/revenue*100:null,breakEven:num(d.units,'Unidades')&&Number(d.rate)<100?(inputs+wages+other)/(Number(d.units)*(1-Number(d.rate)/100)):null})}
 function resources(d){const missing=Math.max(0,num(d.required,'Necessário')-num(d.stock,'Estoque'));return checked({missing,cost:missing*num(d.unitPrice,'Preço unitário')})}
-root.VelarianMath=Object.freeze({num,skills,xp,factory,bonus,construction,army,work,account,tax,profit,resources});
+root.VelarianMath=Object.freeze({num,skills,xp,factory,bonus,construction,army,work,account,tax,profit,factoryEarnings,resources});
 })(typeof globalThis!=='undefined'?globalThis:this);

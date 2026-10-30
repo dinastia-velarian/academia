@@ -11,6 +11,7 @@ on:
       - 'worker.js'
       - 'wrangler.jsonc'
       - 'tests/calculators*.mjs'
+      - 'tests/factory-profit.mjs'
       - '.github/workflows/calculators-ci.yml'
   push:
     branches: [main]
@@ -42,3 +43,5 @@ jobs:
         run: node tests/calculators-preflight.mjs
       - name: Verify audit results
         run: node -e "const r=require('./docs/audit-calculators/results.json');if(Object.values(r.summary).some(x=>x.failed))process.exit(1)"
+      - name: Factory profit continuous model
+        run: node tests/factory-profit.mjs
