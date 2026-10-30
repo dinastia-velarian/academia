@@ -11,12 +11,11 @@ const tools=Array.from(context.reviewTools,t=>({id:t.id,name:t.name,category:t.c
 let count=0;const check=(name,fn)=>{fn();count++;console.log('PASS',name)};
 const expected={
  'Evolução da conta':['skills','xp','account'],
- 'Indústria':['factory','bonus'],
- 'Trabalho e economia':['work','tax','profit'],
- 'Governo e militar':['construction','army'],
- 'Comércio e recursos':['resources']};
-check('Exactly eleven unique tools, no removed calculators',()=>{assert.equal(tools.length,11);assert.equal(new Set(tools.map(t=>t.id)).size,11)});
-check('Exactly the five requested categories',()=>assert.deepEqual([...new Set(tools.map(t=>t.category))].sort(),Object.keys(expected).sort()));
+ 'Indústria':['factory'],
+ 'Trabalho e economia':['work'],
+ 'Governo e militar':['construction','army']};
+check('Exactly seven unique tools, four removed calculators',()=>{assert.equal(tools.length,7);assert.equal(new Set(tools.map(t=>t.id)).size,7)});
+check('Exactly four remaining categories',()=>assert.deepEqual([...new Set(tools.map(t=>t.category))].sort(),Object.keys(expected).sort()));
 for(const [category,ids]of Object.entries(expected))check('Category membership: '+category,()=>assert.deepEqual(tools.filter(t=>t.category===category).map(t=>t.id),ids));
 check('Calculator HTML has no student track section or track script',()=>{const s=read('public/ferramentas.asset');assert.ok(!/trackChoices|trackResult|gestao-trilhas|ferramentas\.js/.test(s));assert.match(s,/BETA PÚBLICO/)});
 check('Student tracks retain authenticated student API scope',()=>{const s=read('public/student-hub.js');assert.match(s,/request\('\/api\/student\/tracks'\)/);assert.match(s,/request\('\/api\/student\/tracks\/request'/)});
