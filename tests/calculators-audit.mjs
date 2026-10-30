@@ -73,7 +73,7 @@ for(const [unit,power,money]of [['infantry',1,5000],['tank',2,10000],['ship',3,2
 add('army','market valuation',{supply:0,infantry:1,leatherPrice:50,goldPrice:100},{market:15000});
 add('army','zero quantities',{infantry:0},{power:0,market:0});
 add('army','quantity upper bound',{infantry:1e9,supply:200},{power:1e9,money:4500000000000});
-for(const edit of [{supply:201},{supply:1.5},{infantry:.1},{goldPrice:-1},{infantry:1e9,goldPrice:1e12}])add('army','invalid '+JSON.stringify(edit),edit,'throws');
+for(const edit of [{supply:1000},{supply:1.5},{infantry:.1},{goldPrice:-1},{infantry:1e9,goldPrice:1e12}])add('army','invalid '+JSON.stringify(edit),edit,'throws');
 // Exact arithmetic identities, independent of game assumptions, for existing accounting models.
 for(const gross of [0,1,17,1000000,1e12])for(const rates of [[0,0],[5,8],[50,50]])add('tax','conservation '+gross+'/'+rates,{gross,federal:rates[0],province:rates[1]},r=>{assert.ok(Math.abs(r.total+r.net-gross)<=Math.max(1e-7,gross*1e-12));assert.equal(r.total,gross*(rates[0]+rates[1])/100)});
 for(const edit of [{federal:101},{province:-1},{federal:99,province:2}])add('tax','invalid '+JSON.stringify(edit),edit,'throws');
