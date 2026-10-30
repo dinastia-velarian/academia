@@ -13,9 +13,8 @@ const expected={
  'Evolução da conta':['skills','xp','account'],
  'Indústria':['factory'],
  'Trabalho e economia':['work'],
- 'Governo e militar':['construction','army'],
- 'Comércio e recursos':['resources']};
-check('Exactly seven unique tools, four removed calculators',()=>{assert.equal(tools.length,7);assert.equal(new Set(tools.map(t=>t.id)).size,11)});
+ 'Governo e militar':['construction','army']};
+check('Exactly seven unique tools, four removed calculators',()=>{assert.equal(tools.length,7);assert.equal(new Set(tools.map(t=>t.id)).size,7)});
 check('Exactly four remaining categories',()=>assert.deepEqual([...new Set(tools.map(t=>t.category))].sort(),Object.keys(expected).sort()));
 for(const [category,ids]of Object.entries(expected))check('Category membership: '+category,()=>assert.deepEqual(tools.filter(t=>t.category===category).map(t=>t.id),ids));
 check('Calculator HTML has no student track section or track script',()=>{const s=read('public/ferramentas.asset');assert.ok(!/trackChoices|trackResult|gestao-trilhas|ferramentas\.js/.test(s));assert.match(s,/BETA PÚBLICO/)});
