@@ -814,3 +814,22 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .admin-task-links button:hover,.admin-task-links button:focus-visible{border-color:#d9b56c}
 .admin-task-note{font-size:.8rem;color:#c4b39c;margin:12px 0 0}
 .admin-health{margin:16px 0 22px;border:1px solid #655037;border-radius:10px;padding:14px;color:#dfcba7}.admin-health summary{cursor:pointer;font-weight:600}.admin-health output{display:block;margin-top:10px;overflow-wrap:anywhere}
+
+/* Minha Academia — hierarquia visual limpa, foco no aprendizado */
+#studentDashboard{max-width:1120px;margin-inline:auto}
+#studentDashboard .student-quick-nav{margin:0 0 18px;gap:8px}
+#studentDashboard .student-quick-nav a{background:#241c17;border:1px solid #665137;border-radius:999px;padding:9px 17px;min-height:42px}
+#studentDashboard .student-dash-hero{border-radius:18px;overflow:hidden;margin-bottom:18px}
+#studentDashboard .student-dash-hero p{max-width:45ch}
+.student-overview-label{font-size:.85rem;font-weight:700;color:#d9b56c;letter-spacing:.045em;margin:18px 0 10px}
+#studentDashboard .student-dash-stats{margin-bottom:14px}
+#studentDashboard .student-dash-stats>div{border-radius:13px}
+#studentDashboard .student-lessons-heading{margin-top:28px}
+.student-certificate-details{margin:12px 0 16px;padding:12px 15px;border:1px solid #6d5435;border-radius:10px}
+.student-certificate-details summary{cursor:pointer;color:#e8cb8e;font-weight:600}
+.student-certificate-details p{margin:10px 0 0;line-height:1.6}
+.student-trade-disclosure{margin-top:26px;border:1px solid #59452f;border-radius:13px;padding:13px 16px}
+.student-trade-disclosure>summary{cursor:pointer;color:#e6cc95;font-weight:650;list-style-position:inside}
+.student-trade-disclosure[open]>summary{margin-bottom:15px}
+.student-trade-disclosure .student-trade{margin-top:0}
+@media(max-width:640px){#studentDashboard .student-dash-hero{padding:18px}#studentDashboard .student-quick-nav a{padding:8px 6px;font-size:.85rem}.student-trade-disclosure{padding:12px}}
