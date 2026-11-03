@@ -792,3 +792,13 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .admin-side-label{letter-spacing:.06em}
 .admin-page-head p{max-width:65ch}
 @media(max-width:720px){.admin-quick-links{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.admin-quick-links button{text-align:center;font-size:.82rem;padding:9px 5px}.admin-stat-grid article{min-width:0}}
+
+/* Organização progressiva dos painéis — mantém IDs e controles existentes */
+.admin-nav-group{margin:0 0 15px}
+.admin-nav-heading{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#c9aa69;padding:11px 12px 6px;font-weight:700}
+.admin-nav-group .admin-tabs button,.admin-nav-group>button{width:100%}
+.student-quick-nav{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 20px}
+.student-quick-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border:1px solid #80653d;border-radius:10px;color:#ebd49a;text-decoration:none;background:rgba(19,16,13,.7);font-weight:600}
+.student-quick-nav a:hover,.student-quick-nav a:focus-visible{border-color:#d9b56c;background:rgba(126,92,38,.18)}
+#studentLessonsHeading,#studentCertificateTitle,#studentNotices{scroll-margin-top:85px}
+@media(max-width:600px){.student-quick-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.student-quick-nav a{font-size:.82rem;padding:8px 5px;text-align:center}.admin-nav-heading{padding-top:15px}}
