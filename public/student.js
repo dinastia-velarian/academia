@@ -7,17 +7,17 @@ function organizeStudentDashboard(){
  const views={study:$('studentViewStudy'),certificate:$('studentViewCertificate'),community:$('studentViewCommunity'),account:$('studentViewAccount')};
  if(Object.values(views).some(x=>!x))return;
  const move=(selector,to)=>{const node=dashboard.querySelector(selector);if(node)views[to].appendChild(node)};
- ['#studentNotices','.student-dash-hero','.student-overview-label','.student-dash-stats','#studentStats','.student-track','.student-lessons-heading','#studentCourseList'].forEach(x=>move(x,'study'));
+ ['.student-dash-hero','.student-overview-label','.student-dash-stats','#studentStats','.student-track','.student-lessons-heading','#studentCourseList'].forEach(x=>move(x,'study'));
  move('.student-certificate','certificate');
  const hub=$('studentHubExtras');
  if(hub){const cert=hub.querySelector('.student-hub-cert');if(cert)views.certificate.appendChild(cert)}
- move('.student-trade-disclosure','community');move('#studentHubExtras','community');move('#studentCommentSection','community');
+ move('#studentNotices','community');move('.student-trade-disclosure','community');move('#studentHubExtras','community');move('#studentCommentSection','community');
  move('.student-password-settings','account');
  const nav=dashboard.querySelector('.student-quick-nav');
  const select=name=>{if(!views[name])return;for(const [key,view]of Object.entries(views))view.hidden=key!==name;nav.querySelectorAll('[data-student-view]').forEach(button=>{const active=button.dataset.studentView===name;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active))})};
  nav.addEventListener('click',event=>{const button=event.target.closest('[data-student-view]');if(button)select(button.dataset.studentView)});
  dashboard.addEventListener('click',event=>{const link=event.target.closest('a[href^="#student"]');if(!link)return;const id=link.getAttribute('href').slice(1);const target=document.getElementById(id);if(!target)return;for(const [name,view]of Object.entries(views))if(view.contains(target)){select(name);break}});
- dashboard.dataset.organized='true';select('study');
+ dashboard.dataset.organized='true';select('study');window.academiaSelectStudentView=select;
 }
 organizeStudentDashboard();
 
