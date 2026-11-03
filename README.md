@@ -15,7 +15,7 @@ Portal público de ensino de Diplomacia, com contas opcionais de alunos e admini
 
 Cloudflare Workers + D1. `wrangler.jsonc` publica `public/` e mantém o binding `DB` existente. **Não execute DROP TABLE, não recrie e não substitua o banco de produção.** As rotas `/admin`, `/admin/` e `/admin.html` devem passar pelo Worker antes do atendimento de arquivos estáticos.
 
-A existência de um commit no GitHub não comprova o deploy. Confirme no Cloudflare a revisão implantada, a versão ativa e os logs. Este repositório não possui workflows de GitHub Actions na revisão auditada; uma integração de build no Cloudflare, se houver, deve ser confirmada no painel do provedor.
+A existência de um commit no GitHub não comprova o deploy. Confirme no Cloudflare a revisão implantada, a versão ativa e os logs. Os workflows de GitHub Actions executam homologação das calculadoras e da plataforma; não publicam o Worker. Uma integração de build no Cloudflare, se houver, deve ser confirmada no painel do provedor.
 
 Não altere credenciais, segredos ou permissões existentes durante homologação sem autorização do responsável.
 
@@ -36,3 +36,9 @@ O adaptador D1 local valida a lógica SQL e as respostas do Worker, mas não sub
 ## Homologação em produção
 
 Use duas contas de teste identificadas como QA. Verifique cadastro, login, logout, persistência, isolamento, fronteira de 80%, rejeição e reenvio, aprovação e download de PDF. Não utilize dados ou pedidos reais. Faça o teste administrativo com uma sessão existente autorizada, sem criar privilégios adicionais. Registre a revisão e versão ativa do Worker antes e depois do deploy.
+
+## Documento administrativo servido
+
+O Worker entrega `public/admin-panel.asset` somente à sessão administrativa; `/admin.html` e o asset interno direto permanecem bloqueados. Mantenha `admin.html` e `admin-panel.asset` sincronizados; o teste de homologação verifica essa igualdade. Atualizar apenas admin.html não altera o painel servido.
+
+Consulte `docs/audit-platform/homologacao-20261102.md` para evidências, limitações e plano de publicação.

@@ -1,0 +1,26 @@
+name: Homologação da plataforma
+on:
+  pull_request:
+    paths: ['worker.js', 'public/**', 'tests/**', 'schema.sql', 'wrangler.jsonc', '.github/workflows/platform-ci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  platform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Server, authentication and certificates
+        run: node tests/audit.mjs
+      - name: Permission matrix, metrics and non-destructive workflows
+        run: node tests/platform-homologation.mjs
+      - name: Student interface
+        run: node tests/student-ui.mjs && node tests/student-hub.mjs
+      - name: Curriculum and generated certificate
+        run: node tests/homologacao-final.mjs
+      - name: Building arithmetic regression
+        run: node tests/calculator-regression.js
