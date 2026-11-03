@@ -814,3 +814,12 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .admin-task-links button:hover,.admin-task-links button:focus-visible{border-color:#d9b56c}
 .admin-task-note{font-size:.8rem;color:#c4b39c;margin:12px 0 0}
 .admin-health{margin:16px 0 22px;border:1px solid #655037;border-radius:10px;padding:14px;color:#dfcba7}.admin-health summary{cursor:pointer;font-weight:600}.admin-health output{display:block;margin-top:10px;overflow-wrap:anywhere}
+/* Keep every administrative section reachable in short and narrow viewports. */
+.admin-sidebar{max-height:100dvh;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box}
+.admin-sidebar>*{flex-shrink:0}
+@media(max-width:760px){
+ .admin-sidebar .admin-tabs{display:flex;flex-direction:column;align-items:stretch;overflow:visible;white-space:normal;width:100%}
+ .admin-sidebar .admin-tabs .admin-nav-group{display:block;flex:none;width:100%}
+ .admin-sidebar .admin-tabs .admin-nav-group>button{display:block;width:100%;white-space:normal;text-align:left}
+ .admin-sidebar .admin-tabs .admin-nav-heading{display:block;white-space:normal}
+}
