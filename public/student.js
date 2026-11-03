@@ -2,6 +2,25 @@
 const root=document.getElementById('studentArea');if(!root)return;
 const $=id=>document.getElementById(id);
 let user=null,completed=new Set(),curriculum=null,certificateEligibility=null;
+function organizeStudentDashboard(){
+ const dashboard=$('studentDashboard');if(!dashboard||dashboard.dataset.organized)return;
+ const views={study:$('studentViewStudy'),certificate:$('studentViewCertificate'),community:$('studentViewCommunity'),account:$('studentViewAccount')};
+ if(Object.values(views).some(x=>!x))return;
+ const move=(selector,to)=>{const node=dashboard.querySelector(selector);if(node)views[to].appendChild(node)};
+ ['#studentNotices','.student-dash-hero','.student-overview-label','.student-dash-stats','#studentStats','.student-track','.student-lessons-heading','#studentCourseList'].forEach(x=>move(x,'study'));
+ move('.student-certificate','certificate');
+ const hub=$('studentHubExtras');
+ if(hub){const cert=hub.querySelector('.student-hub-cert');if(cert)views.certificate.appendChild(cert)}
+ move('.student-trade-disclosure','community');move('#studentHubExtras','community');move('#studentCommentSection','community');
+ move('.student-password-settings','account');
+ const nav=dashboard.querySelector('.student-quick-nav');
+ const select=name=>{if(!views[name])return;for(const [key,view]of Object.entries(views))view.hidden=key!==name;nav.querySelectorAll('[data-student-view]').forEach(button=>{const active=button.dataset.studentView===name;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active))})};
+ nav.addEventListener('click',event=>{const button=event.target.closest('[data-student-view]');if(button)select(button.dataset.studentView)});
+ dashboard.addEventListener('click',event=>{const link=event.target.closest('a[href^="#student"]');if(!link)return;const id=link.getAttribute('href').slice(1);const target=document.getElementById(id);if(!target)return;for(const [name,view]of Object.entries(views))if(view.contains(target)){select(name);break}});
+ dashboard.dataset.organized='true';select('study');
+}
+organizeStudentDashboard();
+
 function route(){const show=location.hash==='#minha-academia';root.hidden=!show;document.body.classList.toggle('student-page-mode',show);if(show)window.scrollTo({top:0,behavior:'instant'})}
 window.addEventListener('hashchange',route);route();
 async function api(path,method='GET',data){const r=await fetch('/api/student/'+path,{method,credentials:'same-origin',headers:data?{'content-type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const b=await r.json();if(!r.ok)throw Error(b.error||'Erro na solicitação');return b}
