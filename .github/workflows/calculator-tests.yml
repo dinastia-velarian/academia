@@ -1,0 +1,25 @@
+name: Regressão das calculadoras
+on:
+  push:
+    paths:
+      - 'public/calculator-engine.js'
+      - 'tests/calculator-regression.js'
+      - '.github/workflows/calculator-tests.yml'
+  pull_request:
+    paths:
+      - 'public/calculator-engine.js'
+      - 'tests/calculator-regression.js'
+      - '.github/workflows/calculator-tests.yml'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Executar regressões
+        run: node tests/calculator-regression.js
