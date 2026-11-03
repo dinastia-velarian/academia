@@ -856,3 +856,9 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 #studentViewCommunity .student-hub-extras>.student-hub-cert{display:none}
 @media(max-width:650px){#studentDashboard .student-quick-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}#studentDashboard .student-view-tab{min-height:44px;font-size:.88rem}#studentViewStudy .student-dash-stats{gap:7px}#studentViewStudy .student-dash-stats>div{padding:11px 8px}#studentViewStudy .student-dash-stats strong{font-size:1.4rem}#studentViewStudy .student-dash-hero img{display:none}}
 @media(prefers-reduced-motion:reduce){#studentDashboard .student-view{animation:none}}
+
+/* Conta do aluno: informações essenciais sem painel duplicado */
+#studentViewAccount .student-account-intro{max-width:640px;margin:0 auto 16px;padding:20px 22px;border:1px solid #56432e;border-radius:14px;background:#211a15}
+#studentViewAccount .student-account-intro h3{margin:0 0 6px;color:#f0d8a5}
+#studentViewAccount .student-account-intro p{margin:0;color:#c6b7a0}
+#studentViewAccount .student-account-logout{display:block;margin:18px auto 0;max-width:640px;width:100%;min-height:44px}
