@@ -802,3 +802,6 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .student-quick-nav a:hover,.student-quick-nav a:focus-visible{border-color:#d9b56c;background:rgba(126,92,38,.18)}
 #studentLessonsHeading,#studentCertificateTitle,#studentNotices{scroll-margin-top:85px}
 @media(max-width:600px){.student-quick-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.student-quick-nav a{font-size:.82rem;padding:8px 5px;text-align:center}.admin-nav-heading{padding-top:15px}}
+
+/* Grupos compactos em telas estreitas, sem ocultar opções administrativas */
+@media(max-width:900px){.admin-workspace .admin-tabs .admin-nav-group{display:flex;align-items:center;gap:5px;flex:0 0 auto}.admin-workspace .admin-tabs .admin-nav-heading{white-space:nowrap;padding:7px 9px;font-size:.67rem}.admin-workspace .admin-tabs .admin-nav-group>button{width:auto;flex:0 0 auto}}
