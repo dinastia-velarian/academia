@@ -774,3 +774,13 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .calc-help summary{cursor:pointer;color:var(--gold);font-size:.92rem;font-weight:600}
 .calc-help p{margin:8px 0 0;max-width:68ch}
 @media(max-width:600px){.hero .actions{flex-direction:column;align-items:stretch}.hero .actions>a{text-align:center;justify-content:center;min-height:44px}}
+
+/* Academia Velarian — atalhos, navegação e leitura simplificada */
+.academy-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 24px}
+.academy-shortcuts a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:52px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-weight:700;color:var(--cream)}
+.academy-shortcuts a:hover,.academy-shortcuts a:focus-visible{border-color:var(--gold);color:var(--gold);outline-offset:3px}
+.calc-nav-title{font-size:.82rem;letter-spacing:.04em;font-weight:700;color:var(--gold);margin:0 0 8px}
+.calc-tool{min-height:44px}
+.calc-form input,.calc-form select,.student-form input{min-height:44px}
+.calc-form details summary{cursor:pointer}
+@media(max-width:700px){.academy-shortcuts{grid-template-columns:1fr;gap:8px}.academy-shortcuts a{justify-content:flex-start}.calc-toolbar input{width:100%;min-width:0}.calc-actions button{min-height:44px}}
