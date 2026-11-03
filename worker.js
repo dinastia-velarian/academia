@@ -3,7 +3,8 @@ const adminOwner=u=>usernameKey(u?.username)==='victor velarian';
 async function adminPermissions(env,u){
  if(adminOwner(u))return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,true]));
  const row=await env.DB.prepare('SELECT value FROM settings WHERE key=?').bind('admin_permissions:'+u.id).first();
- if(!row)return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,true]));
+ // Sem configuração explícita, negar permissões para evitar escalada de privilégios.
+ if(!row)return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,false]));
  try{const saved=JSON.parse(row.value);return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,saved[k]===true]))}catch{return Object.fromEntries(ADMIN_PERMISSION_KEYS.map(k=>[k,false]))}
 }
 function permissionFor(path,method){
