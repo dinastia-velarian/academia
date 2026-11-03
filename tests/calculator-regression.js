@@ -11,6 +11,10 @@ let count=0;
 function check(name,fn){fn();count++;console.log('OK',name)}
 check('Hospital base: cinco unidades',()=>{const r=math.construction(buildings(274,279));assert.equal(r.money,550000);assert.equal(r.gold,2200);assert.equal(r.nte,2500);assert.equal(r.oil,1500)});
 check('Multiplicador informado: duas vezes',()=>{const r=math.construction(buildings(274,279,2));assert.equal(r.money,1100000);assert.equal(r.gold,4400);assert.equal(r.nte,5000);assert.equal(r.oil,3000)});
+check('Modelo progressivo: hospitais 274 a 279 reproduz exemplo observado',()=>{const r=math.construction({...buildings(274,279),costMode:'progressive'});assert.ok(Math.abs(r.money-1144000)<1e-6);assert.ok(Math.abs(r.gold-4576)<1e-6);assert.ok(Math.abs(r.nte-5200)<1e-6);assert.ok(Math.abs(r.oil-3120)<1e-6)});
+check('Modelo progressivo: limite de 25 unidades',()=>{const r=math.construction({...buildings(24,26),costMode:'progressive'});assert.ok(Math.abs(r.money-231000)<1e-6)});
+check('Modelo progressivo: zero unidades não custa',()=>{const r=math.construction({...buildings(0,0),costMode:'progressive'});assert.equal(r.money,0)});
+check('Modo de custo desconhecido é rejeitado',()=>assert.throws(()=>math.construction({...buildings(0,1),costMode:'invalid'}),/Modo de custo/));
 check('Sem novas construções: custo de compra zero',()=>{const r=math.construction(buildings(10,10));assert.equal(r.money,0);assert.ok(r.daily_money>0)});
 check('Alvo inferior ao atual é inválido',()=>assert.throws(()=>math.construction(buildings(11,10)),/nível alvo/));
 check('Multiplicador inferior a um é inválido',()=>assert.throws(()=>math.construction(buildings(0,1,0.9)),/Multiplicador/));
