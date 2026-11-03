@@ -833,3 +833,26 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .student-trade-disclosure[open]>summary{margin-bottom:15px}
 .student-trade-disclosure .student-trade{margin-top:0}
 @media(max-width:640px){#studentDashboard .student-dash-hero{padding:18px}#studentDashboard .student-quick-nav a{padding:8px 6px;font-size:.85rem}.student-trade-disclosure{padding:12px}}
+
+/* Redesenho estrutural Minha Academia: quatro espaços, sem blocos empilhados */
+#studentDashboard{max-width:1040px;margin:0 auto}
+#studentDashboard .student-quick-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:5px;margin:0 0 24px;border:1px solid #45372b;border-radius:14px;background:#171310}
+#studentDashboard .student-view-tab{appearance:none;min-height:48px;border:0;border-radius:10px;background:transparent;color:#bfb1a0;font:inherit;font-weight:650;cursor:pointer;padding:10px 12px;transition:background .15s,color .15s}
+#studentDashboard .student-view-tab:hover{background:#30251d;color:#f3e4c9}
+#studentDashboard .student-view-tab.is-active{background:#a87b36;color:#100e0c;box-shadow:0 2px 8px #0004}
+#studentDashboard .student-view[hidden]{display:none!important}
+#studentDashboard .student-view{min-width:0;animation:studentPanelIn .18s ease-out}
+@keyframes studentPanelIn{from{opacity:.7;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+#studentViewStudy .student-dash-hero{margin:0 0 20px;min-height:190px;background:#211913;border:1px solid #53412d;box-shadow:none}
+#studentViewStudy .student-dash-hero img{max-height:150px;object-fit:contain;opacity:.8}
+#studentViewStudy .student-dash-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#studentViewStudy .student-dash-stats>div{min-width:0;background:#211b16;border:1px solid #4e3e2b;box-shadow:none;padding:16px}
+#studentViewStudy .student-dash-stats small{font-size:.72rem;letter-spacing:.035em}
+#studentViewStudy .student-lessons-heading{margin:28px 0 15px}
+#studentViewCertificate>.student-certificate,#studentViewCertificate>.student-hub-cert,#studentViewCommunity>.student-hub-extras,#studentViewCommunity>.student-comment-section{margin:0 0 18px}
+#studentViewCertificate>.student-certificate,#studentViewCertificate>.student-hub-cert{max-width:100%;border-radius:14px}
+#studentViewCommunity .student-trade-disclosure{margin:0 0 20px}
+#studentViewAccount .student-password-settings{max-width:640px;margin:0 auto}
+#studentViewCommunity .student-hub-extras>.student-hub-cert{display:none}
+@media(max-width:650px){#studentDashboard .student-quick-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}#studentDashboard .student-view-tab{min-height:44px;font-size:.88rem}#studentViewStudy .student-dash-stats{gap:7px}#studentViewStudy .student-dash-stats>div{padding:11px 8px}#studentViewStudy .student-dash-stats strong{font-size:1.4rem}#studentViewStudy .student-dash-hero img{display:none}}
+@media(prefers-reduced-motion:reduce){#studentDashboard .student-view{animation:none}}
