@@ -784,3 +784,11 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 .calc-form input,.calc-form select,.student-form input{min-height:44px}
 .calc-form details summary{cursor:pointer}
 @media(max-width:700px){.academy-shortcuts{grid-template-columns:1fr;gap:8px}.academy-shortcuts a{justify-content:flex-start}.calc-toolbar input{width:100%;min-width:0}.calc-actions button{min-height:44px}}
+
+/* Painel administrativo: acesso rápido, sem remover ferramentas existentes */
+.admin-quick-links{display:grid;grid-template-columns:1fr;gap:7px;margin:8px 0 20px}
+.admin-quick-links button{width:100%;min-height:42px;padding:10px 14px;text-align:left;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--cream);font:inherit;cursor:pointer}
+.admin-quick-links button:hover,.admin-quick-links button:focus-visible{border-color:var(--gold);color:var(--gold)}
+.admin-side-label{letter-spacing:.06em}
+.admin-page-head p{max-width:65ch}
+@media(max-width:720px){.admin-quick-links{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.admin-quick-links button{text-align:center;font-size:.82rem;padding:9px 5px}.admin-stat-grid article{min-width:0}}
