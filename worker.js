@@ -16,7 +16,7 @@ function permissionFor(path,method){
  if(path.includes('comment'))return 'comments';
  if(path.includes('statistics')||path.includes('history')||path.includes('backup'))return 'reports';
  if(path.includes('media'))return 'media';
- if(path.includes('sponsors'))return 'content';
+ if(path.includes('sponsors'))return 'settings';
  if(path.includes('settings'))return 'settings';
  if(path.includes('topic')||path.includes('lesson')||path.includes('catalog')||path.includes('content'))return 'content';
  return null;
