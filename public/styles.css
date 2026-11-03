@@ -805,3 +805,12 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 
 /* Grupos compactos em telas estreitas, sem ocultar opções administrativas */
 @media(max-width:900px){.admin-workspace .admin-tabs .admin-nav-group{display:flex;align-items:center;gap:5px;flex:0 0 auto}.admin-workspace .admin-tabs .admin-nav-heading{white-space:nowrap;padding:7px 9px;font-size:.67rem}.admin-workspace .admin-tabs .admin-nav-group>button{width:auto;flex:0 0 auto}}
+
+/* Central de trabalho e diagnóstico administrativo */
+.admin-task-center{margin:20px 0;padding:20px;border:1px solid #665037;border-radius:14px;background:rgba(25,19,15,.65)}
+.admin-task-heading h3{margin:0 0 5px;color:#ebd49a}.admin-task-heading p{margin:0 0 15px;color:#c7b8a1}
+.admin-task-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:9px}
+.admin-task-links button{min-height:44px;padding:11px 13px;text-align:left;background:#261d18;border:1px solid #745b3d;border-radius:9px;color:#f0d8a5;cursor:pointer;font:inherit}
+.admin-task-links button:hover,.admin-task-links button:focus-visible{border-color:#d9b56c}
+.admin-task-note{font-size:.8rem;color:#c4b39c;margin:12px 0 0}
+.admin-health{margin:16px 0 22px;border:1px solid #655037;border-radius:10px;padding:14px;color:#dfcba7}.admin-health summary{cursor:pointer;font-weight:600}.admin-health output{display:block;margin-top:10px;overflow-wrap:anywhere}
