@@ -12,6 +12,7 @@ Base examinada: `4c335de4ee5be87f2be18437da42f486bc13bf65`, branch main de `dina
 |---|---|
 | Central de trabalho, agrupamento de menus e métricas por área ausentes no painel servido | As melhorias estavam em `admin.html`, mas o Worker serve `admin-panel.asset` e bloqueia /admin.html. Sincronizados os documentos, preservando todos os IDs anteriores, e atualizado o cache. Teste impede nova divergência. Não foi removida a proteção do arquivo interno. |
 | Opções administrativas inacessíveis no fim da tela | Reprodução no navegador: lateral maior que a janela, sem rolagem própria. Adicionada rolagem vertical; em largura móvel, removida disposição horizontal conflitante dos grupos. A aba Administradores também passa a fechar o menu móvel. |
+| Rota /admin/ carregava scripts, estilos e imagens a partir de /admin/... | Referências dos assets administrativos passaram a ser absolutas na raiz. Teste verifica resolução de todas as URLs nessa rota. |
 | Lançamentos financeiros válidos rejeitados | Expressão regular continha barras invertidas duplicadas. Corrigida para aceitar inteiros e até três casas decimais, preservando os limites existentes. |
 | Configurações parcialmente publicadas após erro | Um campo era gravado antes de validar o próximo. Agora todos são validados antes do batch atômico. Teste verifica que título anterior fica intacto ao rejeitar finanças inválidas. |
 | Novos alunos incluíam contas antigas | Comparação de data SQLite textual com timestamp numérico. Corrigida comparação usando data UTC no mesmo formato. |
@@ -31,7 +32,7 @@ As contagens são casos nomeados; alguns verificam vários parâmetros. O execut
 | Suíte | Aprovados | Reprovados finais | Cobertura |
 |---|---:|---:|---|
 | audit.mjs | 28 | 0 | Cadastro, login, logout, sessão expirada, isolamento, 80%, certificado, PDF, bloqueio e rate limit |
-| platform-homologation.mjs | 55 | 0 | Nove permissões individuais, proprietário, CSRF, configurações atômicas, finanças, métricas, trilhas, mudança de senha, conteúdo, avisos, sugestões, patrocínios, documentos internos e CSV |
+| platform-homologation.mjs | 56 | 0 | Nove permissões individuais, proprietário, CSRF, configurações atômicas, finanças, métricas, trilhas, mudança de senha, conteúdo, avisos, sugestões, patrocínios, documentos internos e CSV |
 | student-ui.mjs | 2 | 0 | Elegibilidade 60→80→60% sem recarga e escape de conteúdo |
 | student-hub.mjs | 5 | 0 | Certificado, troca de conta, reenvio e integração pública |
 | homologacao-final.mjs | 9 | 0 | Currículo canônico, rotas administrativas e PDF imperial |
@@ -40,11 +41,11 @@ As contagens são casos nomeados; alguns verificam vários parâmetros. O execut
 | calculators-audit.mjs | 358 | 0 | Matriz matemática existente, incluindo casos extremos e precisão |
 | factory-profit.mjs | 55 | 0 | Projeção contínua, produção, bônus, cenários de referência e inválidos |
 | calculator-regression.js | 7 | 0 | Aritmética de edifícios, multiplicador manual e Suprimentos 999 |
-| **Total** | **569** | **0** | Não equivale à confirmação oficial das fórmulas do jogo |
+| **Total** | **570** | **0** | Não equivale à confirmação oficial das fórmulas do jogo |
 
 Verificação de sintaxe: Worker e 21 scripts públicos, sem falhas. `git diff --check` aprovado. As verificações matemáticas históricas foram executadas uma vez nesta homologação completa; novas execuções locais ficaram limitadas aos testes afetados por correções. O CI existente poderá repeti-las automaticamente.
 
-O primeiro teste amplo encontrou 16 falhas em 47 casos. As correções foram verificadas, a matriz foi ampliada e os 55 casos finais passaram. Falhas de expectativa do próprio teste (como status 201 em rota que retorna 200) foram corrigidas sem alterar a API para satisfazer o teste.
+O primeiro teste amplo encontrou 16 falhas em 47 casos. As correções foram verificadas, a matriz foi ampliada e os 56 casos finais passaram. Falhas de expectativa do próprio teste (como status 201 em rota que retorna 200) foram corrigidas sem alterar a API para satisfazer o teste.
 
 ## Interface e funcionalidades
 
@@ -97,3 +98,5 @@ Evidência necessária, sem gastar recursos: capturas de prévias do jogo para1 
 1. Disponibilizar o caminho de publicação já autorizado no Cloudflare (sessão/conexão segura ou pipeline existente), para publicar e confirmar versão e testes finais. Não enviar tokens/senhas pelo chat.
 2. Fornecer as prévias de edifícios descritas acima para validar a regra de faixas e manutenção. A aritmética atual está testada; a mecânica automática ainda não.
 3. Se desejar validação integral de sessão/cookies no ambiente real: disponibilizar duas contas QA e uma conta administrativa adicional já configurada, sem elevar privilégios ou usar contas de alunos reais. Esta etapa não foi declarada concluída.
+
+Verificação remota inicial: os workflows de homologação da plataforma e das calculadoras passaram no commit 9c1d621. A revisão final acrescentou a correção de assets em /admin/ e seu teste; verificar o CI também no novo head do PR.
