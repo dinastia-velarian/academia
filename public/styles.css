@@ -765,3 +765,12 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
  body.admin-mode #admin .admin-info{width:100%;max-width:100%;min-width:0;box-sizing:border-box}
  body.admin-mode #admin .admin-topline{flex-wrap:wrap}
 }
+
+/* UX simplificada: foco nos caminhos principais e ajuda sob demanda. */
+.hero .actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.hero .actions .secondary{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-weight:700;text-decoration:none}
+.hero .actions .secondary:hover,.hero .actions .secondary:focus-visible{background:rgba(217,180,92,.12)}
+.calc-help{margin:6px 0 18px;color:var(--muted)}
+.calc-help summary{cursor:pointer;color:var(--gold);font-size:.92rem;font-weight:600}
+.calc-help p{margin:8px 0 0;max-width:68ch}
+@media(max-width:600px){.hero .actions{flex-direction:column;align-items:stretch}.hero .actions>a{text-align:center;justify-content:center;min-height:44px}}
