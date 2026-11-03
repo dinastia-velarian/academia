@@ -370,10 +370,10 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   }else if(kind==='certificate'){
    if(!['approved','rejected','pending'].includes(b?.status))return fail('Status inválido.');
    const target=await env.DB.prepare('SELECT user_id FROM academy_certificates WHERE id=?').bind(id).first();if(!target)return fail('Solicitação não encontrada.',404);
-   if(b.status==='approved'){const eligibility=await certificateEligibility(env,target.user_id);if(!eligibility.eligible)return fail('Aluno não atende ao requisito de 80% das aulas disponíveis.',409)}
+   if(b.status==='approved'){if(b.levelVerified!==true||b.skillsVerified!==true||b.feeVerified!==true)return fail('Confirme nível 50, habilidades 100 e taxa de emissão antes de aprovar.',400);const eligibility=await certificateEligibility(env,target.user_id);if(!eligibility.eligible)return fail('Aluno não atende ao requisito de 80% das aulas disponíveis.',409)}
    await env.DB.prepare('UPDATE academy_certificates SET status=?,updated_at=? WHERE id=?').bind(b.status,Date.now(),id).run();
   }else return fail('Ação inválida.');
-  await hubLog(env,null,user.username,'admin_'+kind,id||String(b.title||''));return json({ok:true});
+  await hubLog(env,null,user.username,'admin_'+kind,id||String(b.title||''));if(kind==='certificate'&&b.status==='approved')await hubLog(env,null,user.username,'certificate_requirements_verified','Nível 50, habilidades 100 e taxa de emissão conferidos para '+id);return json({ok:true});
  }
  if(path==='/api/admin/student-profile'&&method==='GET'){
   const id=String(url.searchParams.get('id')||'');const u=await env.DB.prepare("SELECT id,username,created_at AS createdAt FROM users WHERE id=? AND role='student'").bind(id).first();if(!u)return fail('Aluno não encontrado.',404);
