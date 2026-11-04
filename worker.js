@@ -39,7 +39,8 @@ async function derive(password,salt,iterations=iter){const key=await crypto.subt
 async function body(request){if(Number(request.headers.get('content-length')||0)>120000)return null;try{return await request.json()}catch{return null}}
 function safeUrl(s){if(!s)return '';try{const u=new URL(s);return u.protocol==='https:'?u.href:''}catch{return ''}}
 function imageUrl(s){if(!s)return '';if(/^\/(?:media|assets)\/[\w.\-\/]+$/.test(s))return s;return safeUrl(s)}
-function videoUrl(s){if(!s)return '';try{const u=new URL(s);return u.protocol==='https:'&&['www.youtube.com','youtube.com','youtu.be','www.youtube-nocookie.com'].includes(u.hostname)?u.href:''}catch{return ''}}
+function youtubeId(s){if(!s)return '';try{const u=new URL(String(s).trim());if(u.protocol!=='https:')return '';const host=u.hostname.toLowerCase().replace(/^(www\.|m\.)/,'');const segments=u.pathname.split('/').filter(Boolean);const id=host==='youtu.be'?segments[0]:['youtube.com','youtube-nocookie.com'].includes(host)?(u.searchParams.get('v')||(['shorts','live','embed'].includes(segments[0])?segments[1]:'')):'';return /^[A-Za-z0-9_-]{11}$/.test(id||'')?id:''}catch{return ''}}
+function videoUrl(s){const id=youtubeId(s);return id?'https://www.youtube.com/watch?v='+id:''}
 function originOK(req){const origin=req.headers.get('origin');return !origin||origin===new URL(req.url).origin}
 async function current(req,env){const cookie=req.headers.get('cookie')||'';const m=cookie.match(/(?:^|;\s*)av_session=([a-f0-9]{64})(?:;|$)/);if(!m)return null;const hash=await sha(m[1]);return env.DB.prepare('SELECT u.id,u.username,u.role FROM sessions s JOIN users u ON u.id=s.user_id WHERE s.id_hash=? AND s.expires_at>?').bind(hash,Date.now()).first()}
 function setCookie(t,maxAge){return `av_session=${t}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`}
