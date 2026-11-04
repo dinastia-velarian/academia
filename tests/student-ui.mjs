@@ -1,15 +1,16 @@
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
+// This unit fixture isolates progress rendering. Real tab organization is covered in design-browser.mjs.
 class Element {
- constructor(){this.hidden=false;this.attrs={};this.style={};this.children=[];this.classList={toggle(){}};this.textContent=''}
+ constructor(){this.hidden=false;this.dataset={};this.parentElement={setAttribute(){}};this.attrs={};this.style={};this.children=[];this.classList={toggle(){}};this.textContent=''}
  addEventListener(){} setAttribute(k,v){this.attrs[k]=v} append(...xs){this.children.push(...xs)} replaceChildren(...xs){this.children=xs} querySelector(){return new Element()}
 }
 const nodes=new Map();const element=id=>{if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id)};
 let done=new Set(['t0-l0','t0-l1','t0-l2']);
 const courses=[{title:'Test',lessons:['A','B','C','D','E']}];
 const approved={items:courses[0].lessons.map((title,index)=>({topic:0,index,title}))};
-const context={document:{getElementById:element,createElement:()=>new Element(),body:{classList:{toggle(){}}}},location:{hash:'#minha-academia'},window:{addEventListener(){},scrollTo(){}},courses,fetch:async(url,options={})=>{
+const context={document:{getElementById:id=>id.startsWith('studentView')?null:element(id),createElement:()=>new Element(),body:{classList:{toggle(){}}}},location:{hash:'#minha-academia'},window:{addEventListener(){},scrollTo(){}},courses,fetch:async(url,options={})=>{
  let data={};if(url.endsWith('/me'))data={user:{id:'A',username:'QA UI'}};
  else if(url.endsWith('/progress')){if(options.method==='POST'){const p=JSON.parse(options.body);if(p.completed)done.add(p.lessonKey);else done.delete(p.lessonKey)}data={items:[...done].map(lesson_key=>({lesson_key}))}}
  else if(url.endsWith('/certificate-eligibility'))data={total:5,required:4,completed:done.size,eligible:done.size>=4};

@@ -55,12 +55,12 @@ tab.addEventListener('click',()=>{
  document.querySelectorAll('.admin-section').forEach(el=>el.hidden=true);
  panel.hidden=false;
  document.querySelectorAll('[data-tab]').forEach(el=>el.classList.remove('active'));
- tab.classList.add('active');
+ tab.classList.add('active');tab.setAttribute('aria-current','page');document.querySelectorAll('[data-tab]').forEach(node=>node.removeAttribute('aria-current'));window.academiaCloseAdminNav?.();
  document.getElementById('adminPageTitle').textContent='Administradores';
  document.getElementById('adminPageDescription').textContent='Controle de acesso e permissões por administrador.';
  refresh();
 });
-document.querySelectorAll('[data-tab]').forEach(el=>el.addEventListener('click',()=>{panel.hidden=true;tab.classList.remove('active')}));
+document.querySelectorAll('[data-tab]').forEach(el=>el.addEventListener('click',()=>{panel.hidden=true;tab.classList.remove('active');tab.removeAttribute('aria-current')}));
 document.getElementById('adminCreateForm').addEventListener('submit',async e=>{
  e.preventDefault();
  const form=e.currentTarget;
