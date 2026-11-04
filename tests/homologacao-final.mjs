@@ -1,7 +1,8 @@
+import {workerSource} from './helpers/worker-source.mjs';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 import assert from 'node:assert/strict';
-const source=readFileSync(new URL('../worker.js',import.meta.url),'utf8');
+const source=workerSource();
 const mod=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {publishedCurriculum,certificateEligibility,generatedCertificatePdf};').toString('base64'));
 const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../schema.sql',import.meta.url),'utf8'));
 class Stmt{constructor(q){this.q=q;this.args=[]}bind(...a){this.args=a;return this}async all(){return {results:db.prepare(this.q).all(...this.args)}}async first(){return db.prepare(this.q).get(...this.args)||null}async run(){return {meta:{changes:db.prepare(this.q).run(...this.args).changes}}}}

@@ -1,3 +1,4 @@
+import {workerSource} from './helpers/worker-source.mjs';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
@@ -44,7 +45,7 @@ await test('Worker production payout uses only supplied quantities and market pr
 // Worker gates tested against an isolated in-memory database. No production changes.
 const db=new DatabaseSync(':memory:');db.exec(readFileSync(new URL('../schema.sql',import.meta.url),'utf8'));
 class Stmt{constructor(q){this.q=q}bind(...args){this.args=args;return this}async first(){return db.prepare(this.q).get(...this.args)||null}}
-const source=readFileSync(new URL('../worker.js',import.meta.url),'utf8');const worker=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).default;
+const source=workerSource();const worker=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).default;
 let calls=0;const env={DB:{prepare:q=>new Stmt(q)},ASSETS:{fetch:async request=>{calls++;return new Response('test-only-asset',{headers:{'content-type':'application/javascript'}})}}};
 const token='a'.repeat(64),hash=Buffer.from(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(token))).toString('hex');
 db.prepare("INSERT INTO users(id,username,username_key,password_hash,salt,iterations,role) VALUES('qa','QA','qa','unused','unused',100000,'student')").run();db.prepare('INSERT INTO sessions(id_hash,user_id,expires_at) VALUES(?,?,?)').run(hash,'qa',Date.now()+60000);

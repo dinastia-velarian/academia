@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../worker.js'),'utf8');
-const prefix=source.slice(0,source.indexOf('function permissionFor'));
+const prefix=source.slice(0,source.indexOf('function permissionFor')).replace(/^import .*;\n/,'');
 const context={};vm.createContext(context);
 vm.runInContext(`const normalize=s=>String(s||'').normalize('NFKC').trim().replace(/\\s+/g,' ');const usernameKey=s=>normalize(s).toLocaleLowerCase('pt-BR');${prefix};globalThis.checkAdminPermissions=adminPermissions;`,context);
 const check=context.checkAdminPermissions;

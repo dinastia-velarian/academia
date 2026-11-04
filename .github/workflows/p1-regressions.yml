@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: "24"
       - name: Authorization and compatibility regressions (in-memory SQLite)
-        run: node --test tests/p1-regressions.mjs
+        run: node --test tests/p1-regressions.mjs tests/youtube.mjs
       - name: Install isolated browser test tooling
         run: |
           npm install --prefix "$RUNNER_TEMP/p1-browser" --no-save --no-audit --no-fund playwright@1.62.1 axe-core@4.11.0
@@ -26,6 +26,8 @@ jobs:
       - name: Responsive design, keyboard and WCAG regressions
         run: |
           NODE_PATH="$RUNNER_TEMP/p1-browser/node_modules" AXE_CORE_PATH="$RUNNER_TEMP/p1-browser/node_modules/axe-core/axe.min.js" DESIGN_SCREENSHOTS="$RUNNER_TEMP/design-review" node tests/design-browser.mjs
+      - name: YouTube forms, shared embeds and image proportions
+        run: NODE_PATH="$RUNNER_TEMP/p1-browser/node_modules" VIDEO_SCREENSHOTS="$RUNNER_TEMP/design-review/videos" node tests/youtube-browser.mjs
       - name: Save browser screenshots
         if: always()
         uses: actions/upload-artifact@v4

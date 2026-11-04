@@ -409,12 +409,15 @@ td {
 .hero-art {
   grid-column: 2;
   grid-row: 1;
-  align-self: stretch;
-  min-height: 490px;
+  align-self: center;
+  width: 100%;
+  aspect-ratio: 846 / 400;
   border-radius: 22px;
-  background:
-    linear-gradient(0deg, #0d0f1266, #0d0f1210),
-    url("/assets/academia-imperial.webp") center/cover;
+  background-color: var(--panel);
+  background-image: url("/assets/academia-imperial.webp");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
   border: 1px solid #575040;
   box-shadow: var(--shadow);
 }
@@ -619,8 +622,10 @@ td {
 }
 .content-cover {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: contain;
+  background: #101318;
   border-radius: 10px;
   margin-bottom: 20px;
 }
@@ -673,9 +678,10 @@ td {
 }
 .about-seal img {
   width: 170px;
+  height: 170px;
   margin: auto;
   object-fit: contain;
-  border-radius: 50%;
+  border-radius: 14px;
 }
 .about-seal {
   text-align: center;
@@ -2326,9 +2332,6 @@ body[data-admin-page="true"] main {
     gap: 30px;
     min-height: 590px;
   }
-  .hero-art {
-    min-height: 450px;
-  }
   .hero-content h1 {
     font-size: 3.3rem;
   }
@@ -2425,9 +2428,7 @@ body[data-admin-page="true"] main {
   .hero-art {
     grid-column: 1;
     grid-row: 2;
-    min-height: 270px;
-    max-height: 340px;
-    background-position: center 42%;
+    background-position: center;
   }
   .hero-content > p {
     max-width: 58ch;
@@ -2642,7 +2643,6 @@ body[data-admin-page="true"] main {
     grid-template-columns: 1fr;
   }
   .hero-art {
-    min-height: 220px;
     border-radius: 14px;
   }
   .hero-facts {

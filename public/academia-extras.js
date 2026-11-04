@@ -17,8 +17,8 @@ if(form){
 const dialog=byId('courseDialog');
 if(dialog){
  dialog.classList.add('full-lesson-dialog');
- dialog.addEventListener('close',()=>{const url=new URL(location.href);if(url.searchParams.has('aula')){url.searchParams.delete('aula');history.replaceState({},'',url)}});
- document.addEventListener('click',event=>{const btn=event.target.closest('.public-content .text-link');if(!btn)return;const card=btn.closest('.public-content');const title=card?.querySelector('h3')?.textContent;if(!title)return;api('/api/public').then(data=>{const item=data.content.find(x=>x.title===title);if(!item)return;const url=new URL(location.href);url.searchParams.set('aula',item.id);history.replaceState({},'',url)}).catch(()=>{})});
+ dialog.addEventListener('close',()=>{const url=new URL(location.href);if(url.searchParams.has('aula')){url.searchParams.delete('aula');window.history.replaceState({},'',url)}});
+ document.addEventListener('click',event=>{const btn=event.target.closest('.public-content .text-link');if(!btn)return;const card=btn.closest('.public-content');const title=card?.querySelector('h3')?.textContent;if(!title)return;api('/api/public').then(data=>{const item=data.content.find(x=>x.title===title);if(!item)return;const url=new URL(location.href);url.searchParams.set('aula',item.id);window.history.replaceState({},'',url)}).catch(()=>{})});
  const id=new URL(location.href).searchParams.get('aula');if(id)api('/api/public').then(data=>{const item=data.content.find(x=>x.id===id);if(item&&typeof openPublished==='function')openPublished(item)}).catch(()=>{});
 }
 const support=byId('certificados');

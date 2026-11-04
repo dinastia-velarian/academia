@@ -1,7 +1,8 @@
+import {workerSource} from './worker-source.mjs';
 import {readFileSync} from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 
-const source=readFileSync(new URL('../../worker.js',import.meta.url),'utf8');
+const source=workerSource();
 const worker=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).default;
 
 // All identities, sessions and mutations in these tests are confined to memory.

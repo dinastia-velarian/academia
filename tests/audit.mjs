@@ -1,10 +1,11 @@
+import {workerSource} from './helpers/worker-source.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 const out=process.env.AUDIT_OUTPUT_DIR||join(tmpdir(),'academia-audit');mkdirSync(out,{recursive:true});
 import assert from 'node:assert/strict';
-const source=readFileSync(new URL('../worker.js',import.meta.url),'utf8');
+const source=workerSource();
 const worker=(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).default;
 const sql=new DatabaseSync(':memory:');sql.exec(readFileSync(new URL('../schema.sql',import.meta.url),'utf8'));
 class Statement{constructor(q){this.q=q;this.args=[]}bind(...args){this.args=args;return this}async first(){return sql.prepare(this.q).get(...this.args)||null}async all(){return {results:sql.prepare(this.q).all(...this.args)}}async run(){const r=sql.prepare(this.q).run(...this.args);return {meta:{changes:r.changes}}}}
