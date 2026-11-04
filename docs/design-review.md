@@ -10,7 +10,7 @@ Branch: `design/academia-calculadoras-admin`. Revisão destinada ao PR #16, sem 
 - Início mais compacto, dois caminhos principais claros e tópicos em cartões com apresentação uniforme.
 - Aulas em uma janela com título acessível, controles consistentes e leitura adaptada ao celular.
 - Mantidas as quatro áreas do aluno: **Estudar, Certificado, Comunidade e Minha conta**. As abas agora têm semântica acessível e navegação pelas setas, Home e End.
-- Progresso com valores acessíveis, aulas concluídas destacadas e persistência validada. A solicitação de certificado tem uma única ação visível; os mesmos endpoints, bloqueios e requisitos continuam ativos.
+- Progresso com valores acessíveis, aulas concluídas destacadas e persistência validada. A divulgação de Premium e diamantes tem destaque em Estudar e catálogo expandido na Comunidade, respeitando a opção de habilitação da Trade. A solicitação de certificado tem uma única ação visível; os mesmos endpoints, bloqueios e requisitos continuam ativos.
 - Menu público com fechamento por Escape, suporte aos links adicionados dinamicamente e atalhos para pular ao conteúdo.
 
 ### Calculadoras
@@ -31,7 +31,7 @@ Branch: `design/academia-calculadoras-admin`. Revisão destinada ao PR #16, sem 
 
 ## Consolidação técnica
 
-`styles.css` foi reescrito como um conjunto único de tokens, controles compartilhados, componentes e regras responsivas. Foram eliminadas as camadas históricas de sobrescritas; o arquivo passou de **95.528 para 54.370 bytes**, redução de aproximadamente **43%**, mesmo com formatação legível. As calculadoras possuem sua composição própria no arquivo existente `ferramentas.css`; patrocínios reutilizam os mesmos tokens em `sponsors.css`, sem estilos inline duplicados nos cartões.
+`styles.css` foi reescrito como um conjunto único de tokens, controles compartilhados, componentes e regras responsivas. Foram eliminadas as camadas históricas de sobrescritas; o arquivo passou de **95.528 para 54.960 bytes**, redução de aproximadamente **43%**, mesmo com formatação legível. As calculadoras possuem sua composição própria no arquivo existente `ferramentas.css`; patrocínios reutilizam os mesmos tokens em `sponsors.css`, sem estilos inline duplicados nos cartões.
 
 Os principais caminhos foram verificados em **1440, 768, 390 e 320 px**. Nenhum transbordamento horizontal foi encontrado nos estados testados. Os endereços dos estilos e scripts alterados receberam novas versões de cache.
 

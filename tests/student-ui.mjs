@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 // This unit fixture isolates progress rendering. Real tab organization is covered in design-browser.mjs.
 class Element {
  constructor(){this.hidden=false;this.dataset={};this.parentElement={setAttribute(){}};this.attrs={};this.style={};this.children=[];this.classList={toggle(){}};this.textContent=''}
- addEventListener(){} setAttribute(k,v){this.attrs[k]=v} append(...xs){this.children.push(...xs)} replaceChildren(...xs){this.children=xs} querySelector(){return new Element()}
+ addEventListener(){} setAttribute(k,v){this.attrs[k]=v} append(...xs){this.children.push(...xs)} replaceChildren(...xs){this.children=xs} closest(){return null} querySelector(){return new Element()}
 }
 const nodes=new Map();const element=id=>{if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id)};
 let done=new Set(['t0-l0','t0-l1','t0-l2']);
