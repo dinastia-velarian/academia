@@ -937,6 +937,10 @@ body.student-page-mode .intro-strip {
   margin-top: 18px;
 }
 .student-quick-nav {
+  position: sticky;
+  top: 80px;
+  z-index: 25;
+  background: var(--bg);
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 4px;
@@ -1310,27 +1314,48 @@ body.student-page-mode .intro-strip {
 }
 .student-trade-products {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin: 20px 0;
 }
 .student-trade-product {
-  padding: 14px;
+  padding: 20px;
+  min-height: 120px;
   background: #101318;
   border: 1px solid var(--line);
   border-radius: 9px;
 }
-.student-trade-product span,
+.student-trade-product:nth-child(-n + 2) {
+  grid-column: span 2;
+  border-color: #71603e;
+  background: linear-gradient(125deg, #28271f, #15191f);
+}
+.student-trade-product span {
+  display: block;
+  color: #c8cdd5;
+  font-size: 0.85rem;
+}
 .student-trade-product strong {
   display: block;
-  font-size: 0.8rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
 }
 .student-trade-product strong {
   color: var(--gold);
-  margin-top: 5px;
+  margin-top: 12px;
 }
 .student-trade-foot {
   margin-top: 14px;
+}
+.student-trade-contact {
+  background: var(--gold);
+  color: #171611;
+  border-color: var(--gold);
+}
+.student-trade-contact:hover {
+  background: #f1d6a0;
 }
 .student-trade-contact[aria-disabled="true"] {
   opacity: 0.6;
@@ -2468,6 +2493,12 @@ body[data-admin-page="true"] main {
   .student-trade-products {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .student-trade-product:nth-child(-n + 2) {
+    grid-column: auto;
+  }
+  .student-quick-nav {
+    top: 70px;
+  }
   .comment-list {
     grid-template-columns: 1fr 1fr;
   }
@@ -2688,8 +2719,17 @@ body[data-admin-page="true"] main {
     font-size: 2rem;
   }
   .student-quick-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    overflow-x: auto;
+    max-width: 100%;
     gap: 6px;
+    padding-block: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #655335 transparent;
+  }
+  .student-quick-nav .student-view-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
   .student-view-tab {
     font-size: 0.78rem;
@@ -2766,10 +2806,11 @@ body[data-admin-page="true"] main {
     display: none;
   }
   .student-trade-product {
-    padding: 12px;
+    padding: 16px;
+    min-height: 115px;
   }
   .student-trade-product span {
-    font-size: 0.7rem;
+    font-size: 0.78rem;
   }
   .student-trade-contact {
     width: 100%;
