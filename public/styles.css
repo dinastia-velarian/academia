@@ -2941,3 +2941,9 @@ body[data-admin-page="true"] main {
     transition: none !important;
   }
 }
+
+/* Homepage: preserve the full artwork on narrow screens instead of cropping faces or crests. */
+.hero-art{background-repeat:no-repeat;background-position:center center}
+@media(max-width:760px){.hero-art{background-size:contain!important;background-color:#17191d;aspect-ratio:16/9;min-height:0!important;max-height:none!important;width:100%}}
+.content-cover{object-position:center center}
+@media(max-width:760px){.content-cover{object-fit:contain;background:#17191d}}
