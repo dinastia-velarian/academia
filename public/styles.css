@@ -862,3 +862,44 @@ main #comentarios.comments-section{width:min(1100px,calc(100% - 40px));max-width
 #studentViewAccount .student-account-intro h3{margin:0 0 6px;color:#f0d8a5}
 #studentViewAccount .student-account-intro p{margin:0;color:#c6b7a0}
 #studentViewAccount .student-account-logout{display:block;margin:18px auto 0;max-width:640px;width:100%;min-height:44px}
+
+
+/* Design system refinado — Academia e painel (novembro 2026) */
+:root{--vel-surface:#201b18;--vel-surface-raised:#29221c;--vel-border:#554533;--vel-highlight:#e1bd75}
+body{font-synthesis:none}
+.section-heading h2{letter-spacing:-.035em;line-height:1.12}
+.section-heading p{max-width:62ch;line-height:1.65}
+.academy-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.academy-shortcuts a{justify-content:flex-start;gap:8px;background:linear-gradient(145deg,#241d18,#1a1614);border-color:#584630;border-radius:14px;min-height:64px;padding:15px 18px;transition:transform .15s,border-color .15s,background .15s}
+.academy-shortcuts a:hover{transform:translateY(-2px);border-color:#cba663;background:#2c2119}
+#courseCards .card{border-radius:16px;transition:transform .16s,border-color .16s}
+#courseCards .card:hover{transform:translateY(-3px);border-color:#b18a4e}
+#studentDashboard .student-quick-nav{background:#161310;border:1px solid #4c3d2d;border-radius:16px;padding:6px;gap:6px}
+#studentDashboard .student-view-tab{border-radius:11px;font-size:.94rem;letter-spacing:.005em}
+#studentDashboard .student-view-tab.is-active{background:#d4ac62;color:#19130e;box-shadow:0 3px 12px #0005}
+#studentDashboard .student-view{max-width:100%}
+#studentViewStudy .student-dash-hero{background:linear-gradient(115deg,#2c221a,#191512);border:1px solid #675037;border-radius:20px;padding:clamp(20px,3vw,32px)}
+#studentViewStudy .student-dash-hero h3{letter-spacing:-.025em}
+#studentViewStudy .student-dash-stats{gap:12px}
+#studentViewStudy .student-dash-stats>div{background:#211b17;border-color:#584630;border-radius:15px;padding:20px}
+#studentViewStudy .student-dash-stats strong{font-variant-numeric:tabular-nums}
+#studentViewCertificate>.student-certificate,#studentViewCertificate>.student-hub-cert,#studentViewAccount .student-password-settings{background:#201a16;border:1px solid #584630;border-radius:17px;padding:clamp(16px,2.5vw,26px)}
+#studentDashboard input,#studentDashboard select,#studentDashboard textarea{border-radius:10px}
+body.admin-mode #admin.admin-workspace{background:#15120f}
+body.admin-mode #admin .admin-sidebar{background:#1b1714;border-right:1px solid #51402d}
+body.admin-mode #admin .admin-tabs{gap:4px}
+body.admin-mode #admin .admin-tabs button,body.admin-mode #admin .admin-tabs a{border-radius:10px;transition:background .15s,color .15s}
+body.admin-mode #admin .admin-tabs button.active{background:#49351f;color:#f5d69b;box-shadow:inset 3px 0 #dfb66b}
+body.admin-mode #admin .admin-main{min-width:0}
+body.admin-mode #admin .admin-page-head{margin-bottom:24px}
+body.admin-mode #admin .admin-page-head h1{letter-spacing:-.035em;line-height:1.12}
+body.admin-mode #admin .admin-hero-banner{border-radius:18px;background:linear-gradient(110deg,#32251a,#1c1714);border:1px solid #665037}
+body.admin-mode #admin .admin-stat-grid{gap:12px}
+body.admin-mode #admin .admin-stat-grid article{background:#211b17;border:1px solid #544330;border-radius:15px;padding:19px}
+body.admin-mode #admin .admin-stat-grid strong{font-variant-numeric:tabular-nums}
+body.admin-mode #admin .admin-task-center{background:#211b17;border-color:#594631;border-radius:16px}
+body.admin-mode #admin input,body.admin-mode #admin select,body.admin-mode #admin textarea{border-radius:9px}
+body.admin-mode #admin button:focus-visible,#studentDashboard button:focus-visible,.academy-shortcuts a:focus-visible{outline:2px solid #e8c783;outline-offset:3px}
+@media(max-width:760px){.academy-shortcuts{grid-template-columns:1fr}.academy-shortcuts a{min-height:52px;padding:12px 15px}body.admin-mode #admin .admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode #admin .admin-stat-grid article{padding:13px}#studentViewStudy .student-dash-stats>div{padding:13px 10px}}
+@media(max-width:400px){body.admin-mode #admin .admin-stat-grid{grid-template-columns:1fr}#studentDashboard .student-quick-nav{gap:4px;padding:4px}#studentDashboard .student-view-tab{font-size:.85rem;padding:9px 5px}}
+@media(prefers-reduced-motion:reduce){.academy-shortcuts a,#courseCards .card{transition:none}.academy-shortcuts a:hover,#courseCards .card:hover{transform:none}}
