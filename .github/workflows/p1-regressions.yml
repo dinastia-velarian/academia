@@ -1,0 +1,25 @@
+name: Segurança e integração P1
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  p1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Authorization and compatibility regressions (in-memory SQLite)
+        run: node --test tests/p1-regressions.mjs
+      - name: Install isolated browser test tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/p1-browser" --no-save --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/p1-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Browser integration (all requests intercepted; no production access)
+        run: NODE_PATH="$RUNNER_TEMP/p1-browser/node_modules" node tests/p1-browser.mjs
