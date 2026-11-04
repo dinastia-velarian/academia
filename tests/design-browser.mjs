@@ -87,6 +87,7 @@ async function audit(page, name) {
 async function screenshot(page, name) {
   if (!process.env.DESIGN_SCREENSHOTS) return;
   mkdirSync(process.env.DESIGN_SCREENSHOTS, { recursive: true });
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
     path: process.env.DESIGN_SCREENSHOTS + "/" + name + ".jpg",
     type: "jpeg",
@@ -133,13 +134,14 @@ try {
   const studentPage = await pageFor(student);
   await studentPage.goto("https://academy.test/#minha-academia");
   await studentPage.locator("#studentDashboard").waitFor({ state: "visible" });
+  await studentPage.locator("[data-student-view=trade]").click();
   await studentPage
-    .locator("#studentViewStudy #studentTradeProducts .student-trade-product")
+    .locator("#studentViewTrade #studentTradeProducts .student-trade-product")
     .first()
     .waitFor({ state: "visible" });
   assert.equal(
     await studentPage
-      .locator("#studentViewStudy #studentTradeProducts .student-trade-product")
+      .locator("#studentViewTrade #studentTradeProducts .student-trade-product")
       .count(),
     6,
   );
@@ -160,9 +162,20 @@ try {
       width,
       height: width < 500 ? 844 : 1000,
     });
-    for (const name of ["study", "certificate", "community", "account"]) {
+    for (const name of [
+      "study",
+      "certificate",
+      "community",
+      "trade",
+      "account",
+    ]) {
       await studentPage.locator("[data-student-view=" + name + "]").click();
       await audit(studentPage, "student " + name + " " + width);
+      if (name === "trade" && [1440, 390].includes(width))
+        await screenshot(
+          studentPage,
+          "premium-" + (width === 1440 ? "desktop" : "mobile"),
+        );
     }
   }
   await studentPage.locator("[data-student-view=study]").click();
@@ -215,7 +228,7 @@ try {
     await screenshot(studentPage, "aluno-" + name);
   }
   pass(
-    "four student tabs, keyboard selection, single certificate action and persisted progress",
+    "five student tabs, keyboard selection, single certificate action and persisted progress",
   );
 
   const calculators = await pageFor();

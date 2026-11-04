@@ -9,8 +9,8 @@ Branch: `design/academia-calculadoras-admin`. Revisão destinada ao PR #16, sem 
 - Identidade preta e dourada com superfícies neutras, tipografia consistente, hierarquia editorial e menos elementos ornamentais repetidos.
 - Início mais compacto, dois caminhos principais claros e tópicos em cartões com apresentação uniforme.
 - Aulas em uma janela com título acessível, controles consistentes e leitura adaptada ao celular.
-- Mantidas as quatro áreas do aluno: **Estudar, Certificado, Comunidade e Minha conta**. As abas agora têm semântica acessível e navegação pelas setas, Home e End.
-- Progresso com valores acessíveis, aulas concluídas destacadas e persistência validada. A tabela completa de Premium e diamantes aparece diretamente em Estudar, sem recolhimento nem troca de aba, respeitando a opção de habilitação da Trade. A solicitação de certificado tem uma única ação visível; os mesmos endpoints, bloqueios e requisitos continuam ativos.
+- Mantidas as quatro áreas originais e adicionada uma aba exclusiva: **Estudar, Certificado, Comunidade, Premium e diamantes e Minha conta**. As abas agora têm semântica acessível e navegação pelas setas, Home e End.
+- Progresso com valores acessíveis, aulas concluídas destacadas e persistência validada. A tabela completa de Premium e diamantes aparece em sua própria aba, sempre expandida, respeitando os preços, contato e habilitação da Trade. A solicitação de certificado tem uma única ação visível; os mesmos endpoints, bloqueios e requisitos continuam ativos.
 - Menu público com fechamento por Escape, suporte aos links adicionados dinamicamente e atalhos para pular ao conteúdo.
 
 ### Calculadoras
@@ -41,7 +41,7 @@ Não houve alteração em `worker.js`, `schema.sql`, `wrangler.jsonc` ou nas fó
 
 | Verificação | Resultado |
 | --- | --- |
-| `tests/design-browser.mjs` em Chromium com axe-core 4.11.0 | 5 grupos aprovados; **86 estados responsivos/acessíveis**; nenhuma violação automática WCAG A/AA nos estados testados; nenhum erro JavaScript não tratado |
+| `tests/design-browser.mjs` em Chromium com axe-core 4.11.0 | 5 grupos aprovados; **90 estados responsivos/acessíveis**; nenhuma violação automática WCAG A/AA nos estados testados; nenhum erro JavaScript não tratado |
 | `tests/p1-regressions.mjs` | **14/14** |
 | `tests/p1-browser.mjs` | **8/8** |
 | `tests/audit.mjs` | **28/28** |
@@ -100,3 +100,9 @@ Capturas de desktop em 1440 × 1000 e de celular em 390 × 844. São cenários l
 - A verificação automatizada de acessibilidade e de teclado não substitui uma avaliação completa com leitores de tela, pessoas usuárias e dispositivos físicos. Não foram testados Safari e Firefox.
 - Os achados P2 de backend da auditoria anterior permanecem fora do escopo visual; não foram alteradas regras de dados, sessões, contagens ou retenção.
 - Não houve migração, alteração de credenciais, usuários, permissões ou dados financeiros reais. Nenhum merge ou deploy foi executado.
+
+### Aba Premium e diamantes
+
+![Tabela na aba exclusiva — desktop](design-review/after/premium-desktop.jpg)
+
+![Tabela na aba exclusiva — celular](design-review/after/premium-mobile.jpg)
