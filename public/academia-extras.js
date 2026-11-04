@@ -39,10 +39,10 @@ const admin=byId('adminOverview');if(!admin)return;
 const panel=create('div');panel.className='admin-form-card knowledge-admin';const heading=create('h3','Perguntas frequentes e glossário');
 const desc=create('p','Cadastre perguntas e termos. Eles aparecerão automaticamente na central pública.');
 const editor=create('form');editor.className='admin-form';
-const kind=create('select');for(const [v,t] of [['faq','Pergunta frequente'],['glossary','Termo do glossário']]){const o=create('option',t);o.value=v;kind.append(o)}
-const title=create('input');title.placeholder='Pergunta ou termo';title.required=true;title.maxLength=150;
-const answer=create('textarea');answer.placeholder='Resposta ou explicação';answer.required=true;answer.rows=4;
-const group=create('input');group.placeholder='Assunto (ex.: Economia)';group.value='Geral';
+const kind=create('select');kind.setAttribute('aria-label','Tipo do material');for(const [v,t] of [['faq','Pergunta frequente'],['glossary','Termo do glossário']]){const o=create('option',t);o.value=v;kind.append(o)}
+const title=create('input');title.placeholder='Pergunta ou termo';title.setAttribute('aria-label','Pergunta ou termo');title.required=true;title.maxLength=150;
+const answer=create('textarea');answer.placeholder='Resposta ou explicação';answer.setAttribute('aria-label','Resposta ou explicação');answer.required=true;answer.rows=4;
+const group=create('input');group.placeholder='Assunto (ex.: Economia)';group.setAttribute('aria-label','Assunto do material');group.value='Geral';
 const save=create('button','Publicar na central');save.type='submit';save.className='primary';
 const status=create('p');status.setAttribute('role','status');
 for(const [name,input] of [['Tipo',kind],['Pergunta ou termo',title],['Explicação',answer],['Categoria',group]]){const l=create('label',name);l.append(input);editor.append(l)}
