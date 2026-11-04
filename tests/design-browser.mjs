@@ -134,29 +134,18 @@ try {
   await studentPage.goto("https://academy.test/#minha-academia");
   await studentPage.locator("#studentDashboard").waitFor({ state: "visible" });
   await studentPage
-    .locator("#studentTradeHighlight")
-    .waitFor({ state: "visible" });
-  await studentPage.locator("#studentTradeHighlight a").click();
-  assert.equal(
-    await studentPage
-      .locator("[data-student-view=community]")
-      .getAttribute("aria-selected"),
-    "true",
-  );
-  assert.equal(new URL(studentPage.url()).hash, "#minha-academia");
-  await studentPage
-    .locator("#studentTradeProducts .student-trade-product")
+    .locator("#studentViewStudy #studentTradeProducts .student-trade-product")
     .first()
     .waitFor({ state: "visible" });
   assert.equal(
     await studentPage
-      .locator("#studentTradeProducts .student-trade-product")
+      .locator("#studentViewStudy #studentTradeProducts .student-trade-product")
       .count(),
     6,
   );
   assert.equal(
-    await studentPage.locator(".student-trade-disclosure").getAttribute("open"),
-    "",
+    await studentPage.locator("details.student-trade-disclosure").count(),
+    0,
   );
   assert.match(
     await studentPage.locator("#studentTradeProducts").innerText(),

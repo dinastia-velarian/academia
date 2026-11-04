@@ -10,7 +10,7 @@ Branch: `design/academia-calculadoras-admin`. Revisão destinada ao PR #16, sem 
 - Início mais compacto, dois caminhos principais claros e tópicos em cartões com apresentação uniforme.
 - Aulas em uma janela com título acessível, controles consistentes e leitura adaptada ao celular.
 - Mantidas as quatro áreas do aluno: **Estudar, Certificado, Comunidade e Minha conta**. As abas agora têm semântica acessível e navegação pelas setas, Home e End.
-- Progresso com valores acessíveis, aulas concluídas destacadas e persistência validada. A divulgação de Premium e diamantes tem destaque em Estudar e catálogo expandido na Comunidade, respeitando a opção de habilitação da Trade. A solicitação de certificado tem uma única ação visível; os mesmos endpoints, bloqueios e requisitos continuam ativos.
+- Progresso com valores acessíveis, aulas concluídas destacadas e persistência validada. A tabela completa de Premium e diamantes aparece diretamente em Estudar, sem recolhimento nem troca de aba, respeitando a opção de habilitação da Trade. A solicitação de certificado tem uma única ação visível; os mesmos endpoints, bloqueios e requisitos continuam ativos.
 - Menu público com fechamento por Escape, suporte aos links adicionados dinamicamente e atalhos para pular ao conteúdo.
 
 ### Calculadoras

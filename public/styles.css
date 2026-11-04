@@ -1284,35 +1284,6 @@ body.student-page-mode .intro-strip {
 .student-comment-actions small {
   color: var(--muted);
 }
-.student-trade-highlight {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 22px 24px;
-  margin: 24px 0;
-  border: 1px solid #655335;
-  border-radius: 12px;
-  background: linear-gradient(115deg, #24251e, #171c23);
-}
-.student-trade-highlight h3 {
-  font-size: 1.05rem;
-  margin: 4px 0 8px;
-}
-.student-trade-highlight p {
-  margin: 0;
-  font-size: 0.8rem;
-}
-.student-trade-highlight a {
-  flex-shrink: 0;
-}
-@media (max-width: 600px) {
-  .student-trade-highlight {
-    align-items: stretch;
-    flex-direction: column;
-    padding: 20px;
-  }
-}
 .student-trade-disclosure {
   border: 1px solid var(--line);
   border-radius: 12px;
