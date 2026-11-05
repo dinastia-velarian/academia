@@ -39,7 +39,7 @@ function renderTopicOrder(){syncTopicSelectors();topicOrderList.replaceChildren(
   try{await api('/api/admin/topic-order','POST',{order:next});displayOrder=next;renderTopicOrder();topicOrderStatus.textContent='Tópico removido da página inicial. Conteúdo preservado.'}
   catch(e){topicOrderStatus.textContent=e.message;renderTopicOrder()}
  };
- controls.append(remove);row.append(label,controls);topicOrderList.append(row)})}reorderTopics.append(reorderTitle,reorderHelp,topicOrderList,topicOrderStatus);topicSection.insertAdjacentElement('afterend',reorderTopics);fetch('/api/topic-order').then(r=>r.json()).then(d=>{if(Array.isArray(d.order)&&new Set(d.order).size===d.order.length&&d.order.every(i=>Number.isInteger(i)&&i>=0&&i<courses.length))displayOrder=[...d.order];renderTopicOrder()}).catch(e=>{topicOrderStatus.textContent='Não foi possível carregar a ordem: '+e.message;renderTopicOrder()});renderTopicOrder();
+ controls.append(remove);row.append(label,controls);topicOrderList.append(row)})}reorderTopics.append(reorderTitle,reorderHelp,topicOrderList,topicOrderStatus);topicSection.insertAdjacentElement('afterend',reorderTopics);fetch('/api/topic-order').then(r=>r.json()).then(d=>{if(Array.isArray(d.order)&&new Set(d.order).size===d.order.length&&d.order.every(i=>Number.isInteger(i)&&i>=0&&i<courses.length))displayOrder=[...d.order];renderTopicOrder()}).catch(e=>{topicOrderStatus.textContent='Não foi possível carregar a ordem: '+e.message;renderTopicOrder()});
 const section=document.createElement('section');section.className='admin-form-card original-lessons-admin';
 const heading=document.createElement('h3');heading.textContent='Editar os tópicos já existentes';
 const explanation=document.createElement('p');explanation.textContent='Edite os textos individuais das aulas abaixo. O vídeo geral do tópico é configurado na seção acima.';
@@ -79,6 +79,6 @@ function fillLessons(){lesson.replaceChildren();currentOrder().forEach(i=>{const
 function fill(){const i=Number(topic.value),j=Number(lesson.value),record=items.find(x=>x.topic===i&&x.index===j)||approvedItems.find(x=>x.topic===i&&x.index===j);title.value=record?.title||courses[i].lessons[j]||'';body.value=record?.body||'';video.value=record?.videoUrl||'';image.value=record?.imageUrl||'';status.textContent=record?'Aula já cadastrada: você pode atualizar o conteúdo.':'Este subtópico ainda não possui aula publicada.'}
 topic.onchange=fillLessons;lesson.onchange=fill;
 form.onsubmit=async event=>{event.preventDefault();save.disabled=true;try{await api('/api/admin/lesson','POST',{topic:Number(topic.value),index:Number(lesson.value),title:title.value,body:body.value,videoUrl:video.value,imageUrl:image.value});items=(await api('/api/lessons')).items||[];if(lesson.selectedOptions[0])lesson.selectedOptions[0].textContent=title.value;renderLessonOrder();status.textContent='Subtópico salvo e confirmado pelo servidor. Confira a publicação na página pública.';if(Number(lesson.value)<courses[Number(topic.value)].lessons.length)courses[Number(topic.value)].lessons[Number(lesson.value)]=title.value}catch(e){status.textContent=e.message}finally{save.disabled=false}};
-fillLessons();load();
+fillLessons();renderTopicOrder();load();
 const nav=document.querySelector('[data-tab="topics"]');nav?.addEventListener('click',()=>{load();topicSection.scrollIntoView({block:'nearest'})});
 })();
