@@ -498,14 +498,32 @@ td {
 }
 .search-wrap span {
   position: absolute;
-  left: 15px;
-  top: 7px;
-  font-size: 1.65rem;
-  color: var(--muted);
+  left: 19px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  font-size: 0;
+  line-height: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+.search-wrap span::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  background: var(--muted);
+  transform: rotate(45deg);
+  transform-origin: left center;
+  left: 12px;
+  top: 12px;
 }
 .search-wrap input {
   margin: 0;
-  padding-left: 45px;
+  padding-left: 56px;
 }
 .academy-shortcuts {
   display: flex;
