@@ -498,14 +498,21 @@ td {
 }
 .search-wrap span {
   position: absolute;
-  left: 15px;
-  top: 7px;
-  font-size: 1.65rem;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.3rem;
+  line-height: 1;
   color: var(--muted);
+  pointer-events: none;
+  z-index: 1;
 }
-.search-wrap input {
+.search-wrap input[type="search"] {
+  box-sizing: border-box;
+  width: 100%;
   margin: 0;
-  padding-left: 45px;
+  padding-left: 54px;
+  padding-right: 16px;
 }
 .academy-shortcuts {
   display: flex;
