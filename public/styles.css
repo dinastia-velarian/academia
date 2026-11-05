@@ -2941,3 +2941,21 @@ body[data-admin-page="true"] main {
     transition: none !important;
   }
 }
+
+/* Fit the original artwork within its frame at every viewport width. */
+.hero-art {
+  align-self: center;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  max-height: none;
+  background-color: #17191d;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
+.content-cover {
+  object-fit: contain;
+  object-position: center;
+  background: #17191d;
+}
