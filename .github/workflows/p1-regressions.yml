@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: "24"
       - name: Authorization and compatibility regressions (in-memory SQLite)
-        run: node --test tests/p1-regressions.mjs
+        run: node --test tests/p1-regressions.mjs tests/youtube-lessons.mjs
       - name: Install isolated browser test tooling
         run: |
           npm install --prefix "$RUNNER_TEMP/p1-browser" --no-save --no-audit --no-fund playwright@1.62.1 axe-core@4.11.0
