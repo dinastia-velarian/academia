@@ -59,8 +59,8 @@ async function publishedCurriculum(env,req){
  const approved=await approvedResponse.json();
  const map=new Map([...approved.items||[],...lessons.items||[]].filter(x=>Number.isInteger(x.topic)&&Number.isInteger(x.index)&&x.index>=0&&x.index<200).map(x=>[x.topic+':'+x.index,x]));
  const defaults={0:4,1:7,2:6,4:5,5:13,8:10};
- const requested=Array.isArray(topicOrder.order)&&topicOrder.order.length?topicOrder.order:[0,1,2,4,5,8];
- const ids=[...new Set([...requested.filter(i=>Object.hasOwn(defaults,i)),8])];
+ const requested=Array.isArray(topicOrder.order)?topicOrder.order:[0,1,2,4,5,8];
+ const ids=[...new Set(requested.filter(i=>Object.hasOwn(defaults,i)))];
  const topics=ids.map(topic=>{const saved=orders.items?.find(x=>x.topic===topic)?.order;const indexes=Array.isArray(saved)?saved:Array.from({length:defaults[topic]},(_,i)=>i);return {topic,lessons:[...new Set(indexes)].filter(index=>Number.isInteger(index)&&map.has(topic+':'+index)).map(index=>({index,title:map.get(topic+':'+index).title}))}});
  const keys=topics.flatMap(t=>t.lessons.map(l=>'t'+t.topic+'-l'+l.index));
  return {topics,topicCount:topics.length,total:keys.length,required:Math.ceil(keys.length*.8),keys};
