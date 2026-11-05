@@ -2946,12 +2946,12 @@ body[data-admin-page="true"] main {
 .hero-art {
   align-self: center;
   width: 100%;
-  aspect-ratio: 846 / 400;
+  aspect-ratio: 3 / 2;
   min-height: 0;
   max-height: none;
   background-color: #17191d;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
   background-size: contain;
 }
 .content-cover {
