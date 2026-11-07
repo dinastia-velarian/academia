@@ -180,25 +180,11 @@ const pageFields={
   ['introFact2','Segunda frase da faixa informativa','.intro-strip span:nth-child(2)'],
   ['introFact3','Terceira frase da faixa informativa','.intro-strip span:nth-child(3)']
  ],
- guias:[
-  ['guidesEyebrow','Texto pequeno acima do título','#guias .eyebrow'],
-  ['guidesTitle','Título da seção Guias','#guias .section-heading h2'],
-  ['guidesDescription','Descrição dos Guias','#guias .section-heading p','textarea'],
-  ['guidesImage','Imagem decorativa dos cartões de guias','#guideCards','image']
- ],
  topicos:[
   ['topicsEyebrow','Texto pequeno acima do título','#topicos .eyebrow'],
   ['topicsTitle','Título da seção Tópicos','#topicos .section-heading h2'],
   ['topicsDescription','Descrição dos Tópicos','#topicos .section-heading p','textarea'],
   ['topicsImage','Imagem decorativa dos tópicos','#courseCards','image']
- ],
- certificados:[
-  ['certEyebrow','Texto pequeno da seção Certificados','#certificados .eyebrow'],
-  ['certTitle','Título da seção Certificados','#certificados h2'],
-  ['certDescription','Explicação sobre certificados','#certificados .section-heading p','textarea'],
-  ['certButton','Texto do botão do Telegram','#certificados .primary'],
-  ['certTelegramUrl','Link do Telegram para certificados','#certificados .primary','url'],
-  ['certificateFee','Taxa do certificado','#certificateFee']
  ],
  sobre:[
   ['aboutEyebrow','Texto pequeno da seção Sobre','#sobre .eyebrow'],
@@ -209,26 +195,15 @@ const pageFields={
   ['aboutImage','Brasão na seção Sobre','#sobre .about-seal img','image'],
   ['aboutMotto','Lema abaixo do brasão','#sobre .about-seal span']
  ],
- doacoes:[
-  ['supportEyebrow','Texto pequeno de doações','#apoie .eyebrow'],
-  ['supportTitle','Título da seção Apoie','#apoie h2'],
-  ['supportDescription','Texto de apresentação das doações','#apoie > div:first-child > p:first-of-type','textarea'],
-  ['donationAccountUrl','Link da conta para doações','#donationLink','url'],
-  ['donationButton','Texto do botão de doações','#donationLink'],
-  ['certificateFee','Taxa de emissão','#certificateFee'],
-  ['supportNote','Aviso abaixo da taxa','#apoie .support-info .note','textarea'],
-  ['supportFinalNote','Aviso final de doações','#apoie > div:first-child > p.note','textarea'],
-  ['supportImage','Imagem de doações','#apoie .support-illustration img','image']
- ],
  rodape:[
   ['footerMotto','Frase da marca no rodapé','footer .footer-brand small'],
   ['footerDescription','Descrição institucional','footer > p','textarea'],
-  ['footerSupport','Texto do link de apoio','footer > a[href="#apoie"]'],
+  
   ['footerTelegramLabel','Texto do link do Telegram','footer > a[href^="https://t.me/"]'],
   ['footerTelegramUrl','Endereço do Telegram','footer > a[href^="https://t.me/"]','url']
  ]
 };
-const pageNames={inicio:'Página inicial',topicos:'Tópicos',certificados:'Certificados',sobre:'Sobre',doacoes:'Doações',rodape:'Rodapé'};
+const pageNames={inicio:'Página inicial',topicos:'Tópicos e aulas (apresentação)',sobre:'Sobre a Academia',rodape:'Rodapé'};
 let selectedPage='inicio';
 const originalPageValues={};
 for(const fields of Object.values(pageFields))for(const [key,,selector,type]of fields){if(key in originalPageValues)continue;const el=document.querySelector(selector);if(!el)continue;if(type==='image'){if(key==='heroImage')originalPageValues[key]='/assets/academia-imperial.webp';else if(key==='guidesImage')originalPageValues[key]='/assets/guias-imperiais.webp';else if(key==='topicsImage')originalPageValues[key]='/assets/topicos-imperiais.webp';else originalPageValues[key]=(el.getAttribute('src')||'').replace(/^assets\//,'/assets/')}else if(type==='url')originalPageValues[key]=el.getAttribute('href')||'';else originalPageValues[key]=el.textContent.trim();}
@@ -250,7 +225,7 @@ function applyPageSettings(settings){
 }
 function renderPageEditor(){
  const nav=$('pageEditorNav');nav.replaceChildren();
- for(const [key,name]of Object.entries(pageNames)){const btn=make('button',key===selectedPage?'active':'',name);btn.type='button';btn.addEventListener('click',()=>{selectedPage=key;renderPageEditor()});nav.append(btn)}
+ for(const [key,name]of Object.entries(pageNames)){const btn=make('button',key===selectedPage?'active':'',name);btn.type='button';btn.addEventListener('click',()=>{selectedPage=key;renderPageEditor()});nav.append(btn)} for(const [name,tab] of [['Gerenciar aulas','topics'],['Patrocínios e planos','sponsors'],['Calculadoras','overview'],['Trade Velarian','trade']]){const btn=make('button','',name+' ↗');btn.type='button';btn.title='Abrir a área administrativa correspondente';btn.addEventListener('click',()=>selectTab(tab));nav.append(btn)}
  const fields=$('pageEditorFields');fields.replaceChildren();
  fields.append(make('h3','',pageNames[selectedPage]));
  fields.append(make('p','admin-field-help','Edite os campos abaixo. Use a prévia para conferir como ficará antes de publicar.'));
@@ -270,7 +245,7 @@ $('pageEditorForm').addEventListener('submit',async e=>{
 $('pageResetButton').addEventListener('click',renderPageEditor);
 $('pagePreviewButton').addEventListener('click',()=>{
  const frame=$('pagePreviewFrame'),dialog=$('pagePreviewDialog'),values=Object.fromEntries(new FormData($('pageEditorForm')));
- frame.onload=()=>{frame.contentWindow.postMessage({type:'academia-page-preview',settings:values},location.origin);setTimeout(()=>{try{frame.contentDocument.querySelector(({'inicio':'#inicio','guias':'#guias','topicos':'#topicos','certificados':'#certificados','sobre':'#sobre','doacoes':'#apoie','rodape':'footer'})[selectedPage])?.scrollIntoView()}catch{}},250)};
+ frame.onload=()=>{frame.contentWindow.postMessage({type:'academia-page-preview',settings:values},location.origin);setTimeout(()=>{try{frame.contentDocument.querySelector(({'inicio':'#inicio','topicos':'#topicos','sobre':'#sobre','rodape':'footer'})[selectedPage])?.scrollIntoView()}catch{}},250)};
  frame.src='/?preview='+Date.now();dialog.showModal();
 });
 $('pagePreviewClose').addEventListener('click',()=>$('pagePreviewDialog').close());
