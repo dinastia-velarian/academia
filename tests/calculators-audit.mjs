@@ -30,8 +30,8 @@ for(const [tool,{key}]of Object.entries(defs)){
 for(const [className,edu,eng,premium,seconds]of [['academico',0,0,true,3575],['academico',11,20,false,2628],['academico',11,20,true,1280],['burocrata',11,20,true,1558],['burocrata',5,10,false,4888],['burocrata',11,20,false,3055]])add('skills','measured reductions '+[className,edu,eng,premium].join('/'),{current:100,target:101,class:className,education:edu,engineering:eng,premium},{seconds});
 for(const [n,diamond]of [[10,8],[11,15],[50,38],[51,45],[100,75],[200,150]])add('skills','tariff boundary '+n,{current:n,target:n+1},{money:250*n,diamonds:diamond});
 add('skills','rounded-source timing corrected at150',{current:150,target:151,class:'academico'},{seconds:15152});
-add('skills','zero range',{current:201,target:201},{money:0,diamonds:0,seconds:0});
-for(const edit of [{current:0},{target:202},{current:1.5},{education:12},{engineering:4},{class:'unknown'},{skill:'unknown'},{premium:'true'},{target:1,current:2}])add('skills','invalid '+JSON.stringify(edit),edit,'throws');
+add('skills','zero range',{current:999,target:999},{money:0,diamonds:0,seconds:0});
+for(const edit of [{current:0},{target:1000},{current:1.5},{education:12},{engineering:4},{class:'unknown'},{skill:'unknown'},{premium:'true'},{target:1,current:2}])add('skills','invalid '+JSON.stringify(edit),edit,'throws');
 for(const n of [1,16,50,100,150,200])add('skills','independent raw power law '+n,{current:n,target:n+1},{seconds:Math.ceil(Math.max(60,1080*Math.pow(n/50,2.5)))});
 // XP fixtures are measured reference values, not independent game certification.
 for(const [n,value]of [[2,271],[10,520],[20,1177],[50,13614],[75,104650],[80,157358],[81,204565],[90,2169297],[100,62747892]])add('xp','measured transition '+n,{current:n,target:n+1},{required:value});
@@ -43,7 +43,7 @@ for(const edit of [{progress:250},{progress:-1},{daily:-1},{current:1.1},{target
 add('xp','maximum supported level',{target:150},{required:3176441961605643});
 // Aggregate account cost deliberately reuses the same single-skill tariff.
 for(const n of [2,10,51,100,201]){let money=0,diamonds=0,raw=0;for(let i=1;i<n;i++){money+=250*i;diamonds+=Math.round(Math.ceil(i/10)*7.5);raw+=Math.max(60,1080*(i/50)**2.5)}const edit={};for(const k of ['quartel','militar','ciencia','suprimentos'])edit[k+'Target']=n;add('account','aggregate tariff '+n,edit,{money:4*money,diamonds:4*diamonds,seconds:4*Math.ceil(raw)});}
-add('account','zero range',{quartelTarget:1,militarTarget:1,cienciaTarget:1,suprimentosTarget:1},{money:0,diamonds:0,seconds:0});add('account','invalid quote',{diamondPrice:-1},'throws');add('account','invalid endpoint',{militarTarget:202},'throws');
+add('account','zero range',{quartelTarget:1,militarTarget:1,cienciaTarget:1,suprimentosTarget:1},{money:0,diamonds:0,seconds:0});add('account','invalid quote',{diamondPrice:-1},'throws');add('account','invalid endpoint',{militarTarget:1000},'throws');
 add('factory','reference 10→11',{current:10,target:11},{xp:844,diamonds:60,totalXp:6590,totalDiamonds:375});
 for(const type of ['couro','ouro','petroleo','nte'])add('factory','resource reference '+type,{type,current:10,target:11},{xp:253,totalXp:1977});
 add('factory','zero range',{current:3,target:3},{xp:0,diamonds:0});
