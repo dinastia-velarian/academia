@@ -160,6 +160,16 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
  if(path==='/api/curriculum'&&method==='GET')return json(await publishedCurriculum(env,req));
  if(path==='/api/sponsor-plans'&&method==='GET')return json({plans:await sponsorPlans(env)});
  if(path==='/api/sponsors'&&method==='GET'){await ensureSponsors(env);const rows=await env.DB.prepare("SELECT id,name,tier,image_url AS imageUrl,target_url AS targetUrl,starts_at AS startsAt,ends_at AS endsAt FROM academy_sponsors WHERE starts_at<=? AND ends_at>? ORDER BY CASE tier WHEN 'master' THEN 0 WHEN 'patrocinador' THEN 1 ELSE 2 END,starts_at DESC LIMIT 50").bind(Date.now(),Date.now()).all();return json({items:rows.results||[]})}
+ if(path==='/api/usage-event'&&method==='POST'){
+  const b=await body(req),session=String(b?.session||''),kind=String(b?.kind||''),item=String(b?.item||'');
+  if(!/^[a-f0-9-]{36}$/.test(session)||!['calculator','topic','lesson'].includes(kind))return fail('Evento inválido.',400);
+  if(kind==='calculator'&&!/^(skills|xp|account|factory|work|construction|army|profit)$/.test(item))return fail('Calculadora inválida.',400);
+  if(kind==='topic'&&!/^[0-8]$/.test(item))return fail('Tópico inválido.',400);
+  if(kind==='lesson'&&!/^[0-8]:[0-9]{1,3}$/.test(item))return fail('Aula inválida.',400);
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_usage_events (kind TEXT NOT NULL,item TEXT NOT NULL,session_id TEXT NOT NULL,occurred_at INTEGER NOT NULL)").run();
+  await env.DB.prepare('INSERT INTO academy_usage_events(kind,item,session_id,occurred_at) VALUES(?,?,?,?)').bind(kind,item,session,Date.now()).run();
+  return json({ok:true});
+ }
  if(path==='/api/section-view'&&method==='POST'){const b=await body(req);const id=String(b?.session||''),section=String(b?.section||'');if(!/^[a-f0-9-]{36}$/.test(id)||!['inicio','topicos','minha-academia','sobre','calculadoras','ferramentas'].includes(section))return fail('Dados de navegação inválidos.',400);await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_section_views (session_id TEXT NOT NULL,section TEXT NOT NULL,view_day TEXT NOT NULL,first_seen INTEGER NOT NULL,PRIMARY KEY(session_id,section,view_day))").run();const now=Date.now(),day=new Date(now).toISOString().slice(0,10);await env.DB.prepare('INSERT OR IGNORE INTO academy_section_views(session_id,section,view_day,first_seen) VALUES(?,?,?,?)').bind(id,section,day,now).run();return json({ok:true})}
  if(path==='/api/visit'&&method==='POST'){const b=await body(req),id=String(b?.session||'');if(!/^[a-f0-9-]{36}$/.test(id))return fail('Sessão inválida.');await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_site_visits (session_id TEXT PRIMARY KEY,created_at INTEGER NOT NULL)").run();await env.DB.prepare('INSERT OR IGNORE INTO academy_site_visits(session_id,created_at) VALUES(?,?)').bind(id,Date.now()).run();return json({ok:true})}
  if(path==='/api/bootstrap'&&method==='POST'){
@@ -406,6 +416,24 @@ async function api(req,env,url){const path=url.pathname,method=req.method;
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_section_views (session_id TEXT NOT NULL,section TEXT NOT NULL,view_day TEXT NOT NULL,first_seen INTEGER NOT NULL,PRIMARY KEY(session_id,section,view_day))").run();
   const sectionRows=await env.DB.prepare('SELECT section,COUNT(*) AS total,SUM(CASE WHEN first_seen>=? THEN 1 ELSE 0 END) AS last7d,SUM(CASE WHEN first_seen>=? THEN 1 ELSE 0 END) AS last30d FROM academy_section_views GROUP BY section ORDER BY last30d DESC,section ASC').bind(Date.now()-7*86400000,Date.now()-30*86400000).all();
   return json({students:Number(overview?.students||0),new30d:Number(overview?.new30d||0),learners:Number(progress?.learners||0),active30d:Number(activity?.active30d||0),completions:Number(progress?.completions||0),completions30d:Number(progress?.completions30d||0),sections:(sectionRows.results||[]).map(x=>({section:x.section,total:Number(x.total||0),last7d:Number(x.last7d||0),last30d:Number(x.last30d||0)})),visits:{total:Number(visits?.total||0),last7d:Number(visits?.last7d||0),last30d:Number(visits?.last30d||0)},topLessons:lessons.results||[],studentTotals:(studentTotals.results||[]).map(x=>Number(x.completed||0))});
+ }
+ if(path==='/api/admin/engagement'&&method==='GET'){
+  if(!permissions.reports&&!permissions.settings)return fail('Sem permissão para relatórios.',403);
+  const period=url.searchParams.get('period')||'monthly';
+  const days={daily:1,weekly:7,monthly:30,yearly:365}[period];
+  if(!days)return fail('Período inválido.',400);
+  const now=Date.now(),span=days*86400000,start=now-span,previous=start-span;
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_site_visits (session_id TEXT PRIMARY KEY,created_at INTEGER NOT NULL)").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_section_views (session_id TEXT NOT NULL,section TEXT NOT NULL,view_day TEXT NOT NULL,first_seen INTEGER NOT NULL,PRIMARY KEY(session_id,section,view_day))").run();
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS academy_usage_events (kind TEXT NOT NULL,item TEXT NOT NULL,session_id TEXT NOT NULL,occurred_at INTEGER NOT NULL)").run();
+  const visits=await env.DB.prepare("SELECT SUM(CASE WHEN created_at>=? THEN 1 ELSE 0 END) AS current,SUM(CASE WHEN created_at>=? AND created_at<? THEN 1 ELSE 0 END) AS previous FROM academy_site_visits WHERE created_at>=?").bind(start,previous,start,previous).first();
+  const sectionRows=await env.DB.prepare("SELECT section,COUNT(*) AS views,COUNT(DISTINCT session_id) AS sessions FROM academy_section_views WHERE first_seen>=? GROUP BY section ORDER BY views DESC").bind(start).all();
+  const usageRows=await env.DB.prepare("SELECT kind,item,COUNT(*) AS actions,COUNT(DISTINCT session_id) AS sessions FROM academy_usage_events WHERE occurred_at>=? GROUP BY kind,item ORDER BY actions DESC").bind(start).all();
+  const usagePrevious=await env.DB.prepare("SELECT kind,item,COUNT(*) AS actions FROM academy_usage_events WHERE occurred_at>=? AND occurred_at<? GROUP BY kind,item").bind(previous,start).all();
+  const dailyVisits=await env.DB.prepare("SELECT strftime('%Y-%m-%d',created_at/1000,'unixepoch') AS day,COUNT(*) AS count FROM academy_site_visits WHERE created_at>=? GROUP BY day ORDER BY day ASC").bind(start).all();
+  const dailyUsage=await env.DB.prepare("SELECT strftime('%Y-%m-%d',occurred_at/1000,'unixepoch') AS day,kind,COUNT(*) AS count FROM academy_usage_events WHERE occurred_at>=? GROUP BY day,kind ORDER BY day ASC").bind(start).all();
+  const prev=new Map((usagePrevious.results||[]).map(x=>[x.kind+':'+x.item,Number(x.actions||0)]));
+  return json({period,days,from:new Date(start).toISOString(),to:new Date(now).toISOString(),visits:{current:Number(visits?.current||0),previous:Number(visits?.previous||0)},sections:(sectionRows.results||[]).map(x=>({section:x.section,views:Number(x.views||0),sessions:Number(x.sessions||0)})),usage:(usageRows.results||[]).map(x=>({kind:x.kind,item:x.item,actions:Number(x.actions||0),sessions:Number(x.sessions||0),previous:prev.get(x.kind+':'+x.item)||0})),dailyVisits:(dailyVisits.results||[]).map(x=>({day:x.day,count:Number(x.count||0)})),dailyUsage:(dailyUsage.results||[]).map(x=>({day:x.day,kind:x.kind,count:Number(x.count||0)}))});
  }
  if(path==='/api/admin/students'&&method==='GET'){
   await env.DB.prepare("CREATE TABLE IF NOT EXISTS student_last_login (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,logged_at INTEGER NOT NULL)").run();
