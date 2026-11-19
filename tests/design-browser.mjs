@@ -135,28 +135,13 @@ try {
   await studentPage.goto("https://academy.test/#minha-academia");
   await studentPage.locator("#studentDashboard").waitFor({ state: "visible" });
   await studentPage.locator("[data-student-view=trade]").click();
-  await studentPage
-    .locator("#studentViewTrade #studentTradeProducts .student-trade-product")
-    .first()
-    .waitFor({ state: "visible" });
-  assert.equal(
-    await studentPage
-      .locator("#studentViewTrade #studentTradeProducts .student-trade-product")
-      .count(),
-    6,
-  );
-  assert.equal(
-    await studentPage.locator("details.student-trade-disclosure").count(),
-    0,
-  );
-  assert.match(
-    await studentPage.locator("#studentTradeProducts").innerText(),
-    /Premium/,
-  );
-  assert.match(
-    await studentPage.locator("#studentTradeProducts").innerText(),
-    /diamantes/,
-  );
+  const bankLink = studentPage.locator("#studentViewTrade #studentTradeContact");
+  await bankLink.waitFor({ state: "visible" });
+  assert.equal(await bankLink.getAttribute("href"), "https://banco.velarian.workers.dev/#/entrar");
+  assert.equal(await bankLink.getAttribute("target"), "_blank");
+  assert.match(await studentPage.locator("#studentViewTrade").innerText(), /Banco Velarian/);
+  assert.equal(await studentPage.locator("#studentViewTrade #studentTradeProducts").count(), 0);
+  assert.equal(await studentPage.locator("details.student-trade-disclosure").count(), 0);
   for (const width of [1440, 768, 390, 320]) {
     await studentPage.setViewportSize({
       width,
@@ -174,7 +159,7 @@ try {
       if (name === "trade" && [1440, 390].includes(width))
         await screenshot(
           studentPage,
-          "premium-" + (width === 1440 ? "desktop" : "mobile"),
+          "banco-" + (width === 1440 ? "desktop" : "mobile"),
         );
     }
   }
