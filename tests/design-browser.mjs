@@ -134,14 +134,8 @@ try {
   const studentPage = await pageFor(student);
   await studentPage.goto("https://academy.test/#minha-academia");
   await studentPage.locator("#studentDashboard").waitFor({ state: "visible" });
-  await studentPage.locator("[data-student-view=trade]").click();
-  const bankLink = studentPage.locator("#studentViewTrade #studentTradeContact");
-  await bankLink.waitFor({ state: "visible" });
-  assert.equal(await bankLink.getAttribute("href"), "https://banco.velarian.workers.dev/#/entrar");
-  assert.equal(await bankLink.getAttribute("target"), "_blank");
-  assert.match(await studentPage.locator("#studentViewTrade").innerText(), /Banco Velarian/);
-  assert.equal(await studentPage.locator("#studentViewTrade #studentTradeProducts").count(), 0);
-  assert.equal(await studentPage.locator("details.student-trade-disclosure").count(), 0);
+  assert.equal(await studentPage.locator('[data-student-view=trade]').count(), 0);
+  assert.equal(await studentPage.locator('a[href*="banco.velarian.workers.dev"]').count(), 0);
   for (const width of [1440, 768, 390, 320]) {
     await studentPage.setViewportSize({
       width,
@@ -151,16 +145,11 @@ try {
       "study",
       "certificate",
       "community",
-      "trade",
       "account",
     ]) {
       await studentPage.locator("[data-student-view=" + name + "]").click();
       await audit(studentPage, "student " + name + " " + width);
-      if (name === "trade" && [1440, 390].includes(width))
-        await screenshot(
-          studentPage,
-          "banco-" + (width === 1440 ? "desktop" : "mobile"),
-        );
+
     }
   }
   await studentPage.locator("[data-student-view=study]").click();
@@ -213,7 +202,7 @@ try {
     await screenshot(studentPage, "aluno-" + name);
   }
   pass(
-    "five student tabs, keyboard selection, single certificate action and persisted progress",
+    "four student tabs, keyboard selection, single certificate action and persisted progress",
   );
 
   const calculators = await pageFor();
@@ -307,7 +296,6 @@ try {
     "comments",
     "notices",
     "suggestions",
-    "trade",
     "media",
     "sponsors",
     "reports",
@@ -332,7 +320,6 @@ try {
       "comments",
       "notices",
       "suggestions",
-      "trade",
       "media",
       "sponsors",
       "reports",
