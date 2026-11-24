@@ -4,12 +4,12 @@ const $=id=>document.getElementById(id);
 let user=null,completed=new Set(),curriculum=null,certificateEligibility=null;
 function organizeStudentDashboard(){
  const dashboard=$('studentDashboard');if(!dashboard||dashboard.dataset.organized)return;
- const views={study:$('studentViewStudy'),certificate:$('studentViewCertificate'),community:$('studentViewCommunity'),trade:$('studentViewTrade'),account:$('studentViewAccount')};
+ const views={study:$('studentViewStudy'),certificate:$('studentViewCertificate'),community:$('studentViewCommunity'),account:$('studentViewAccount')};
  if(Object.values(views).some(x=>!x))return;
  const move=(selector,to)=>{const node=dashboard.querySelector(selector);if(node)views[to].appendChild(node)};
  ['.student-dash-hero','.student-overview-label','.student-dash-stats','#studentStats','.student-track','.student-lessons-heading','#studentCourseList'].forEach(x=>move(x,'study'));
  move('.student-certificate','certificate');
- move('.student-trade-disclosure','trade');
+
  const hub=$('studentHubExtras');
  if(hub){const cert=hub.querySelector('.student-hub-cert'),main=views.certificate.querySelector('.student-certificate');if(cert&&main){while(cert.firstChild)main.appendChild(cert.firstChild);cert.remove()}else if(cert)views.certificate.appendChild(cert)}
  move('#studentNotices','community');move('#studentHubExtras','community');move('#studentCommentSection','community');
@@ -37,7 +37,6 @@ function visibleCourses(){const available=typeof courses!=='undefined'?courses:w
 async function refreshCurriculum(){try{const catalog=await fetch('/api/curriculum').then(r=>{if(!r.ok)throw Error('Catálogo indisponível');return r.json()});curriculum=catalog.topics.map(t=>({c:(typeof courses!=='undefined'?courses:window.courses)[t.topic],i:t.topic,lessons:t.lessons}));}catch{curriculum=[];message('Catálogo indisponível. Atualize a página para tentar novamente.')}}
 function activeCourses(){return curriculum||visibleCourses().map(({c,i})=>({c,i,lessons:c.lessons.map((title,index)=>({title,index}))}))}
 function total(){return activeCourses().reduce((n,x)=>n+x.lessons.length,0)}
-async function refreshTrade(){const panel=$('studentTrade');if(!panel)return;panel.hidden=false;const disclosure=panel.closest('.student-trade-disclosure');if(disclosure)disclosure.hidden=false;const link=$('studentTradeContact');if(link){link.href='https://banco.velarian.workers.dev/#/entrar';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Acessar Banco Velarian ↗';link.removeAttribute('aria-disabled');link.style.pointerEvents='';}}
 
 function render(){root.classList.toggle('is-authenticated',!!user); $('studentAuth').hidden=!!user;$('studentDashboard').hidden=!user;$('studentLogout').hidden=!user;if(!user)return;
 safeText($('studentWelcome'),'Bem-vindo(a), '+user.username);if($('studentAccountName'))safeText($('studentAccountName'),'Jogador: '+user.username);
@@ -64,5 +63,5 @@ $('studentChangePassword').addEventListener('submit',async e=>{e.preventDefault(
 $('studentCertificateRequest').addEventListener('click',e=>{if($('studentCertificateRequest').getAttribute('aria-disabled')==='true'){e.preventDefault();message('Conclua pelo menos 80% das aulas para solicitar o certificado.')}else{e.preventDefault();if(typeof window.academiaSendCertificateRequest==='function')window.academiaSendCertificateRequest();else message('O formulário de solicitação está indisponível. Atualize a página e tente novamente.')}});
 
 $('studentLogout').addEventListener('click',async()=>{try{await api('logout','POST');message('Você saiu da sua conta.');await refresh()}catch(e){message(e.message)}});
-refresh();refreshTrade();
+refresh();
 })();
