@@ -6,7 +6,7 @@ const m=globalThis.VelarianMath;let count=0;const test=async(name,fn)=>{await fn
 const skill={skill:'quartel',class:'burocrata',current:1,target:2,education:0,engineering:0,premium:false};
 const work={health:7,wage:50000,bonusXp:100,bonusMoney:0,tax:0,amount:1,mode:'hours',type:'diamantes'};
 const army={supply:0,infantry:0,tank:0,ship:0,plane:0,missile:0,leatherPrice:0,goldPrice:0,ntePrice:0,oilPrice:0};
-const building={days:7,escolaCurrent:0,escolaTarget:2,baseCurrent:0,baseTarget:0,estradaCurrent:0,estradaTarget:0,hospitalCurrent:0,hospitalTarget:0};
+const building={escolaCurrent:0,escolaTarget:2,baseCurrent:0,baseTarget:0,estradaCurrent:0,estradaTarget:0,hospitalCurrent:0,hospitalTarget:0};
 await test('Skill reference: 1→2',()=>assert.deepEqual(m.skills(skill),{money:250,diamonds:8,seconds:60,diamondSeconds:15}));
 await test('Skill reference: 1→3',()=>{const r=m.skills({...skill,target:3,class:'academico'});assert.equal(r.money,750);assert.equal(r.diamonds,16);assert.equal(r.seconds,108)});
 await test('Skill tariff boundaries 10/11/50/51',()=>{for(const [n,dc]of [[10,8],[11,15],[50,38],[51,45]])assert.equal(m.skills({...skill,current:n,target:n+1}).diamonds,dc)});
@@ -22,8 +22,8 @@ await test('Factory reference 1→3 / 10→11',()=>{assert.deepEqual(m.factory({
 await test('All four resource factories',()=>{for(const type of ['couro','ouro','petroleo','nte'])assert.deepEqual(m.factory({type,current:10,target:11}),{xp:253,diamonds:60,totalXp:1977,totalDiamonds:375})});
 await test('Factory bonus example:500XP→2.5M and 1 turn',()=>{const r=m.bonus({type:'diamantes',current:1,target:2,workers:10,salary:500000,bonusXp:1000,bonusMoney:5000000,mode:'bonus'});assert.equal(r.payroll,2500000);assert.equal(r.jobs,5);assert.equal(r.rounds,1);assert.equal(r.hours,1/6)});
 await test('Fixed wages pay only required work, partial final shift',()=>{const r=m.bonus({type:'diamantes',current:1,target:2,workers:3,salary:10,bonusXp:1000,bonusMoney:0,mode:'fixed'});assert.equal(r.payroll,50);assert.equal(r.rounds,2)});
-await test('Construction observed school 0→2',()=>{const r=m.construction(building);assert.equal(r.money,200000);assert.equal(r.gold,880);assert.equal(r.leather,800);assert.equal(r.nte,600);assert.equal(r.daily_money,6000);assert.equal(r.period_money,42000)});
-await test('Construction existing levels incur maintenance even with no upgrades',()=>{const r=m.construction({...building,escolaCurrent:2});assert.equal(r.money,0);assert.equal(r.daily_money,6000)});
+await test('Construction observed school 0→2',()=>{const r=m.construction(building);assert.equal(r.money,200000);assert.equal(r.gold,880);assert.equal(r.leather,800);assert.equal(r.nte,600);assert.deepEqual(Object.keys(r).sort(),['gold','leather','money','nte','oil'])});
+await test('Construction existing levels cost nothing without upgrades',()=>{const r=m.construction({...building,escolaCurrent:2});assert.deepEqual(r,{money:0,leather:0,gold:0,nte:0,oil:0})});
 await test('All construction base costs and target reversal',()=>{const r=m.construction({...building,escolaTarget:0,baseTarget:1,estradaTarget:1,hospitalTarget:1});assert.equal(r.money,330000);assert.equal(r.oil,1100);assert.throws(()=>m.construction({...building,escolaCurrent:3}))});
 await test('Military reference per-unit costs',()=>{for(const [unit,power,money]of [['infantry',1,5000],['tank',2,10000],['ship',3,20000],['plane',4,40000],['missile',5,80000]]){const r=m.army({...army,[unit]:1});assert.equal(r.power,power);assert.equal(r.money,money)}});
 await test('Military reference supplies100 infantry10',()=>{const r=m.army({...army,supply:100,infantry:10});assert.equal(r.money,47500);assert.equal(r.leather,950);assert.equal(r.gold,475);assert.equal(r.power,10)});
