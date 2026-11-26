@@ -13,7 +13,7 @@ account:{d:{class:'burocrata',education:0,engineering:0,premium:false,diamondPri
 factory:{d:{type:'diamantes',current:1,target:3},key:'current'},
 bonus:{d:{type:'diamantes',current:1,target:2,workers:10,salary:500000,bonusXp:1000,bonusMoney:5000000,mode:'bonus'},key:'workers'},
 work:{d:{health:7,wage:50000,bonusXp:100,bonusMoney:0,tax:0,amount:1,mode:'hours',type:'diamantes',payMode:'salary'},key:'amount'},
-construction:{d:{days:7,escolaCurrent:0,escolaTarget:2,baseCurrent:0,baseTarget:0,estradaCurrent:0,estradaTarget:0,hospitalCurrent:0,hospitalTarget:0},key:'days'},
+construction:{d:{escolaCurrent:0,escolaTarget:2,baseCurrent:0,baseTarget:0,estradaCurrent:0,estradaTarget:0,hospitalCurrent:0,hospitalTarget:0},key:'escolaTarget'},
 army:{d:{supply:100,infantry:10,tank:0,ship:0,plane:0,missile:0,leatherPrice:0,goldPrice:0,ntePrice:0,oilPrice:0},key:'infantry'},
 tax:{d:{gross:1000000,federal:5,province:8},key:'gross'},
 profit:{d:{units:100,price:100,materials:40,wages:1000,other:0,rate:0},key:'units'},
@@ -21,7 +21,7 @@ resources:{d:{required:1000,stock:250,unitPrice:80},key:'required'}};
 const cases=[];
 function add(tool,name,edit,expected){const d={...clone(defs[tool].d),...edit};cases.push({tool,name,d,expected})}
 function match(result,expected){for(const [k,v]of Object.entries(expected))if(v===null)assert.equal(result[k],null);else{assert.equal(typeof result[k],'number');assert.ok(Math.abs(result[k]-v)<=Math.max(1e-7,Math.abs(v)*1e-12),`${k}: ${result[k]} ≠ ${v}`)}}
-const fixtures={skills:{money:250,diamonds:8,seconds:60,diamondSeconds:15},xp:{required:250,remaining:250,days:2.5},account:{money:1000,diamonds:32,diamondsValue:320,seconds:240},factory:{xp:1030,diamonds:35},bonus:{jobs:5,rounds:1,payroll:2500000,hours:1/6},work:{jobs:6,ep:600,regen:70,spent:106,netDiamonds:14,netMoney:300000},construction:{money:200000,leather:800,gold:880,nte:600,daily_money:6000,period_money:42000},army:{power:10,money:47500,leather:950,gold:475},tax:{federal:50000,province:80000,total:130000,net:870000},profit:{revenue:10000,cost:5000,profit:5000,margin:50,breakEven:50},resources:{missing:750,cost:60000}};
+const fixtures={skills:{money:250,diamonds:8,seconds:60,diamondSeconds:15},xp:{required:250,remaining:250,days:2.5},account:{money:1000,diamonds:32,diamondsValue:320,seconds:240},factory:{xp:1030,diamonds:35},bonus:{jobs:5,rounds:1,payroll:2500000,hours:1/6},work:{jobs:6,ep:600,regen:70,spent:106,netDiamonds:14,netMoney:300000},construction:{money:200000,leather:800,gold:880,nte:600,oil:0},army:{power:10,money:47500,leather:950,gold:475},tax:{federal:50000,province:80000,total:130000,net:870000},profit:{revenue:10000,cost:5000,profit:5000,margin:50,breakEven:50},resources:{missing:750,cost:60000}};
 for(const [tool,{key}]of Object.entries(defs)){
  add(tool,'ordinary fixture',{},fixtures[tool]);
  for(const [i,value]of ['', ' ', -1,NaN,Infinity,-Infinity,true,false,[1],{},'abc','1e999'].entries())add(tool,`invalid primary input ${i}`,{[key]:value},'throws');
@@ -64,11 +64,11 @@ add('work','inactive bonus divisor',{bonusXp:'',bonusMoney:0},{bonusPay:0});
 add('work','zero jobs',{amount:0},{jobs:0,spent:0,netMoney:0});
 for(const edit of [{mode:'unknown'},{payMode:'unknown'},{type:'unknown'},{health:8},{tax:101},{bonusXp:0,bonusMoney:1}])add('work','invalid '+JSON.stringify(edit),edit,'throws');
 add('work','maximum supported hours',{amount:1e7,wage:0},r=>assert.equal(r.jobs,60000000));
-add('construction','existing property no upgrade',{escolaCurrent:2},{money:0,daily_money:6000});
+add('construction','existing property no upgrade',{escolaCurrent:2},{money:0,leather:0,gold:0,nte:0,oil:0});
 add('construction','all buildings one level',{escolaTarget:1,baseTarget:1,estradaTarget:1,hospitalTarget:1},{money:430000,leather:1200,gold:880,nte:1600,oil:1100});
-add('construction','zero targets',{escolaTarget:0},{money:0,daily_money:0});
-add('construction','upper level and days',{escolaTarget:1000,days:3650},{money:1e8,daily_money:3e6,period_money:10950000000});
-for(const edit of [{days:1.5},{days:3651},{escolaCurrent:3},{baseTarget:1001},{hospitalTarget:-1}])add('construction','invalid '+JSON.stringify(edit),edit,'throws');
+add('construction','zero targets',{escolaTarget:0},{money:0,leather:0,gold:0,nte:0,oil:0});
+add('construction','upper level',{escolaTarget:1000},{money:1e8});
+for(const edit of [{escolaTarget:1.5},{escolaTarget:1001},{escolaCurrent:3},{baseTarget:1001},{hospitalTarget:-1}])add('construction','invalid '+JSON.stringify(edit),edit,'throws');
 for(const [unit,power,money]of [['infantry',1,5000],['tank',2,10000],['ship',3,20000],['plane',4,40000],['missile',5,80000]])add('army','unit '+unit,{infantry:0,[unit]:1,supply:0},{power,money});
 add('army','market valuation',{supply:0,infantry:1,leatherPrice:50,goldPrice:100},{market:15000});
 add('army','zero quantities',{infantry:0},{power:0,market:0});
