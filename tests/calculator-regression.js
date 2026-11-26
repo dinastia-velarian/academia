@@ -15,7 +15,7 @@ check('Modelo progressivo: hospitais 274 a 279 reproduz exemplo observado',()=>{
 check('Modelo progressivo: limite de 25 unidades',()=>{const r=math.construction({...buildings(24,26),costMode:'progressive'});assert.ok(Math.abs(r.money-231000)<1e-6)});
 check('Modelo progressivo: zero unidades não custa',()=>{const r=math.construction({...buildings(0,0),costMode:'progressive'});assert.equal(r.money,0)});
 check('Modo de custo desconhecido é rejeitado',()=>assert.throws(()=>math.construction({...buildings(0,1),costMode:'invalid'}),/Modo de custo/));
-check('Sem novas construções: custo de compra zero',()=>{const r=math.construction(buildings(10,10));assert.deepEqual(r,{money:0,leather:0,gold:0,nte:0,oil:0})});
+check('Sem novas construções: custo de compra zero',()=>{const r=math.construction(buildings(10,10));assert.deepEqual({...r},{money:0,leather:0,gold:0,nte:0,oil:0})});
 check('Alvo inferior ao atual é inválido',()=>assert.throws(()=>math.construction(buildings(11,10)),/nível alvo/));
 check('Multiplicador inferior a um é inválido',()=>assert.throws(()=>math.construction(buildings(0,1,0.9)),/Multiplicador/));
 const army=supply=>({supply,infantry:1,tank:0,ship:0,plane:0,missile:0,leatherPrice:0,goldPrice:0,ntePrice:0,oilPrice:0});
